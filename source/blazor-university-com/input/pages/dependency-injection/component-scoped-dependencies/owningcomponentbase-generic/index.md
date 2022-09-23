@@ -1,5 +1,5 @@
 ---
-title: "OwningComponentBase&lt;T&gt;"
+title: "OwningComponentBase<T>"
 date: "2020-05-30"
 order: 1
 ---
