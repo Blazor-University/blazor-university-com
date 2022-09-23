@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "blazor-university-com": {
+      "commandName": "Project",
+      "commandLineArgs": "deploy -l Debug"
+    }
+  }
+}

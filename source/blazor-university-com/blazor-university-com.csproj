@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>BlazorUniversityCom</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Statiq.Web" />
+    <PackageReference Include="Statiq.Docs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\blazor-university-tailwind\blazor-university-tailwind.csproj" />
+  </ItemGroup>
+</Project>

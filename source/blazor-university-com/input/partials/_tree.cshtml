@@ -1,0 +1,81 @@
+<!-- _tree.cshtml -->
+@{
+  // This is a recursive component.
+
+  bool showInSidebar = Model.GetBool(MetaDataKeys.ShowInSidebar, true);
+  bool hasRedirect = Model.ContainsKey(Keys.RedirectTo);
+
+  DocumentList<IDocument> children =
+    OutputPages
+      .GetChildrenOf(Model)
+      .Where(x => !x.ContainsKey(Keys.RedirectTo))
+      .ToDocumentList();
+
+  bool hasChildren = children.Count > 0;
+  bool hasVisibleChildren = children.Any(x => x.GetBool(MetaDataKeys.ShowInSidebar, true));
+
+  string GetMenuClasses()
+  {
+    var classes = new List<string>();
+    classes.Add("menu");
+    classes.Add("dark:text-gray-300");
+
+    if (showInSidebar && hasChildren) classes.Add("pb-2");
+    if (hasChildren)
+    {
+      classes.Add("text-base");  }
+    else
+    {
+      classes.Add("ml-6");
+      classes.Add("font-light");
+    }
+
+    classes.Add("flex items-start cursor-pointer");
+    string menuClassesAsString = string.Join(" ", classes);
+    return menuClassesAsString;
+  }
+
+  string GetMenuGroupClasses()
+  {
+    var classes = new List<string>();
+    classes.AddRange(new [] {"hidden", "menu-group", "overflow-hidden"});
+    if (showInSidebar)
+    {
+      classes.Add("pl-2 mb-4");
+    }
+    string menuGroupClassesAsString = string.Join(' ', classes);
+
+    return menuGroupClassesAsString;
+  }
+
+  async Task TraverseChildren()
+  {
+    @foreach (IDocument aChild in children)
+    {
+      @await Html.PartialAsync("_tree.cshtml", aChild);
+    }
+  }
+
+  if (showInSidebar)
+  {
+    <div class="@GetMenuClasses()" data-doc-id=@Model.Id data-doc-title="@Model.GetTitle()">
+      <div class="flex items-start cursor-pointer">
+        @await Html.PartialAsync("_tree-link.cshtml", (Model, hasChildren))
+      </div>
+    </div>
+  }
+  if (hasChildren)
+  {
+    if (hasVisibleChildren)
+    {
+      var menugroupClasses = GetMenuGroupClasses();
+      <div class="@GetMenuGroupClasses()" data-group-id=@(Model.Id)>
+        @{await TraverseChildren();}
+      </div>
+    }
+    else
+    {
+      await TraverseChildren();
+    }
+  }
+}

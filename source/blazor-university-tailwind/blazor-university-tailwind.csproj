@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Target Name="EnsureNpmRestored">
+    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+    <Exec Command="npm install" />
+  </Target>
+
+  <Target Name="BuildNpmPackages" AfterTargets="ResolveReferences" DependsOnTargets="EnsureNpmRestored">
+    <Message Importance="high" Text="Building npm packages" />
+    <Exec Command="npm run tailwinds" />
+  </Target>
+
+</Project>

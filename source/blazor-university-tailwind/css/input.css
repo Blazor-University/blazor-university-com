@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.rotate {
+  @apply rotate-90;
+  @apply transform;
+  @apply transition;
+  @apply duration-300;
+}
+
+.rotated {
+  @apply rotate-90;
+  @apply transform;
+}
+
+.active {
+  @apply text-gray-800;
+  @apply font-semibold !important;
+  @apply dark:text-gray-300;
+}

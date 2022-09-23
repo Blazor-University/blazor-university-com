@@ -1,0 +1,6 @@
+<Project>
+  <ItemGroup>
+    <PackageVersion Include="Statiq.Docs" Version="1.0.0-beta.3" />
+    <PackageVersion Include="Statiq.Web" Version="1.0.0-beta.49" />
+  </ItemGroup>
+</Project>

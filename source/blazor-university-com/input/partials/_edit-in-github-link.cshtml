@@ -1,0 +1,19 @@
+<!-- _edit-in-github-link.cshtml -->
+@{
+  string editRoot = Document.GetString(MetaDataKeys.EditRoot);
+  var markdownPath = Document.Source.GetRelativeInputPath();
+  string gitHubEditUrl = $"{editRoot}/{markdownPath}";
+  string? editLink =
+    Document.ContainsKey(MetaDataKeys.EditLink) ?
+      Document.GetString(MetaDataKeys.EditLink) :
+      (Document.ContainsKey(MetaDataKeys.EditRoot) ?
+        Document.GetString(MetaDataKeys.EditRoot) + "/" + Document.Source.GetRelativeInputPath()
+        : null);
+}
+
+<a class="flex flex-row justify-end gap-2 -mt-4 text-sm font-normal" href="@editLink" target="_blank">
+  <span>
+    Edit This Page
+  </span>
+  @await Html.PartialAsync("icons/_pencil-square.cshtml")
+</a>

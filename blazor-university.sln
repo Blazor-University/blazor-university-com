@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "source", "source", "{0937108E-2858-4378-9A1E-2F89705118C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "blazor-university-com", "source\blazor-university-com\blazor-university-com.csproj", "{647314F8-CD2A-4933-A07D-7C09CB50216C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "blazor-university-tailwind", "source\blazor-university-tailwind\blazor-university-tailwind.csproj", "{62DCA2DD-11C8-4A1C-887B-B95B853DA073}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{647314F8-CD2A-4933-A07D-7C09CB50216C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{647314F8-CD2A-4933-A07D-7C09CB50216C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{647314F8-CD2A-4933-A07D-7C09CB50216C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{647314F8-CD2A-4933-A07D-7C09CB50216C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62DCA2DD-11C8-4A1C-887B-B95B853DA073}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62DCA2DD-11C8-4A1C-887B-B95B853DA073}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62DCA2DD-11C8-4A1C-887B-B95B853DA073}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62DCA2DD-11C8-4A1C-887B-B95B853DA073}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{647314F8-CD2A-4933-A07D-7C09CB50216C} = {0937108E-2858-4378-9A1E-2F89705118C6}
+		{62DCA2DD-11C8-4A1C-887B-B95B853DA073} = {0937108E-2858-4378-9A1E-2F89705118C6}
+	EndGlobalSection
+EndGlobal

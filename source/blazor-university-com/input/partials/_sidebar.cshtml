@@ -1,0 +1,8 @@
+<!-- _sidebar.cshtml -->
+
+@* TODO: Cramer remove the wrappting div below.  Will effect css Path *@
+<section id="left-sidebar">
+  <nav class="content-menu">
+    @await Html.PartialAsync("_tree.cshtml",GetRoot())
+  </nav>
+</section>

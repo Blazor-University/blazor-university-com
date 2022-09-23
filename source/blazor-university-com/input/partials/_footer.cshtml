@@ -1,0 +1,32 @@
+﻿<!-- _footer.cshtml -->
+@{
+  // TODO: Cramer replace timewarp links with Blazor-U links
+}
+<footer id="footer"
+  class="flex flex-row items-center m-2 text-sm tracking-tight text-center"
+>
+  <div class="flex-1">
+    <a href="/" class="">
+      The Freeze Team
+    </a>
+  </div>
+  <div class="flex-1">
+    <a href="https://timewarp.enterprises" target="_blank">
+      <img class="w-2/3 mx-auto" src="images/timewarp-enterprises.svg" />
+    </a>
+  </div>
+  <div class="flex-1">
+    <ul class="flex justify-center list-reset">
+      <li class="">
+        <a href="@Context.GetLink(@RssFeeds.FirstOrDefault())">
+          Rss
+        </a>
+      </li>
+      <li class="pl-3">
+        <a href="@Context.GetLink(AtomFeeds.FirstOrDefault())">
+          Atom
+        </a>
+      </li>
+    </ul>
+  </div>
+</footer>

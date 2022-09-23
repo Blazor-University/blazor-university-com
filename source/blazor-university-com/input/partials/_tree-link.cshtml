@@ -1,0 +1,20 @@
+<!-- _tree-node.cshtml -->
+@{
+  // Model (IDocument theDocumentToLinkTo, bool hasChildren)
+  // The document for the sidebar link and whether it has children is passed in as the model
+  string? activeClass = Document.IdEquals(Model.Document) ? "active": null;
+  // string? hasChildrenClass = @Model.HasChildren ? "has-children" : null;
+}
+
+@inherits BaseStatiqRazorPage<(IDocument Document, bool HasChildren)>
+
+@if (Model.HasChildren)
+{
+  <div class="mt-1 mr-2 menu-arrow rotate-arrow">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+  </div>
+}
+
+<div class="sidebar-nav-item @(Document.IdEquals(Model.Document) ? "active" : null)">
+  @Html.DocumentLink(Model.Document)
+</div>

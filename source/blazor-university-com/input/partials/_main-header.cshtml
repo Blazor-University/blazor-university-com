@@ -1,0 +1,17 @@
+﻿<!-- _main-header.cshtml -->
+@{
+
+}
+<header class="w-full px-4 mx-auto">
+  @await Html.PartialAsync("_announcement.cshtml")
+  <h1
+    class="text-4xl font-bold tracking-tight text-center sm:text-5xl"
+  >
+    @Title
+  </h1>
+  <div class="invisible mt-4 text-sm text-center text-blue-500 uppercase">
+    @PublishedDate
+  </div>
+  @* @Html.Partial("_tags.cshtml") *@
+  <!--image-->
+</header>

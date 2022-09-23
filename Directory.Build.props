@@ -1,0 +1,21 @@
+<Project>
+  <!-- Set common properties regarding assembly information and nuget packages -->
+  <PropertyGroup>
+    <Authors>Peter Leslie Morris</Authors>
+    <Product>blazor-university.com</Product>
+  </PropertyGroup>
+
+  <!-- Common compile parameters -->
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <EnablePreviewFeatures>true</EnablePreviewFeatures>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>preview</LangVersion>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <Nullable>enable</Nullable>
+    <TargetFramework>net6.0</TargetFramework>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+</Project>
