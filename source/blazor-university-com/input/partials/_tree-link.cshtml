@@ -15,6 +15,6 @@
   </div>
 }
 
-<div class="sidebar-nav-item @(Document.IdEquals(Model.Document) ? "active" : null)">
+<div class="sidebar-nav-item px-2 @(Document.IdEquals(Model.Document) ? "active" : null)">
   @Html.DocumentLink(Model.Document)
 </div>
