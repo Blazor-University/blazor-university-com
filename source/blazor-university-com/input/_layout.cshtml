@@ -3,25 +3,26 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 @await Html.PartialAsync("partials/_head.cshtml")
 <body class="flex flex-col min-h-screen bg-zinc-200 dark:bg-slate-800 text-zinc-800 dark:text-zinc-100">
-  <div class="flex flex-col flex-grow mx-auto">
-    @await Html.PartialAsync("partials/_header.cshtml")
-    <!-- Main  -->
-    <div class="flex flex-col flex-grow w-full mx-auto mt-2">
-      @await Html.PartialAsync("partials/_main-header.cshtml")
-      <div class="flex flex-row">
-        @await Html.PartialAsync("partials/_sidebar.cshtml")
-        <main
-          class="w-3/4 p-2 mx-auto prose max-w-none lg:p-10 bg-zinc-200 dark:bg-slate-800 dark:prose-invert "
-        >
-          @await Html.PartialAsync("partials/_edit-in-github-link.cshtml")
-          @RenderBody()
-        </main>
-      </div>
-      <!-- Main Footer -->
-      @* @Html.Partial("partials/_main-footer.cshtml") *@
+    <div class="flex flex-col flex-grow mx-auto">
+        @await Html.PartialAsync("partials/_header.cshtml")
+        <!-- Main  -->
+        <div class="flex flex-row flex-grow w-full mx-auto mt-2">
+            <div class="w-1/4">
+                @await Html.PartialAsync("partials/_sidebar.cshtml")
+            </div>
+            <div class="w-3/4">
+                @await Html.PartialAsync("partials/_main-header.cshtml")
+                <div class="flex flex-row">
+                    <main class="mx-auto prose max-w-none pr-10 bg-zinc-200 dark:bg-slate-800 dark:prose-invert ">
+                        @RenderBody()
+                    </main>
+                </div>
+                <!-- Main Footer -->
+                @* @Html.Partial("partials/_main-footer.cshtml") *@
+            </div>
+        </div>
+        @* @Html.Partial("partials/_footer.cshtml") *@
+        @await Html.PartialAsync("partials/_scripts.cshtml")
     </div>
-    @* @Html.Partial("partials/_footer.cshtml") *@
-    @await Html.PartialAsync("partials/_scripts.cshtml")
-  </div>
 </body>
 </html>
