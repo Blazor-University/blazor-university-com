@@ -2,18 +2,18 @@
 <!-- _layout.cshtml -->
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 @await Html.PartialAsync("partials/_head.cshtml")
-<body class="flex flex-col min-h-screen bg-zinc-200 dark:bg-slate-800 text-zinc-800 dark:text-zinc-100">
-    <div class="flex flex-col flex-grow mx-auto">
+<body class="flex flex-col bg-zinc-200 dark:bg-slate-800 text-zinc-800 dark:text-zinc-100">
+    <div class="flex flex-col flex-grow lg:w-2/3 mx-auto">
         @await Html.PartialAsync("partials/_header.cshtml")
         <!-- Main  -->
         <div class="flex flex-row flex-grow w-full mx-auto mt-2">
-            <div class="w-1/4">
+            <div class="w-1/4 mt-4">
                 @await Html.PartialAsync("partials/_sidebar.cshtml")
             </div>
             <div class="w-3/4">
                 @await Html.PartialAsync("partials/_main-header.cshtml")
                 <div class="flex flex-row">
-                    <main class="mx-auto prose pl-4 max-w-none pr-10 bg-zinc-200 dark:bg-slate-800 dark:prose-invert ">
+                    <main class="mx-auto prose px-4 max-w-none bg-zinc-200 dark:bg-slate-800 dark:prose-invert ">
                         @RenderBody()
                     </main>
                 </div>
