@@ -3,11 +3,13 @@
 
 }
 <header>
-    <h1 class="text-4xl mb-2 font-bold tracking-tight sm:text-5xl">
-        @Title
-    </h1>
-    <div class="-mt-5 -mb-4">
-        @await Html.PartialAsync("_edit-in-github-link.cshtml")
+    <div class="flex flex-row justify-between">
+        <h1 class="text-4xl mb-2 font-bold tracking-tight sm:text-5xl">
+            @Title
+        </h1>
+        <div class="mx-4 -mt-4">
+            @await Html.PartialAsync("_edit-in-github-link.cshtml")
+        </div>
     </div>
     <!--
     <div class="invisible mt-4 text-sm text-center text-blue-500 uppercase">
