@@ -95,7 +95,7 @@ of what should be rendered to the user.
 {
   <ShowPersonDetails Person=@currentPerson/>
 }
-```razor
+```
 
 The preceding mark-up will add an `h1` to the render tree with "People" as its content. It will then create a new instance of the `ShowPersonDetails` for every `Person` in `people`.
 
@@ -176,10 +176,10 @@ such as retrieving data from a server.
 
 #### SetParametersAsync
 
-- **Action on first await**  
-    Continue the lifecycle process  
+- **Action on first await**
+    Continue the lifecycle process
     (OnInitialized\* if new instance, otherwise OnParametersSet\*)
-- **Action on exit method**  
+- **Action on exit method**
     No further action
 
 **Note:** The `base.SetParametersAsync` method must be executed before any `await` instructions in the method,
@@ -187,23 +187,23 @@ otherwise an `InvalidOperationException` will be thrown.
 
 #### OnInitializedAsync
 
-- **Action on first await**  
+- **Action on first await**
     Render the component
-- **Action on exit method**  
+- **Action on exit method**
     Continue the lifecycle process
 
 #### OnParametersSetAsync
 
-- **Action on first await**  
+- **Action on first await**
     Render the component
-- **Action on exit method**  
+- **Action on exit method**
     Continue the lifecycle process
 
 #### OnAfterRenderAsync
 
-- **Action on first await**  
+- **Action on first await**
     No further action
-- **Action on exit method**  
+- **Action on exit method**
     No further action
 
 The simple rule is that `SetParametersAsync` is the only method that cannot suspend the lifecycle process by awaiting a `Task`.
@@ -230,13 +230,13 @@ Subsequent awaits will not cause multiple renders. For example
 protected override async Task OnParametersSetAsync()
 {
   // Automatically renders when next line starts to await
-  await Task.Delay(1000); 
+  await Task.Delay(1000);
 
   // No automatic render when next line starts to await
-  await Task.Delay(1000); 
+  await Task.Delay(1000);
 
   // No automatic render when next line starts to await
-  await Task.Delay(1000); 
+  await Task.Delay(1000);
 }
 ```razor
 
@@ -246,15 +246,15 @@ If we want to render at additional points then we must call `StateHasChanged` ju
 protected override async Task OnParametersSetAsync()
 {
   // Automatically renders when next line starts to await
-  await Task.Delay(1000); 
+  await Task.Delay(1000);
 
   // Explicitly render when next line starts to await
   StateHasChanged();
-  await Task.Delay(1000); 
+  await Task.Delay(1000);
 
   // Explicitly render when next line starts to await
   StateHasChanged();
-  await Task.Delay(1000); 
+  await Task.Delay(1000);
 }
 ```
 
