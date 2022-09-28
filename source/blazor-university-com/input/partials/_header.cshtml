@@ -1,16 +1,14 @@
 ﻿<!-- _header.cshtml -->
 <header class="mx-auto my-2">
-  <a
-    href="index"
-    class="flex flex-row items-center"
-  >
-    <img class="mx-auto my-2" src="/images/blazor-university-circle.png" />
-    <div class="flex flex-col">
-      <span class="text-4xl">Blazor University</span>
-      <span class="text-sm uppercase">Learn the .NET SPA framework from Microsoft</span>
-    </div>
-  </a>
-  @* <h1 class="text-4xl font-bold tracking-tight text-center sm:text-5xl">@PageTitle</h1> *@
-  @Html.Partial("_search.cshtml")
-  @Html.Partial("_navigation.cshtml")
+    <a href="/"
+       class="flex flex-row items-center mb-3">
+        <img class="mx-auto my-2" src="/images/blazor-university-circle.png" />
+        <div class="flex flex-col ml-4">
+            <span class="text-4xl">Blazor University</span>
+            <span class="text-sm uppercase">Learn the .NET SPA framework from Microsoft</span>
+
+        </div>
+    </a>
+    @Html.Partial("_search.cshtml")
+    @Html.Partial("_navigation.cshtml")
 </header>

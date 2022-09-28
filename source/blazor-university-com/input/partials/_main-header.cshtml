@@ -2,16 +2,20 @@
 @{
 
 }
-<header class="w-full px-4 mx-auto">
-  @await Html.PartialAsync("_announcement.cshtml")
-  <h1
-    class="text-4xl font-bold tracking-tight text-center sm:text-5xl"
-  >
-    @Title
-  </h1>
-  <div class="invisible mt-4 text-sm text-center text-blue-500 uppercase">
+<header>
+    <div class="flex flex-row justify-between">
+        <h1 class="text-4xl mb-2 font-bold tracking-tight sm:text-5xl">
+            @Title
+        </h1>
+        <div class="mx-4 -mt-4">
+            @await Html.PartialAsync("_edit-in-github-link.cshtml")
+        </div>
+    </div>
+    <!--
+    <div class="invisible mt-4 text-sm text-center text-blue-500 uppercase">
     @PublishedDate
-  </div>
-  @* @Html.Partial("_tags.cshtml") *@
-  <!--image-->
+    </div>
+    -->
+    @* @Html.Partial("_tags.cshtml") *@
+    <!--image-->
 </header>

@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Statiq.Web" />
-    <PackageReference Include="Statiq.Docs" />
+    <PackageReference Include="Statiq.Web" Version="1.0.0-beta.49" />
+    <PackageReference Include="Statiq.Docs" Version="1.0.0-beta.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\blazor-university-tailwind\blazor-university-tailwind.csproj" />
