@@ -51,9 +51,11 @@ Edit the _/Pages/Counter.razor_ file in a new Blazor app so that it can be reach
 @page "/counter"
 @page "/counter/1"
 @page "/counter/2"
+```
 
 Then edit the _/Shared/NavMenu.razor_ component so the Counter menu item has two sub-menu links.
 
+```razor
 <li class="px-3 nav-item">
   <NavLink class="nav-link" href="counter" Match=@NavLinkMatch.All>
     <span class="oi oi-plus" aria-hidden="true"></span>Counter
@@ -102,7 +104,7 @@ considered a match whenever the URL starts with `/counter`, so it will also matc
 To illustrate the difference, declare a field within the code section of _/Shared/NavMenu.razor_
 
 ```razor
-NavLinkMatch MatchMode = NavLinkMatch.All; 
+NavLinkMatch MatchMode = NavLinkMatch.All;
 ```
 
 Find the `<div class="@NavMenuCssClass"...` element, and before the `<ul>` element add the following mark-up to bind a
