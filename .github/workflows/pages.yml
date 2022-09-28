@@ -30,28 +30,35 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18.9.0
+
       - name: Install dependencies
         run: npm install
         working-directory: './source/blazor-university-tailwind'
+
       - name: run Tailwind to generate Site.css
         run: npm run tailwinds
         working-directory: './source/blazor-university-tailwind'
+
       - name: generate statiq site
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '6.0.401'
       - run: dotnet run --project ./source/blazor-university-com/blazor-university-com.csproj
+
       - name: Setup Pages
         uses: actions/configure-pages@v2
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
           # Upload entire repository
           path: './source/blazor-university-com/output'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
