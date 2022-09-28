@@ -238,7 +238,7 @@ protected override async Task OnParametersSetAsync()
   // No automatic render when next line starts to await
   await Task.Delay(1000);
 }
-```razor
+```
 
 If we want to render at additional points then we must call `StateHasChanged` just before all additional `await` statements.
 
