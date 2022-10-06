@@ -32,7 +32,9 @@ and the `TabPage` will pick this value up via a `CascadingParameter`.
   [Parameter]
   public RenderFragment ChildContent { get; set; }
 }
+```
 
+```razor
 <div>This is a TabPage</div>
 @ChildContent
 
@@ -108,7 +110,7 @@ and then for each `TabPage` it creates a button with the following notable featu
 
 1. The CSS class is set to "btn", appended by whatever the `GetButtonClass` method returns.
    This will be "btn-primary" if the tab is the `ActivePage`, or "btn-secondary" if it is not.
-2. When the button is clicked it will activate the page the button was created for.  
+2. When the button is clicked it will activate the page the button was created for.
     **Note**: `@onclick` requires a parameterless method,
     so a lambda expression is used inside `@( )` to execute `ActivatePage` with the correct `TabPage`.
 3. The text of the button is set to the value of the `Text` property of the `TabPage`.
