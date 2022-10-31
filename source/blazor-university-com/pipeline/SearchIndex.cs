@@ -8,8 +8,11 @@ public class SearchIndex : Pipeline
 {
   public SearchIndex()
   {
+    // Dependencies is a HashSet<string> that contains the names of pipelines that the current one depends on,
+    // content pipeline should excute before searchindex pipeline
     Dependencies.AddRange(nameof(Content));
 
+    // The post-process phase can be used for modules that need access to output documents from the process phase of every pipeline regardless of dependencies
     PostProcessModules = new ModuleList
     {
         new ExecuteIf(Config.FromSetting(CustomKeys.GenerateSearchIndex, false))
@@ -53,8 +56,8 @@ public class SearchIndex : Pipeline
                 // Create the module
                 GenerateLunrIndex generateLunrIndex = new GenerateLunrIndex()
                     .WithIndexPath(ctx.GetPath(WebKeys.SearchScriptPath))
-                    .ZipIndexFile(ctx.GetBool(WebKeys.ZipSearchIndexFile, true))
-                    .ZipResultsFile(ctx.GetBool(WebKeys.ZipSearchResultsFile, true))
+                    .ZipIndexFile(ctx.GetBool(WebKeys.ZipSearchIndexFile, false))
+                    .ZipResultsFile(ctx.GetBool(WebKeys.ZipSearchResultsFile, false))
                     .IncludeHostInLinks(ctx.GetBool(WebKeys.SearchIncludeHost))
                     .AllowPositionMetadata(ctx.GetBool(WebKeys.SearchAllowPositionMetadata))
                     .WithoutAnyFields()
@@ -62,6 +65,7 @@ public class SearchIndex : Pipeline
                     .WithStemming(ctx.GetBool(WebKeys.SearchStemming));
 
                 // Set manual stop words
+                // Stop Words: A stop word is a commonly used word (such as “the”, “a”, “an”, “in”) that a search engine has been programmed to ignore
                 IReadOnlyList<string> stopWords = ctx.GetList<string>(WebKeys.SearchStopWords);
                 NormalizedPath stopWordsFilePath = ctx.GetPath(WebKeys.SearchStopWordsFilePath);
                 if (stopWords is object)
@@ -78,6 +82,7 @@ public class SearchIndex : Pipeline
         }
     };
 
+    // Output phase pipline.
     OutputModules = new ModuleList
     {
         new WriteFiles()
