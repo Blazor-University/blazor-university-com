@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using Statiq.App;
 using Statiq.Docs;
+using Statiq.Lunr;
+
 
 internal class Program
 {
@@ -9,5 +11,6 @@ internal class Program
     await Bootstrapper
       .Factory
       .CreateDocs(aArgumentArray)
+      .AddSetting(CustomKeys.GenerateSearchIndex,true)
       .RunAsync();
 }
