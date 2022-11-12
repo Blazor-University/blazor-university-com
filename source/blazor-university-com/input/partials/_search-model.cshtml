@@ -1,0 +1,43 @@
+<div id="searchModel"
+    onclick="hideSearch()"
+    class="absolute top-0 z-50 flex justify-center hidden w-screen h-screen p-12 transition duration-300 ease-in-out delay-150 backdrop-filter backdrop-blur-sm bg-white/30 drop-shadow-2xl">
+    <div class="flex flex-col w-full max-w-3xl m-auto rounded-lg bg-slate-800/75 max-h-96">
+        <div class="flex flex-col w-full max-w-3xl m-auto rounded-lg bg-slate-800/75 max-h-96 ">
+            <header class="m-2 ">
+                <form class="flex items-center space-x-4">
+                    <label>
+
+                        <svg width="20" height="20" class="DocSearch-Search-Icon" viewBox="0 0 20 20">
+                            <path
+                                d="M14.386 14.386l4.0877 4.0877-4.0877-4.0877c-2.9418 2.9419-7.7115 2.9419-10.6533 0-2.9419-2.9418-2.9419-7.7115 0-10.6533 2.9418-2.9419 7.7115-2.9419 10.6533 0 2.9419 2.9418 2.9419 7.7115 0 10.6533z"
+                                stroke="currentColor" fill="none" fill-rule="evenodd" stroke-linecap="round"
+                                stroke-linejoin="round">
+                            </path>
+                        </svg>
+
+                    </label>
+                    <input id="searchbox" class="flex items-center justify-center flex-auto h-12 border-none group md:ring-1 md:ring-slate-200 md:hover:ring-slate-300 dark:bg-slate-800/75 dark:ring-inset dark:ring-white/5 dark:hover:bg-slate-700/40 dark:hover:ring-slate-500 lg:w-96" placeholder="search..." >
+                    <button class="p-1 bg-amber-500">
+                        esc
+                    </button>
+                </form>
+            </header>
+            <div class="m-2 overflow-y-auto">
+                <section>
+                    <ul id="search-results">
+                        <li area-selected="" class="hover:bg-slate-700/75">
+                            <a class="block p-4 border border-gray-600 xt-ellipsis" href="#">
+                                No results found
+                            </a>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+            <footer class="flex justify-end p-4 m-2">
+                <div>
+                    <a href="#"> lunrjs </a>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>
