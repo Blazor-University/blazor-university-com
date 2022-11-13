@@ -1,13 +1,12 @@
 var message = document.querySelector('#searchbox');
 var ul = document.querySelector('#search-results');
-var query;
 var searchModel = document.querySelector("#searchModel");
+var query;
 
 function searchResultsAppend(results) {
 
-    console.log(JSON.stringify(results));
-
     if (results.length == 0) {
+
         // clear child nodes
         ul.innerHTML = "";
         ul.textContent = "";
@@ -57,17 +56,20 @@ function addClasses(element) {
 }
 
 /*
-    ctrl + C & esc key short triggers.
+    ctrl + x & esc key short triggers.
 */
 document.onkeyup = function (e) {
 
+
+    onSearchMode();
     stopBodyFromScrolling();
 
     var searchModel = document.querySelector("#searchModel");
+
     if (e.which == 27) {
         makeBodyScrolable();
         searchModel.classList.add("hidden");
-    } else if (e.ctrlKey && e.which == 67) {
+    } else if (e.ctrlKey && e.which == 88) {
         searchModel.classList.remove("hidden");
         message.focus();
     }
@@ -123,4 +125,9 @@ function stopBodyFromScrolling() {
 function makeBodyScrolable() {
     var body = document.querySelector("body");
     body.classList.remove("overflow-hidden");
+}
+
+function onSearchMode()
+{
+    window.scrollTo(0, 0);
 }
