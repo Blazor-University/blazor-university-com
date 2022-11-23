@@ -269,16 +269,20 @@ public Task SomethingHappenedInChildComponent(string value)
   // Do something with value
   return Task.CompletedTask;
 }
+```
 
 Because of this, Blazor will allow us to set `EventCallback<T>` to call back a method with a void return type.
 
+```razor
 public void SomethingHappenedInChildComponent(string value)
 {
   // Do something with value
 }
-
+```
+  
 Sometimes we only want to know when an event occurs, and aren't interested in the value that was passed with it. Blazor will also call back a method that excludes the value parameter.
 
+```razor
 // Either
 public void SomethingHappenedInChildComponent()
 {
