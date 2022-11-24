@@ -1,6 +1,6 @@
-var message = document.querySelector('#searchbox');
+var message = document.querySelector('#search-model-input');
 var ul = document.querySelector('#search-results');
-var searchModel = document.querySelector("#searchModel");
+var searchModel = document.querySelector("#search-model");
 var query;
 
 function searchResultsAppend(results) {
@@ -57,19 +57,19 @@ function addClasses(element) {
 
 /*
     ctrl + x & esc key short triggers.
+    27 = esc key
+    88 = x key
 */
-document.onkeyup = function (e) {
+document.onkeyup = function (e) {  
 
-
-    onSearchMode();
-    stopBodyFromScrolling();
-
-    var searchModel = document.querySelector("#searchModel");
-
+    var searchModel = document.querySelector("#search-model");    
+    
     if (e.which == 27) {
-        makeBodyScrolable();
+        makeBodyScrollable();
         searchModel.classList.add("hidden");
     } else if (e.ctrlKey && e.which == 88) {
+        stopBodyFromScrolling();
+        onSearchMode();
         searchModel.classList.remove("hidden");
         message.focus();
     }
@@ -83,6 +83,7 @@ function searchWindow() {
     stopBodyFromScrolling();
 
     var searchModel = document.querySelector("#searchModel");
+    message = document.querySelector('#search-model-input');
     searchModel.classList.remove("hidden");
     message.focus();
 }
@@ -107,7 +108,7 @@ function addEventListener() {
 */
 window.onload = function () {
     if (message == null) {
-        message = document.querySelector('#searchbox');
+        message = document.querySelector('#search-model-input');
         addEventListener();
     }
 
@@ -122,7 +123,7 @@ function stopBodyFromScrolling() {
     body.classList.add("overflow-hidden");
 }
 
-function makeBodyScrolable() {
+function makeBodyScrollable() {
     var body = document.querySelector("body");
     body.classList.remove("overflow-hidden");
 }
