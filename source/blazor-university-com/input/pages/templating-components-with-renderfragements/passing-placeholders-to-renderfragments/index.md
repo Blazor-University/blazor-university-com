@@ -127,7 +127,7 @@ This component may be consumed by our Index page like so:
     };
   }
 }
-``
+```
 
 **Note:** The `@key=context` in the `<li>` element is for performance purposes and should be used whenever rendering a list.
 See [Optimising using @key](/components/render-trees/optimising-using-key/) for more information.
@@ -265,7 +265,7 @@ but what do we do when we need to pass an instance of `RenderFragment` to our te
 
 To define a non-generic `RenderFragment` we can use the standard Razor escape sequence to denote HTML, which is `@:`
 
-RenderFragment rf = @<h1>Hello</h1>;
+`RenderFragment rf = @<h1>Hello</h1>`
 
 To define a `RenderFragment<T>` we need to use a lambda that passes in an instance of `T`
 
