@@ -22,10 +22,10 @@ Now edit the **Index.razor** file.
 At this point we can either reference the component with a fully qualified name:
 
 ```razor
-<CreatingAComponent.Client.Components.MyFirstComponent/>
+<MyFirstBlazorApp.Client.Components.MyFirstComponent/>
 ```
 
-Or edit **/_Imports.razor** and add `@using CreatingAComponent.Client.Components`.
+Or edit **/_Imports.razor** and add `@using MyFirstBlazorApp.Client.Components`.
 The using statements here are cascaded into all Razor views -
 which means the mark-up to use the new component in **/Pages/Index.razor** no longer needs a namespace.
 
