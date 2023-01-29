@@ -250,7 +250,7 @@ This request will be served by the same page, but we'll know we should start at 
       CurrentStep = 3;
   }
 }
-``
+```
 
 ### Completing the sample
 

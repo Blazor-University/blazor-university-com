@@ -45,7 +45,7 @@ Next we'll create a very basic page
 ```razor
 @page "/admin/users"
 
-<h2>Users</h2
+<h2>Users</h2>
 ```
 
 **Note**: The URL to the page does not have to reflect the folder structure.

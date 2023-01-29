@@ -14,7 +14,7 @@ The following generated source code can be found in `obj\Debug\netcoreapp3.0\Raz
 3 apps, and in `obj\Debug\{DotNetVersion{\generated\Microsoft.NET.Sdk.Razor.SourceGenerators\Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator\Pages_Counter_razor.g.s`
 in Blazor 5 or later.
 
-Note that after Blazor version 3 these automatically files are no longer automatically written to disk.
+Note that after Blazor version 3 these files are no longer automatically written to disk.
 To re-enable this feature, edit your `csproj` file and add the following:
 
 ```xml

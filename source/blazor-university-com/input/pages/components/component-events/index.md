@@ -15,9 +15,10 @@ consuming components can specify in Razor mark-up which method to call when the 
 ## Adding an event to the Counter component
 
 In a new Blazor app, edit the **/Pages/Counter.razor** file and add a new callback parameter.
-
+```razor
 [Parameter]
 public EventCallback<int> OnMultipleOfThree { get; set; }
+```
 
 This declares a new `EventCallback` named OnMultipleOfThree that any consuming component can register an interest in.
 The `<int>` specifies that the value emitted by the event callback will be a `System.Int32`.
@@ -269,16 +270,20 @@ public Task SomethingHappenedInChildComponent(string value)
   // Do something with value
   return Task.CompletedTask;
 }
+```
 
 Because of this, Blazor will allow us to set `EventCallback<T>` to call back a method with a void return type.
 
+```razor
 public void SomethingHappenedInChildComponent(string value)
 {
   // Do something with value
 }
-
+```
+  
 Sometimes we only want to know when an event occurs, and aren't interested in the value that was passed with it. Blazor will also call back a method that excludes the value parameter.
 
+```razor
 // Either
 public void SomethingHappenedInChildComponent()
 {

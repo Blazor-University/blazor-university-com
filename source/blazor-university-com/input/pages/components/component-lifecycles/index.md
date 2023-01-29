@@ -53,7 +53,7 @@ This method flags the component to be rendered.
 
 A component will call this method whenever it wants to inform Blazor that changes have occurred that would result in the
 rendered output being different.
-For example, in a `Clock` component we might set off a recurring 1 second timer than executes `StateHasChanged`
+For example, in a `Clock` component we might set off a recurring 1 second timer that executes `StateHasChanged`
 in order to re-render with the correct time.
 
 Another use is to instruct Blazor to perform re-renders part way through an asynchronous method.
