@@ -135,7 +135,7 @@ We'll start the thread immediately, but the first instruction in the thread will
 ```razor
 protected override void OnInitialized()
 {
-  var thread = new System.Threading.Thread(\_ =>
+  var thread = new System.Threading.Thread(_ =>
   {
     Trigger.WaitOne();
     for (int i = 0; i < 1000; i++)
