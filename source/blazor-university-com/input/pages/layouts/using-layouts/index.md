@@ -14,7 +14,7 @@ the single line of code to identify a different layout.
 ```
 
 The name of the layout is strongly typed.
-Blazor will only syntax-highlight the code correctly if it there is a layout with the name specified,
+Blazor will only syntax-highlight the code correctly if there is a layout with the name specified,
 the compiler will also fail if the identifier is incorrect.
 
 **Note**: Obviously you can alter the **/Shared/MainLayout.razor** file
