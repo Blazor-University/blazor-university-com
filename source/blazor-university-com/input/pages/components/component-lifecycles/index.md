@@ -39,7 +39,7 @@ _If the parent changes the component's parameters at a later time, this method i
 **Note**: When the component is a `@page`, and our Blazor app navigates to a new URL that renders the same page,
 Blazor will reuse the current object instance for that page.
 Because the object is the same instance, Blazor does not call `IDisposable.Dispose` on the object,
-nor does it execute its `OnInitialized` method again.
+or does it execute its `OnInitialized` method again.
 
 ## OnParametersSet / OnParametersSetAsync
 
