@@ -11,7 +11,7 @@ In this exercise we'll recreate the `Counter.razor` page from scratch.
 - Expand the `Pages` folder.
 - Right-click `Counter.razor` and delete it.
 - Right-click the `Pages` folder.
-- Select **Add**\->**Razor Page** and create a new page named `Counter.razor`.
+- Select **Add**\->**Razor Component** and create a new page named `Counter.razor`.
   If you receive a "scaffolding" error, you can instead select another file format and give it a `.razor` file extension.
 
 A Razor page is a self-contained view.
