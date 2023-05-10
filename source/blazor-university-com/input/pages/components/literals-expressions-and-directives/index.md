@@ -126,7 +126,7 @@ string HeaderText = "Value of variable";
 
 private int DoubleInputSize()
 {
-  return InputSize \* 2;
+  return InputSize * 2;
 }
 ```
 

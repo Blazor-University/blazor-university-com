@@ -84,7 +84,7 @@ For example `<h1 @ref=MyH1Element>Hello</h1>`.
     These can be used as references when using [JavaScript Interop](/javascript-interop/calling-javascript-from-dotnet/passing-html-element-references/),
     or to obtain a reference to an embedded Blazor component so that we can invoke methods on it.
 - `@bind`  
-    Allows us to data bind ([Two way binding](/javascript-interop/calling-javascript-from-dotnet/passing-html-element-references/))
+    Allows us to data bind ([Two way binding](/components/two-way-binding/))
     to the property of a component being consumed, or the attribute of an HTML element.
 - `@attributes`  
     [Outputs name-value pairs](/components/code-generated-html-attributes/) as HTML attributes.
