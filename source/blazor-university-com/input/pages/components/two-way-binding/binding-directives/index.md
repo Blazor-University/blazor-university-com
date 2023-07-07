@@ -165,8 +165,8 @@ And something similar to the following (again abridged) code for converting user
 
 The code hooks into the HTML `onchange` event and then, via the binder, sets our member value when the event is triggered.
 
-The different when setting the `@bind-value:format` directive attribute value is that the format we
-provide passed in the generated code to both `BindConverter.Format` and `EventCallback.Factory.CreateBinder`.
+The difference when setting the `@bind-value:format` directive attribute value is that the format we
+provide is passed in the generated code to both `BindConverter.Format` and `EventCallback.Factory.CreateBinder`.
 
 ```cs
 ...BindConverter.FormatValue(Name, format: "yyyy-MM-dd");
