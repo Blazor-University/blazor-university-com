@@ -94,7 +94,7 @@ In fact, even apply a value such as `false` will still activate them. The follow
 `readonly` and `disabled`.
 
 ```html
-<input readonly="false" disbabled="false"/>
+<input readonly="false" disabled="false"/>
 ```
 
 In razor views the rule is slightly different.
