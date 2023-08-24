@@ -24,7 +24,7 @@ For example, the `preventDefault` attribute applied to the `@onclick` directive 
 a submit button from actually submitting a form.
 
 ```razor
-<input type="submit" @onclick:preventdefault>
+<input type="submit" @onclick:preventDefault>
 ```
 
 In addition to these, it is also possible to assign values to some directive attributes in the following form:
