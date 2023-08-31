@@ -24,7 +24,7 @@ An exception to this is when we wish to pass a lambda; lambdas must be escaped w
 The following code shows how the `@onclick` directive is used to add the DOM onclick event to a rendered H1 element.
 
 ```razor
-// Razor mark-up with @ref directive
+// Razor mark-up with @onclick directive
 <h1 @onclick=H1Clicked>Hello, world!</h1>
 
 @code
