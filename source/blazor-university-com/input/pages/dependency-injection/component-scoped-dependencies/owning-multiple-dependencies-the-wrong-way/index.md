@@ -41,7 +41,7 @@ public interface IOwnedDependency
   public int InstanceNumber { get; }
 }
 
-public class OwnedDependency : IDependencyOne
+public class OwnedDependency : IOwnedDependency
 {
   private static volatile int PreviousInstanceNumber;
 
