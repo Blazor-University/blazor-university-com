@@ -22,12 +22,3 @@
   @apply dark:bg-zinc-700;
 }
 
-.contract-status {
-  background-color: green;
-  color: white;
-  padding: 0.25rem;
-}
-
-  .contract-status a {
-    text-decoration: underline;
-  }
