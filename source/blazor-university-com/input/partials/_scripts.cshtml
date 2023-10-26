@@ -5,27 +5,3 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.4/pako.min.js"></script>
 <script src="@Context.GetLink("search.js")"></script>
 <script src="/js/lunrsearch.js"></script>
-  <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const menuToggle = document.getElementById("menu-toggle");
-    const sidebar = document.getElementById("left-sidebar-container");
-
-    menuToggle.addEventListener("click", function() {
-      console.log(window.outerWidth);
-      if (window.outerWidth < 768) { // Tailwind's default 'md' breakpoint
-        if (sidebar.classList.contains("hidden")) {
-          sidebar.classList.remove("hidden");
-        } else {
-          sidebar.classList.add("hidden");
-        }
-      }
-    });
-
-    // Optional: To handle window resizing
-    window.addEventListener("resize", function() {
-      if (window.innerWidth >= 768) {
-        sidebar.classList.remove("hidden");
-      }
-    });
-  });
-</script>
