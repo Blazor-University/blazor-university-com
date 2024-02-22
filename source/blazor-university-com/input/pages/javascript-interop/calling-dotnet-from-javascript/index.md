@@ -32,7 +32,7 @@ First, create a new Blazor application and change Index.razor to the following m
 > **Warning**: The following code has a memory leak and should not be used in production. This will be highlighted and 
 > corrected in [Lifetimes and Memory Leaks](/javascript-interop/calling-dotnet-from-javascript/lifetimes-and-memory-leaks/).
 
-```razor
+```razor {: .line-numbers}
 @page "/"
 @inject IJSRuntime JSRuntime
 
