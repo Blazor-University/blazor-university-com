@@ -29,11 +29,13 @@ We'll also add a `[Parameter]` property, expecting an `IEnumerable<TItem>`.
   [Parameter]
   public IEnumerable<TItem> Data { get; set; }
 }
+```
 
 ## Using the generic component
 
 Create a `Person` class with three properties.
 
+```cs
 public class Person
 {
   public string Salutation { get; set; }
