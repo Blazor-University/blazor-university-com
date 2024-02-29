@@ -31,7 +31,7 @@ public interface IMyTransientService
 
 To implement this interface we'll write a class with a `static` integer field that we can use to determine the next
 available sequence number.
-This field will be marked as `[volatile](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/volatile)`
+This field will be marked as [`volatile`](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/volatile)
 and altered using `System.Threading.Interlocked.Increment` so we can modify the field across multiple threads without
 having to do any thread locking.
 
