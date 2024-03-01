@@ -9,7 +9,7 @@ The name Blazor is a combination/mutation of the words Browser and Razor (the .N
 The implication being that instead of having to execute Razor views on the server in order to present HTML to the browser,
 Blazor is capable of executing these views on the client.
 
-[![Blazor client side](images/BlazorClientSide-300x251.png)](http://blazor-university.com/wp-content/uploads/2019/05/BlazorClientSide.png)
+[![Blazor client side](images/BlazorClientSide-300x251.png)](images/BlazorClientSide-300x251.png)
 
 Blazor app with client-side execution
 

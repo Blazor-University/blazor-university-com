@@ -32,4 +32,4 @@ Blazor layouts work only within the part of the HTML that Blazor is defined with
 in a default Blazor application this is everything within the `<app>` element.
 It isn't currently possible to alter attributes of HTML elements outside of this scope except by use of [JavaScript Interop](http://blazor-university.com/javascript-interop/).
 
-[![](images/Layout.png)](http://blazor-university.com/wp-content/uploads/2019/06/image.png)
+[![](images/Layout.png)](images/Layout.png)
