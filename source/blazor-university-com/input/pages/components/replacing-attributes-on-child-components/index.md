@@ -137,7 +137,7 @@ then adjusting the position of `@attributes=` in our `ChildComponent` will give 
 <div
   first="consumer-value-1"
   second="consumer-value-2"
-  inserted="consumer-inserted-value />
+  inserted="consumer-inserted-value" />
 ```
 
 ## R.I.P. default values
