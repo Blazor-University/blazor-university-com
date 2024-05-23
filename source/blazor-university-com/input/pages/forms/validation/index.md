@@ -7,7 +7,7 @@ order: 3
 [![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Forms/ValidatingUserInput)
 
 The `DataAnnotationsValidator` is the standard validator type in Blazor.
-Adding this component within an `EditForm` component will enable form validation based on .NET attributes descended 
+Adding this component within an `EditForm` component will enable form validation based on .NET attributes descended
 from `System.ComponentModel.DataAnnotations.ValidationAttribute`.
 
 First we'll create a short example, then we'll go through what happens behind the scenes.
@@ -133,4 +133,4 @@ whereas the razor expression makes it more obvious to other developers that we a
 }
 ```
 
-[![](images/ValidationSummaryAndValidationMessages.png)](http://blazor-university.com/wp-content/uploads/2019/08/ValidationSummaryAndValidationMessages.png)
+[![](images/ValidationSummaryAndValidationMessages.png)](images/ValidationSummaryAndValidationMessages.png)

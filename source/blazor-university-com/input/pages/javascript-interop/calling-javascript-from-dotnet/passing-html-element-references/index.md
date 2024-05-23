@@ -66,7 +66,9 @@ This is the problem we will solve using JavaScript Interop, `@ref`, and `Element
 - First create a new Blazor application.
 - In each of the pages replace the content with the same mark-up just below each `@page` directive.
 
+```html
 Enter your name: <input autofocus />
+```
 
 Run the application and observe how the `<input>` element does not automatically gain focus, not even on first page load.
 
