@@ -77,7 +77,7 @@ to send that event to the server and execute the relevant .NET code.
 {
   private int CurrentCount;
 
-  public void Increment()
+  public void IncrementCount()
   {
     CurrentCount++;
   }

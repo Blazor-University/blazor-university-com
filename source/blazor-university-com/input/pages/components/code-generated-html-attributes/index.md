@@ -60,7 +60,7 @@ Razor will only execute C# code in the following places:
 3. Within the `@code` section.
 
 The technique we need to employ to generate one or more attributes + values for a HTML element is called "Attribute splatting".
-Attribute splatting involves assigning a `Dictionary<string, object>` to an attribute with the special name `@attribute`.
+Attribute splatting involves assigning a `Dictionary<string, object>` to an attribute with the special name `@attributes`.
 
 ```razor
 <div @attributes=MyCodeGeneratedAttributes/>
@@ -94,7 +94,7 @@ In fact, even apply a value such as `false` will still activate them. The follow
 `readonly` and `disabled`.
 
 ```html
-<input readonly="false" disbabled="false"/>
+<input readonly="false" disabled="false"/>
 ```
 
 In razor views the rule is slightly different.

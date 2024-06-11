@@ -14,7 +14,7 @@ the single line of code to identify a different layout.
 ```
 
 The name of the layout is strongly typed.
-Blazor will only syntax-highlight the code correctly if it there is a layout with the name specified,
+Blazor will only syntax-highlight the code correctly if there is a layout with the name specified,
 the compiler will also fail if the identifier is incorrect.
 
 **Note**: Obviously you can alter the **/Shared/MainLayout.razor** file
@@ -31,8 +31,8 @@ grouping them within their own child-folder that has its own **_Imports.razor** 
 Create a new Blazor client-side app, and then update the navigation menu to contain a link to a new page we'll create shortly.
 
 1. Open the **/Shared/NavMenu.razor** file.
-2. Locate the last `<li>` element, it should contain a `<NavLink>` element.
-3. Duplicate the `<li>` element.
+2. Locate the last `<div>` element, it should contain a `<NavLink>` element.
+3. Duplicate the `<div>` element.
 4. Change the NavLink's `href` attribute to `"admin/users"`.
 5. Change the text of the link to **Admin users**.
 
@@ -45,7 +45,7 @@ Next we'll create a very basic page
 ```razor
 @page "/admin/users"
 
-<h2>Users</h2
+<h2>Users</h2>
 ```
 
 **Note**: The URL to the page does not have to reflect the folder structure.

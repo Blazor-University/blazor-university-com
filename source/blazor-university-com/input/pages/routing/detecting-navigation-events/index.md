@@ -50,7 +50,7 @@ Currently, the `ComponentBase` class does not have a [lifecycle](http://blazor-u
 event for when it is destroyed, but it is possible to implement the `IDisposable` interface.
 
 ```razor
-@implement IDisposable
+@implements IDisposable
 @inject NavigationManager NavigationManager
 
 protected override void OnInitialized()

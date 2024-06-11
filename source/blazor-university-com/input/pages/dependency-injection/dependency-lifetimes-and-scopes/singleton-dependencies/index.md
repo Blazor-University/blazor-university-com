@@ -31,7 +31,7 @@ public interface IChatService
 ```
 
 To implement this service we'll use a `List<string>` to store the chat history,
-and remove messages from the start of the list whenever there are more than 100 in the queue.
+and remove messages from the start of the list whenever there are more than 50 in the queue.
 We'll use the `lock()` statement to ensure thread safety.
 
 ```razor {: .line-numbers}
