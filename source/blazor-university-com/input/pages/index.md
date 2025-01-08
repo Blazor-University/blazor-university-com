@@ -6,7 +6,7 @@ date: "2019-11-15"
 
 > _Blazor University is an invaluable resource for anyone learning the framework. It gets right to the point and covers the essential topics clearly and directly._
 > 
-> Steve Sanderson - Blazor developer, Microsoft  
+> Steve Sanderson - Creator of Blazor, Microsoft  
 
 ![](images/blazor-university-logo-large.png)
 
