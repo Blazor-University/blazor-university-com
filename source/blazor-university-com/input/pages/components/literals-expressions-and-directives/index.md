@@ -177,7 +177,7 @@ by enclosing the expression text in brackets.
       <td>
         &lt;input value=<code>@($"Size is {DoubleInputSize()}")</code> /&gt;
       </td>
-      <td>&lt;input size="Size is 16"/&gt;</td>
+      <td>&lt;input value="Size is 16"/&gt;</td>
     </tr>
   </tbody>
 </table>
