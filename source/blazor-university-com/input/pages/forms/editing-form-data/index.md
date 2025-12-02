@@ -52,7 +52,9 @@ Any that are not explicitly recognised by Blazor will be rendered directly onto 
 The `InputCheckbox` component binds a Boolean property to an HTML `<input>` element with `type="checkbox"`.
 This component does not allow binding to a nullable property.
 
+```razor
 <InputCheckbox @bind-Value=FormData.SomeBooleanProperty />
+```
 
 ## InputDate
 
