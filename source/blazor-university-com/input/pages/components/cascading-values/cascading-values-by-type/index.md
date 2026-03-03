@@ -11,8 +11,8 @@ in a `CascadingValue` into the correct properties in consuming components by mat
 Another option is to specify a `CascadingValue` without specifying a `Name`, when Blazor encounters a cascading value
 specified in this way it will inject its value into a component's property if the property meets the following criteria.
 
-1. The property is decorated with a `CascadingPropertyAttribute`.
-2. The `[CascadingProperty]` does **not** have a `Name` specified.
+1. The property is decorated with a `CascadingParameterAttribute`.
+2. The `[CascadingParameter]` does **not** have a `Name` specified.
 3. The property is of the same `Type` as set in the `CascadingValue` (e.g. boolean).
 4. The property has a setter.
 5. The property is public.
