@@ -1,20 +1,99 @@
-﻿<a href="https://github.com/mrpmorris/AutoRegister">
-   <div class="border-4 border-gray-300 dark:border-gray-700 rounded px-5 py-2 my-4 lg:mx-8 bg-slate-300 dark:bg-slate-700">
-      <div class="flex items-start gap-4">
-         <img src="/images/auto-register.png"
-            alt="AutoRegister"
-            class="shrink-0 w-auto h-auto" />
-         <p class="flex-1">
-         <div>
-            <span class="font-bold text-lg">Automatic Dependency Injection Registration for .NET.</span>
-            <p>
-               I built my free open-source AutoRegister library to remove the repetitive DI wiring in .NET
-               projects. It discovers and registers implementations at build time, no start-up reflection
-               cost, discovers Roslyn generated dependencies, and is 100% AOT compatible.
-               <span class="underline">See it on GitHub.</span>
-            </p>
+﻿<style>
+   .advert-slot {
+      display: grid;
+   }
+
+   .advert-slot > .advert {
+      grid-area: 1 / 1;
+      visibility: hidden;
+      pointer-events: none;
+   }
+
+   .advert-slot > .advert.is-visible {
+      visibility: visible;
+      pointer-events: auto;
+   }
+</style>
+
+<div class="advert-slot">
+   <a href="https://github.com/mrpmorris/AutoRegister" class="advert">
+      <div class="border-4 border-gray-300 dark:border-gray-700 rounded px-5 py-2 my-4 lg:mx-8 bg-slate-300 dark:bg-slate-700">
+         <div class="flex items-start gap-4">
+            <div class="shrink-0 flex justify-center">
+               <img src="/images/adverts/auto-register.png"
+                  alt="AutoRegister"
+                  class="w-auto h-auto" />
+            </div>
+            <div class="flex-1">
+               <span class="font-bold text-lg">Automatic Dependency Injection Registration for .NET.</span>
+               <p>
+                  AutoRegister is a free open-source library that removes repetitive DI wiring in .NET
+                  projects. It discovers and registers implementations at build time, avoids start-up reflection
+                  cost, discovers Roslyn generated dependencies, and is 100% AOT compatible.
+                  <span class="underline">Check it out on GitHub.</span>
+               </p>
+            </div>
          </div>
-         </p>
       </div>
-   </div>
-</a>
+   </a>
+
+   <a href="https://github.com/mrpmorris/AutoLocalize" class="advert">
+      <div class="border-4 border-gray-300 dark:border-gray-700 rounded px-5 py-2 my-4 lg:mx-8 bg-slate-300 dark:bg-slate-700">
+         <div class="flex items-start gap-4">
+            <div class="shrink-0 flex justify-center">
+               <img src="/images/adverts/auto-localize.png"
+                  alt="AutoLocalize"
+                  class="w-auto h-auto" />
+            </div>
+            <div class="flex-1">
+               <span class="font-bold text-lg">Automatic DataAnnotations localization for .NET.</span>
+               <p>
+                  AutoLocalize is a free open-source library that removes the repetitive work of wiring up
+                  localized validation messages in .NET projects. It weaves validation attributes at build
+                  time, applies a shared resource type automatically, and fills in resource names by convention.
+                  <span class="underline">Check it out on GitHub.</span>
+               </p>
+            </div>
+         </div>
+      </div>
+   </a>
+
+   <a href="https://github.com/mrpmorris/Morris.Moxy" class="advert">
+      <div class="border-4 border-gray-300 dark:border-gray-700 rounded px-5 py-2 my-4 lg:mx-8 bg-slate-300 dark:bg-slate-700">
+         <div class="flex items-start gap-4">
+            <div class="shrink-0 flex justify-center">
+               <img src="/images/adverts/moxy.png"
+                  alt="Morris.Moxy"
+                  class="w-auto h-auto" />
+           </div>
+           <div class="flex-1">
+              <span class="font-bold text-lg">Automatic mixin code generation for .NET.</span>
+              <p>
+                 Morris.Moxy is a free open-source library that removes repetitive code patterns in .NET
+                 projects. It lets developers write reusable code templates at development time, processes them as
+                 Roslyn source generators in real time, and mixes the generated code into target classes.
+                 <span class="underline">Check it out on GitHub.</span>
+              </p>
+           </div>
+        </div>
+     </div>
+  </a>
+</div>
+
+<script>
+   const showRandomAdvert = () => {
+      const adverts = Array.from(document.querySelectorAll(".advert"));
+      if (adverts.length === 0) {
+         return;
+      }
+
+      const randomIndex = Math.floor(Math.random() * adverts.length);
+      adverts[randomIndex].classList.add("is-visible");
+   };
+
+   if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", showRandomAdvert);
+   } else {
+      showRandomAdvert();
+   }
+</script>
