@@ -58,6 +58,7 @@ The method implementation is very simple, and should be placed within the `@code
 
 ```razor
 @page "/counter"
+@rendermode InteractiveServer
 
 <h1>Counter</h1>
 <p>The counter value is @currentCount</p>
