@@ -14,7 +14,11 @@
     <LangVersion>preview</LangVersion>
     <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
     <Nullable>enable</Nullable>
-    <TargetFramework>net6.0</TargetFramework>
+    <!-- Audit only direct dependencies. The Statiq.* packages pull in older transitive
+         packages with known advisories that we cannot upgrade independently, and
+         TreatWarningsAsErrors would otherwise fail the build on them (NU1902/03/04). -->
+    <NuGetAuditMode>direct</NuGetAuditMode>
+    <TargetFramework>net10.0</TargetFramework>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
