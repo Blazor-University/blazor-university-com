@@ -3,6 +3,7 @@
 ## Important rules
 1: Do not use en-dash or em-dash anywhere.
 2: Emulate my style of writing as much as possible.
+3: Do not update copyright year.
 
 ---
 
@@ -554,3 +555,53 @@ These files were reviewed and contain no outdated patterns or references:
 - `javascript-interop/calling-javascript-from-dotnet/passing-html-element-references/index.md` — Element references still correct
 - `templating-components-with-renderfragements/index.md` — RenderFragment patterns unchanged
 - `layouts/using-layouts/index.md` — Layout usage unchanged
+
+---
+
+## Phase 6 — Agent Readiness
+
+Make the site discoverable and usable by AI agents (LLMs, crawlers, coding agents). Based on standards checked by [isitagentready.com](https://isitagentready.com/blazor-university.com).
+
+### 6.1 Add `llms.txt`
+
+- **Standard**: [llmstxt.org](https://llmstxt.org/) — a curated markdown file at `/llms.txt` providing LLM-friendly content overview with links to detailed pages
+- **Task**: Generate `/llms.txt` as part of the Statiq build, containing:
+  - H1 title (e.g., "Blazor University")
+  - Blockquote summary describing the site
+  - H2 sections mapping to content areas (Components, Routing, Forms, etc.) with links to `.md`-suffixed URLs
+- **Sub-tasks**:
+  - [ ] Create a custom Statiq pipeline that outputs `/llms.txt` at build time
+  - [ ] List key documentation sections with links (e.g., `[Components](/components/index.html.md)`)
+  - [ ] Include an "Optional" section for secondary/deep-dive pages
+  - [ ] Ensure the file is human-readable but structured for LLM parsing
+
+### 6.2 Markdown content negotiation
+
+- **Standard**: Serve clean markdown copies of each page at the same URL with `.md` appended (e.g., `/components/index.html` → `/components/index.html.md`)
+- **Task**: Add a Statiq pipeline that generates `.md` copies of all pages
+- **Sub-tasks**:
+  - [ ] Create a pipeline that copies/renders each page's markdown source to its output URL with `.md` appended
+  - [ ] Ensure images and links remain valid in the markdown version
+  - [ ] Add `Link` response header or HTML `<link>` tag pointing to the `.md` alternative (e.g., `<link type="text/markdown" rel="alternate" href="/page.html.md">`)
+
+### 6.3 Robots.txt with AI bot rules
+
+- **Standard**: Publish `/robots.txt` with directives for AI crawlers
+- **Sub-tasks**:
+  - [ ] Create or update `/robots.txt` (likely in `input/` for Statiq passthrough)
+  - [ ] Add rules for known AI bots: `ChatGPT-User`, `GPTBot`, `Google-Extended`, `CCBot`, `Anthropic-AI`, `Claude-Web`, `cohere-ai`, `PerplexityBot`, `Amazonbot`
+  - [ ] Include `Sitemap: https://blazor-university.com/sitemap.xml` directive
+
+### 6.4 Sitemap verification
+
+- **Standard**: Ensure `/sitemap.xml` is generated and comprehensive
+- **Sub-tasks**:
+  - [ ] Verify Statiq's built-in sitemap generation includes all agent-relevant pages
+  - [ ] Ensure no orphaned or broken URLs in the sitemap
+
+### 6.5 Verify agent readiness
+
+- **Sub-tasks**:
+  - [ ] Run scan at https://isitagentready.com/blazor-university.com after deployment
+  - [ ] Address any failing checks
+  - [ ] Document agent-readiness score in README or team wiki
