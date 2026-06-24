@@ -14,7 +14,7 @@ from a pool of available threads.
 
 The easiest way for us to observe this behavior is to create some asynchronous methods that perform an `await`.
 For this example,
-we'll use the `OnInitializedAsync` [lifecycle](https://blazor-university.com/components/component-lifecycles/) method.
+we'll use the `OnInitializedAsync` [lifecycle](/components/component-lifecycles/) method.
 
 [![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Components/MultithreadedRendering)
 
@@ -42,7 +42,7 @@ This value will then be displayed on the page when our component renders.
 - **Line 5**  
     A field is declared to hold a reference to a thread ID.
 - **Line 7**  
-    The `OnInitialized` [lifecycle](https://blazor-university.com/components/component-lifecycles/) method is overridden.
+    The `OnInitialized` [lifecycle](/components/component-lifecycles/) method is overridden.
 - **Line 10**  
     The ID of the current thread is stored in `IdOfRenderingThread` so it can be rendered.
 - **Line 1**  
@@ -101,7 +101,7 @@ but will additionally re-assign the value of `IdOfRenderingThread` in `OnInitial
 ```
 
 - **Line 7**  
-    The `OnInitializedAsync` [lifecycle](https://blazor-university.com/components/component-lifecycles/) method is overridden.
+    The `OnInitializedAsync` [lifecycle](/components/component-lifecycles/) method is overridden.
 - **Line 12**  
     As with the synchronous component, the `ManagedThreadId` of the current thread is assigned to `IdOfRenderingThread`
     so it can be rendered by the component. (See note)
@@ -183,4 +183,4 @@ the method will not be the same one that started it.
 In a Blazor WebAssembly application (which only has a single thread) there are no threading problems,
 but in server-side applications, this can cause problems when using a non-thread-safe dependency across multiple components.
 
-This issue will be addressed in the section on [OwningComponentBase<T>](https://blazor-university.com/dependency-injection/component-scoped-dependencies/owningcomponentbase-generic/).
+This issue will be addressed in the section on [OwningComponentBase<T>](/dependency-injection/component-scoped-dependencies/owningcomponentbase-generic/).

@@ -6,8 +6,8 @@ order: 9
 
 [![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Components/ReplacingChildAttributes)
 
-So far we've seen how to create [code-generated attributes](https://blazor-university.com/components/code-generated-html-attributes/),
-and also how to [capture unexpected parameters](https://blazor-university.com/components/capturing-unexpected-parameters/).
+So far we've seen how to create [code-generated attributes](/components/code-generated-html-attributes/),
+and also how to [capture unexpected parameters](/components/capturing-unexpected-parameters/).
 In addition to these two techniques, Blazor also allows us to override/replace existing attributes in a child component.
 
 Take the following page mark-up:
@@ -30,7 +30,7 @@ Which consumes the following child component:
 }
 ```
 
-As we've seen before in [Code-generated attributes](https://blazor-university.com/components/code-generated-html-attributes/),
+As we've seen before in [Code-generated attributes](/components/code-generated-html-attributes/),
 the `ChildComponent` will capture the attributes provided by the consumer (`first` and `second`) into our parameter `AllOtherAttributes`
 and the call to `@attributes=AllOtherAttributes` will instruct Blazor to output the name/value pairs in our
 `Dictionary<string, object>`.
@@ -45,7 +45,7 @@ The preceding code will output the following HTML.
 ## Replacing child attributes
 
 What if we want to specify default values for `first` and `second` to output whenever the consumer does not provide them?
-It might be tempting to override [SetParametersAsync](https://blazor-university.com/components/component-lifecycles/) 
+It might be tempting to override [SetParametersAsync](/components/component-lifecycles/) 
 and insert values if they are not set, but there is a much easier way!
 
 All we have to do is to write out our default values as part of our child component's mark-up, and the `@attributes=` 

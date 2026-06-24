@@ -55,7 +55,7 @@ We'll now use `@ref`,`ElementReference`, and JavaScript interop to solve a commo
 
 The HTML specification has an `autofocus` attribute that can be applied to any focusable element;
 when a page is loaded the browser will find the first element decorated with `autofocus` and give it focus.
-As [Blazor apps do not really navigate](http://blazor-university.com/routing/#simulated-navigation)
+As [Blazor apps do not really navigate](/routing/#simulated-navigation)
 (the HTML is simply rewritten and the browser URL changed),
 the browser will not scan for `autofocus` attributes when we navigate to a new URL and present the user with new content.
 This means that putting `autofocus` attributes on inputs doesn't work.

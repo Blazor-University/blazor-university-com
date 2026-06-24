@@ -4,11 +4,11 @@ date: "2020-05-30"
 order: 1
 ---
 
-As mentioned in the section on [Singleton dependencies](https://blazor-university.com/dependency-injection/dependency-lifetimes-and-scopes/scoped-dependencies/),
+As mentioned in the section on [Singleton dependencies](/dependency-injection/dependency-lifetimes-and-scopes/scoped-dependencies/),
 a Singleton registered dependency must either have no state or should contain only state that may be shared across all
 users on the same server.
 
-And, as mentioned in the section on [Scoped dependencies](https://blazor-university.com/dependency-injection/component-scoped-dependencies/),
+And, as mentioned in the section on [Scoped dependencies](/dependency-injection/component-scoped-dependencies/),
 a Scoped registered dependency isolates an individual user's state away from everyone else
 (or even the same user accessing the same website in a different browser tab).
 
@@ -16,7 +16,7 @@ But what about thread-safety?
 When running a server-side application it is very likely that a Singleton registered dependency will be used
 by more than one thread at a time.
 Even if we register our dependency as Scoped, it is entirely possible that different components will be rendered by
-different threads, this is described in detail in the section [Multi-threaded rendering](https://blazor-university.com/components/multi-threaded-rendering/).
+different threads, this is described in detail in the section [Multi-threaded rendering](/components/multi-threaded-rendering/).
 
 Because of this, we must consider thread-safety when writing our services.
 However, sometimes we do not own the source code for the services we consume, and they might not be thread-safe
@@ -91,7 +91,7 @@ public class WeatherForecastService
 - **Line 19**  
     We introduce an `await Task.Delay` of 3 seconds to simulate a long-running process.
     This will increase the risk of two threads clashing, and also ensure our code actually runs asynchronously.
-    (See [Multi-threaded rendering](https://blazor-university.com/components/render-trees/multi-threaded-rendering/)).
+    (See [Multi-threaded rendering](/components/multi-threaded-rendering/)).
 - **Line 30**  
     Once the method is complete,
     decrement the `Locked` count from `1` back down to `0` so that another thread may execute the method without
@@ -115,14 +115,14 @@ public void ConfigureServices(IServiceCollection services)
 ```
 
 Running the application again we'll see that we are able to open many tabs without causing a threading conflict.
-If you've read the section on [Scoped dependencies](https://blazor-university.com/dependency-injection/dependency-lifetimes-and-scopes/scoped-dependencies/),
+If you've read the section on [Scoped dependencies](/dependency-injection/dependency-lifetimes-and-scopes/scoped-dependencies/),
 it will be obvious why.
 Each tab receives its own unique instance of the `WeatherForecastService` and therefore only a single thread is using each
 service at any one time.
 
 However, we are only guaranteed our service will not be used by threads from other users of our application.
 It does not guarantee our component will not be used by multiple threads at all.
-The section on [Multi-threaded rendering](https://blazor-university.com/components/render-trees/multi-threaded-rendering/)
+The section on [Multi-threaded rendering](/components/multi-threaded-rendering/)
 explains how server-side Blazor applications can utilize multiple threads to render the user interface.
 
 Potentially having multiple threads rendering for a single user means we still have the possibility of thread reentrancy

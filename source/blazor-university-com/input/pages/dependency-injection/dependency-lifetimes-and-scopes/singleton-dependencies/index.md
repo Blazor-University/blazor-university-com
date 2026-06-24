@@ -147,12 +147,12 @@ component and some Bootstrap CSS decorated HTML for inputting a user name and te
 ```
 
 - **Line 4**  
-    Creates an [EditForm](https://blazor-university.com/forms/editcontext-fieldidentifiers-and-fieldstate/)
+    Creates an [EditForm](/forms/editcontext-fieldidentifiers-and-fieldstate/)
     that is bound to `this`.
 - **Line 5**  
     Enables validation based on data annotations such as `RequiredAttribute`.
 - **Line 8**  
-    Binds a Blazor [InputText](https://blazor-university.com/forms/editing-form-data/) component to the `Name` property.
+    Binds a Blazor [InputText](/forms/editing-form-data/) component to the `Name` property.
 - **Line 9**  
     Displays any validation errors for the `Name` property.
 - **Line 13**  
@@ -295,7 +295,7 @@ If you don't wish to tackle this yourself then just take a look at the project t
 the work is done for you. If you do fancy tackling it, here are some clues.
 
 1. You'll need some JavaScript that will take a control as a parameter and set `control.scrollTop = control.scrollHeight`.
-2. You'll need to [invoke this JavaScript](https://blazor-university.com/javascript-interop/calling-javascript-from-dotnet/)
-   after every time our component [renders](https://blazor-university.com/components/component-lifecycles/).
-3. You'll need an [ElementReference](https://blazor-university.com/javascript-interop/calling-javascript-from-dotnet/passing-html-element-references/)
+2. You'll need to [invoke this JavaScript](/javascript-interop/calling-javascript-from-dotnet/)
+   after every time our component [renders](/components/component-lifecycles/).
+3. You'll need an [ElementReference](/javascript-interop/calling-javascript-from-dotnet/passing-html-element-references/)
    to the `<textarea>` to pass to the JavaScript.

@@ -16,7 +16,7 @@ Let's start with a UML diagram describing how Blazor maintains meta-state for fo
 
 Whenever the `EditForm.Model` changes (the object being modified in the form),
 `EditForm.OnParametersSet` is executed and creates a new `EditContext` instance.
-The `EditForm` component declares this `EditContext` as a [Cascading value](http://blazor-university.com/components/cascading-values/cascading-values-by-type/),
+The `EditForm` component declares this `EditContext` as a [Cascading value](/components/cascading-values/cascading-values-by-type/),
 so that any components within the form have access to it.
 
 The `EditContext` is a form-meta-data holder for the object currently being edited.

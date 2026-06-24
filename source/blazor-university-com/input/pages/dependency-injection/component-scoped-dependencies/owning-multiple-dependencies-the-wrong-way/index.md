@@ -4,13 +4,13 @@ date: "2020-06-07"
 order: 2
 ---
 
-The [OwningComponentBase<T>](https://blazor-university.com/dependency-injection/component-scoped-dependencies/owningcomponentbase-generic/)
+The [OwningComponentBase<T>](/dependency-injection/component-scoped-dependencies/owningcomponentbase-generic/)
 class is a suitable solution for when we need our component to own only a single isolated instance of a dependency
 (and any Scoped/Transient dependencies it depends upon).
 However, sometimes we need our component to own multiple dependencies.
 
 This section will demonstrate the **_wrong_** way to achieve this goal, and then the
-[following section](https://blazor-university.com/dependency-injection/component-scoped-dependencies/owning-multiple-dependencies-the-right-way/)
+[following section](/dependency-injection/component-scoped-dependencies/owning-multiple-dependencies-the-right-way/)
 will demonstrate how to implement it correctly.
 
 ## Overview
@@ -25,7 +25,7 @@ Using the `@inject` directive on a descendant of `OwningComponentBase<T>` will n
 component's own injection container.
 
 **Note**: If you have not already done so, read the section on
-[OwningComponentBase<T>](https://blazor-university.com/dependency-injection/component-scoped-dependencies/owningcomponentbase-generic/)
+[OwningComponentBase<T>](/dependency-injection/component-scoped-dependencies/owningcomponentbase-generic/)
 if you are not already familiar with how this class creates its own injection container.
 
 ## Example
@@ -133,4 +133,4 @@ along with the instance of our `OwningComponentBase<T>` descended component.
 
 ![](images/OwningMultipleDependenciesTheWrongWay.jpg)
 
-The correct way for a component to own multiple dependencies will be covered in the section about the non-generic [OwningComponentBase](https://blazor-university.com/dependency-injection/component-scoped-dependencies/owning-multiple-dependencies-the-right-way/) class.
+The correct way for a component to own multiple dependencies will be covered in the section about the non-generic [OwningComponentBase](/dependency-injection/component-scoped-dependencies/owning-multiple-dependencies-the-right-way/) class.

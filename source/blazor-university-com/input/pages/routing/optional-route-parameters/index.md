@@ -85,7 +85,7 @@ When the component is a `@page` and our Blazor app navigates to a new URL that r
 Blazor does not create a new instance of the component in order to render the page
 but instead it treats it as the same page with changed parameters.
 Because of this `OnInitialized` will be executed only when the page is first created.
-See [Component lifecycles](http://blazor-university.com/components/component-lifecycles/) for details.
+See [Component lifecycles](/components/component-lifecycles/) for details.
 
 <table>
   <tbody>

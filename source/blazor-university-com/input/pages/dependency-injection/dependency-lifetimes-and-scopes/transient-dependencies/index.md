@@ -112,7 +112,7 @@ and allow it to be garbage collected when it is not.
 - **Lines 19-20**  
     Declares boolean fields to determine whether or not each of the two components should be created and rendered.
 - **Line 2**  
-    Uses [two-way binding](https://blazor-university.com/components/two-way-binding/) on a checkbox so we can toggle
+    Uses [two-way binding](/components/two-way-binding/) on a checkbox so we can toggle
     the boolean field between `false` and `true`.
 - **Line 5**  
     If the relevant field is true then an instance of `MyStandardComponent` is displayed.

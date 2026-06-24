@@ -169,7 +169,7 @@ async void ValidationRequested(object sender, ValidationRequestedEventArgs args)
     this is done in a separate method because we will use it when validating a whole object and also when validating
     an individual changed property when notified via `EditContext.OnFieldChanged`.
 
-Adding error messages to the `ValidationMessageStore` is simply a case of creating a [FieldIdentifier](http://blazor-university.com/forms/editcontext-fieldidentifiers-and-fieldstate/)
+Adding error messages to the `ValidationMessageStore` is simply a case of creating a [FieldIdentifier](/forms/editcontext-fieldidentifiers-and-fieldstate/)
 to identify exactly which object/property has an error and using that identifier to add any error messages,
 and then let the `EditContext` know that the validation state has changed.
 

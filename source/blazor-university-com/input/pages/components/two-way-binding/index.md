@@ -13,8 +13,8 @@ and part of our component's state is passed from its host view (the **Counter** 
 in the form of a `Parameter` named `CurrentCounterValue`.
 But what if we also want the component to be able to update the state that is passed into it?
 
-_If you are not already familiar with the `EventCallback<T>` class, read [Component events](https://blazor-university.com/components/component-events/)._
-_Ideally, you should also be familiar with using [Component directives](https://blazor-university.com/components/literals-expressions-and-directives/)_,
+_If you are not already familiar with the `EventCallback<T>` class, read [Component events](/components/component-events/)._
+_Ideally, you should also be familiar with using [Component directives](/components/literals-expressions-and-directives/)_,
 and to gain a deeper understanding of binding variations you may also wish to familiarize yourself with [Browser DOM events](/components/component-events/browser-dom-events/).
 
 Start as we did with the **Counter** page, by adding a button with an `onclick` event that updates the value of `CurrentCounterValue`.

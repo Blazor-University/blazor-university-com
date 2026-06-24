@@ -30,6 +30,6 @@ To indicate where you want the content of your page to appear you simply output 
 Note that this is not the entire HTML page.
 Blazor layouts work only within the part of the HTML that Blazor is defined within the `wwwroot\index.html` page,
 in a default Blazor application this is everything within the `<app>` element.
-It isn't currently possible to alter attributes of HTML elements outside of this scope except by use of [JavaScript Interop](http://blazor-university.com/javascript-interop/).
+It isn't currently possible to alter attributes of HTML elements outside of this scope except by use of [JavaScript Interop](/javascript-interop/).
 
 [![](images/Layout.png)](images/Layout.png)

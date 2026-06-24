@@ -45,9 +45,10 @@
   - `dependency-injection/comparing-dependency-scopes/index.md` line 189: `https://blazor-university.com/...`
   - Many more across the codebase
 - **Sub-tasks**:
-  - [ ] Run `rg 'https?://blazor-university\.com' --include '*.md'` to find all occurrences
-  - [ ] Replace each with a relative path (e.g., `/routing/` instead of `http://blazor-university.com/routing/`)
-  - [ ] Ensure migrated links include the `.md` extension or use the Statiq URL convention
+  - [x] Run `rg 'https?://blazor-university\.com' --include '*.md'` to find all occurrences
+  - [x] Replace each with a relative path (e.g., `/routing/` instead of `http://blazor-university.com/routing/`)
+  - [x] Ensure migrated links include the `.md` extension or use the Statiq URL convention
+  - [x] Fixed pre-existing broken links: `/components/render-trees/multi-threaded-rendering/` → `/components/multi-threaded-rendering/`
 
 ---
 

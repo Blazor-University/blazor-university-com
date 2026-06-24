@@ -4,7 +4,7 @@ date: "2020-06-13"
 order: 1
 ---
 
-In circumstances where our code is called by a non-UI event (such as the ones outlined in [Multi-threaded rendering)](https://blazor-university.com/components/multi-threaded-rendering/),
+In circumstances where our code is called by a non-UI event (such as the ones outlined in [Multi-threaded rendering)](/components/multi-threaded-rendering/),
 we would ordinarily need to implement some kind of thread locking/synchronization if we intend to manipulate state.
 
 **Recap**: Non-UI events include:
@@ -18,7 +18,7 @@ executes the code, and WinForms developers might use the `Invoke` method of the 
 Any code invoked in this manner is always executed by a specific thread (the UI thread), which avoids the use for thread
 synchronizing code.
 
-The [StateHasChanged](https://blazor-university.com/components/component-events/) framework method, which is used to tell
+The [StateHasChanged](/components/component-events/) framework method, which is used to tell
 Blazor to re-render our component, does not allow multiple threads to access the rendering process at the same time.
 If `StateHasChanged` is called by a secondary thread an exception will be thrown.
 
@@ -128,7 +128,7 @@ and a parameter to indicate if we want to use `InvokeAsync` to increment the val
 }
 ```
 
-To increment the `CounterState.Value`, we'll create a thread in the `OnInitialized` [lifecycle method](https://blazor-university.com/components/component-lifecycles/).
+To increment the `CounterState.Value`, we'll create a thread in the `OnInitialized` [lifecycle method](/components/component-lifecycles/).
 We'll start the thread immediately, but the first instruction in the thread will be to suspend itself until our
 `WaitHandle` is triggered.
 
@@ -191,7 +191,7 @@ private bool UseInvokeAsync;
 private System.Threading.ManualResetEvent Trigger = new System.Threading.ManualResetEvent(false);
 ```
 
-For the mark-up, we'll need to use [Two-way binding](https://blazor-university.com/components/two-way-binding/) to bind
+For the mark-up, we'll need to use [Two-way binding](/components/two-way-binding/) to bind
 our `IsWorking` field to an HTML `<input>` element.
 
 ```razor

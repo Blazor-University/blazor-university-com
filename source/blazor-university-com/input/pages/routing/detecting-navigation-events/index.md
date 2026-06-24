@@ -46,7 +46,7 @@ of the service's lifetime.
 It is therefore important our components also unsubscribe from this event when they are destroyed,
 otherwise they will not be garbage collected.
 
-Currently, the `ComponentBase` class does not have a [lifecycle](http://blazor-university.com/components/component-lifecycles/)
+Currently, the `ComponentBase` class does not have a [lifecycle](/components/component-lifecycles/)
 event for when it is destroyed, but it is possible to implement the `IDisposable` interface.
 
 ```razor

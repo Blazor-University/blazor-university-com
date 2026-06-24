@@ -4,7 +4,7 @@ date: "2020-05-30"
 order: 3
 ---
 
-In the [previous section](https://blazor-university.com/dependency-injection/component-scoped-dependencies/owning-multiple-dependencies-the-wrong-way/),
+In the [previous section](/dependency-injection/component-scoped-dependencies/owning-multiple-dependencies-the-wrong-way/),
 we saw the wrong way to inject multiple owned dependencies into a component. This section will demonstrate the correct way to approach the problem.
 
 As mentioned previously, the `OwningComponentBase<T>` class component will create its own dependency container and resolve
@@ -57,7 +57,7 @@ public class OwnedDependency1 : IOwnedDependency1
 ```
 
 Register the interfaces + their implementing classes as `Scoped`
-(see [Comparing dependency scopes](https://blazor-university.com/dependency-injection/dependency-lifetimes-and-scopes/comparing-dependency-scopes/)
+(see [Comparing dependency scopes](/dependency-injection/dependency-lifetimes-and-scopes/comparing-dependency-scopes/)
 if you need to be reminded how).
 
 Next, edit the **Index.razor** page so the user of our app can toggle a component by clicking a checkbox.

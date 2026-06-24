@@ -86,7 +86,7 @@ _\* This method is not executed the first time the component is rendered._
 
 ## BuildRenderTree
 
-This method renders the component's content to an in-memory representation ([RenderTree](https://blazor-university.com/components/render-trees/))
+This method renders the component's content to an in-memory representation ([RenderTree](/components/render-trees/))
 of what should be rendered to the user.
 
 ```razor
@@ -104,12 +104,12 @@ If our component re-renders at a later time with an additional item in `people` 
 If there are fewer items in `people` then some of the previously created `ShowPersonDetails` component instances will be
 discarded from our component's RenderTree, and `Dispose()` will be executed on them if they implement `IDiposable`.
 
-**Note:** For rendering efficiency, whenever possible always use the [@key directive](https://blazor-university.com/components/render-trees/)
+**Note:** For rendering efficiency, whenever possible always use the [@key directive](/components/render-trees/)
 when rendering mark-up within any kind of loop.
 
 ## OnAfterRender / OnAfterRenderAsync
 
-These last two methods are executed every time Blazor has re-generated the component's [RenderTree](http://blazor-university.com/components/render-trees/).
+These last two methods are executed every time Blazor has re-generated the component's [RenderTree](/components/render-trees/).
 This can be as a result of the component's parent re-rendering, the user interacting with the component (e.g. a mouse-click),
 or if the component executes its `StateHasChanged` method to invoke a re-render.
 
@@ -259,4 +259,4 @@ protected override async Task OnParametersSetAsync()
 ```
 
 For more information about how to work safely with different threads running on the same component,
-see the section on [Multi-threaded rendering](https://blazor-university.com/components/multi-threaded-rendering/).
+see the section on [Multi-threaded rendering](/components/multi-threaded-rendering/).

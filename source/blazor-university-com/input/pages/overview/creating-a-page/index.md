@@ -30,7 +30,7 @@ Start your new razor page with the following.
 ```
 
 The first line identifies the URL required to render the content of this page.
-More advanced routing techniques will be covered in the [Routing](http://blazor-university.com/routing/) section.
+More advanced routing techniques will be covered in the [Routing](/routing/) section.
 
 This is followed by some standard HTML, a H1 with a page title and a paragraph with some content.
 Just as with a standard ASP.NET Razor page, it is possible to insert programmable content by escaping it with the `@` symbol.

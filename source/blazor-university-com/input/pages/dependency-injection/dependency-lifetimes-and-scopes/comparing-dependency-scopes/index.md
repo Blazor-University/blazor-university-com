@@ -427,7 +427,7 @@ except they are isolated from other users / other browser tabs.
 Transient dependencies work the same on both server-side and WebAssembly,
 and the same as in ASP.NET MVC -
 except for the fact that the dependency injection container is disposed of after a page request in ASP.NET MVC.
-See the [Avoiding memory leaks](https://blazor-university.com/dependency-injection/dependency-lifetimes-and-scopes/transient-dependencies/#avoiding-memory-leaks)
+See the [Avoiding memory leaks](/dependency-injection/dependency-lifetimes-and-scopes/transient-dependencies/#avoiding-memory-leaks)
 section of Transient dependencies.
 
 There are ways of introducing additional scopes for each user. This technique will be covered in a later section.

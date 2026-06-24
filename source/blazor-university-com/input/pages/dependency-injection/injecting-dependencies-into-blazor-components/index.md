@@ -186,7 +186,7 @@ file corresponding to the razor file.
 ## Consuming injected dependencies
 
 Dependencies are injected after the Blazor component instance has been created and before the `OnInitialized` or `OnInitializedAsync`
-[lifecycle events](https://blazor-university.com/components/component-lifecycles/) are executed.
+[lifecycle events](/components/component-lifecycles/) are executed.
 This means we cannot override our component's constructor and use those dependencies from there,
 but we can use them in the `OnInitialized*` methods.
 
