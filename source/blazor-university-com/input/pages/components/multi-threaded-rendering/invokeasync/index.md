@@ -36,7 +36,7 @@ any given moment, eliminating the need to write thread-locking/synchronization c
 
 ## InvokeAsync example
 
-[![](images/SourceLink-e1567978928628.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Components/UsingInvokeAsync)
+[![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Components/UsingInvokeAsync)
 
 To demonstrate the different in behavior between executing component methods directly from a thread vs executing via `InvokeAsync`,
 we'll create a server-side application that will show how multiple concurrent threads can corrupt shared state.

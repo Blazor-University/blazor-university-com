@@ -4,7 +4,7 @@ date: "2019-10-30"
 order: 1
 ---
 
-[![](images/SourceLink-e1567978928628.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/JavaScriptInterop/UpdatingDocumentTitle)
+[![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/JavaScriptInterop/UpdatingDocumentTitle)
 
 In the section [Creating a Blazor layout](/layouts/creating-a-blazor-layout/)
 it we saw how a Blazor app lives within a HTML (or cshtml) document,

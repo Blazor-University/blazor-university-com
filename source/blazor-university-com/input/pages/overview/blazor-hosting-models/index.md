@@ -43,7 +43,7 @@ Additionally, Blazor Wasm only works on newer browsers and is not search-engine 
 
 ## Blazor server-side
 
-![](images/BlazorServerSide-1024x365.jpg)
+![](images/BlazorServerSide.jpg)
 
 ### Pros
 

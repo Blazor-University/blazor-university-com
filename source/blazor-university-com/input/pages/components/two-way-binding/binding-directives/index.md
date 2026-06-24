@@ -4,7 +4,7 @@ date: "2020-02-08"
 order: 1
 ---
 
-[![](images/SourceLink-e1567978928628.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Components/BindingDirectives)
+[![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Components/BindingDirectives)
 
 We covered [Directives](/components/literals-expressions-and-directives/directives/) earlier -
 if you are unfamiliar with directives, please read the section about them before you continue.

@@ -13,7 +13,7 @@ To illustrate this shared state, let's create a very simple (i.e. non-scalable) 
 
 ## The Singleton chat service
 
-[![](images/SourceLink-e1567978928628.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/DependencyInjection/WebChat)
+[![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/DependencyInjection/WebChat)
 
 First, create a new Blazor Server App. Then create a new folder named **Services** and add the following interface.
 This is the service our UI will use to send a message to other users, to be notified whenever a user sends a message,

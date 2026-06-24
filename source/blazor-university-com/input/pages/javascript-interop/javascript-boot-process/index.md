@@ -9,7 +9,7 @@ this means any JavaScript referenced from the bootstrap HTML will be loaded imme
 and any code that executes automatically within those JavaScript files will be executed before
 Blazor has had a chance to initialize.
 
-[![](images/SourceLink-e1567978928628.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/JavaScriptInterop/JavaScriptBootProcess)
+[![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/JavaScriptInterop/JavaScriptBootProcess)
 
 To observe this, create a new Blazor server-side application:
 

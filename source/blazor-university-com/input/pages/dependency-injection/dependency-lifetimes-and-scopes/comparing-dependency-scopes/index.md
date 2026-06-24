@@ -4,7 +4,7 @@ date: "2020-05-25"
 order: 4
 ---
 
-[![](images/SourceLink-e1567978928628.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/DependencyInjection/ServerDependencyScopes)
+[![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/DependencyInjection/ServerDependencyScopes)
 
 In this section we'll create a Blazor application to demonstrate the different lifetimes of the various dependency injection
 scopes.
@@ -359,21 +359,21 @@ When our website first runs, we get the first instance of all of our injected de
 Except for the Transient dependencies, because these are created on demand and not cached away for reuse,
 we are given instances `#1` and `#2`.
 
-![](images/ScopeComparison1-1024x427.jpg)
+![](images/ScopeComparison1.jpg)
 
 When the user clicks the **Next step** button the `CurrentStep` increments to 2,
 the first couple of our components are discarded and the second couple are created for rendering instead.
 Because these are new instances running in the same user session,
 they will receive the same Scoped dependency along with two new Transient dependencies.
 
-![](images/ScopeComparison2-1024x427.jpg)
+![](images/ScopeComparison2.jpg)
 
 When the user clicks the **Next step** button again the app will force a reload of the app at the new path `/continue`.
 Because the ID of the SignalR connection was forgotten when the page was reloaded,
 the user will be set up with a new connection and therefore a new scope.
 So now when the first couple of components are rendered they Scoped instance `#2`.
 
-![](images/ScopeComparison3-1024x427.jpg)
+![](images/ScopeComparison3.jpg)
 
 Finally, when the user clicks the Next step button for the final time,
 the second couple of our components will be created to be rendered and will be injected with the `IMySingletonService`
@@ -381,24 +381,24 @@ cached by instance cached in the shared Singleton container (instance `#1`),
 with the `IMyScopedService` cached by the current user's injection container (instance `#2`),
 and two new instances of `IMyTransientService`.
 
-![](images/ScopeComparison4-1024x427.jpg)
+![](images/ScopeComparison4.jpg)
 
 ## WebAssembly dependency scopes
 
-[![](images/SourceLink-e1567978928628.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/DependencyInjection/WebAssemblyDependencyScopes)
+[![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/DependencyInjection/WebAssemblyDependencyScopes)
 
 Because WebAssembly runs in the user's browser and every tab is a completely separate process,
 our output will be slightly different than that produced by a server-side Blazor application.
 
 First, the app starts up in the browser tab and we get the same output we'd expect to see on a server-side Blazor application.
 
-![](images/WasmScopeComparison1-1024x427.jpg)
+![](images/WasmScopeComparison1.jpg)
 
 The first click of **Next step** also shows us a screen that is the same as in our server-side Blazor application,
 where the Singleton and Scoped instances remain unchanged because they are both cached instances,
 and two Transient instances are created on demand.
 
-![](images/WasmScopeComparison2-1024x427.jpg)
+![](images/WasmScopeComparison2.jpg)
 
 It's when our app performs a forced reload that things are different.
 In a server-side application the user gets a new SignalR connection ID and therefore a new dependency injection container
@@ -407,11 +407,11 @@ In WebAssembly there is no application state for the page to reconnect to.
 Once the page reloads, the whole application state is destroyed and then recreated.
 As a consequence, our instances numbers start again from the beginning.
 
-![](images/WasmScopeComparison3-1024x427.jpg)
+![](images/WasmScopeComparison3.jpg)
 
 And then finally.
 
-![](images/WasmScopeComparison4-1024x427.jpg)
+![](images/WasmScopeComparison4.jpg)
 
 ## Conclusion
 

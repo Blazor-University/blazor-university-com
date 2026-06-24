@@ -4,7 +4,7 @@ date: "2020-04-26"
 order: 1
 ---
 
-[![](images/SourceLink-e1567978928628.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/DependencyInjection/BasicDependencyInjection)
+[![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/DependencyInjection/BasicDependencyInjection)
 
 ## Defining our dependency
 

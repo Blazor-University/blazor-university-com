@@ -16,7 +16,7 @@ will demonstrate how to implement it correctly.
 ## Overview
 
 <!---Cramer we can use xrefs instead of complete URLs for these links --->
-[![](images/SourceLink-e1567978928628.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/DependencyInjection/OwningMultipleDependenciesTheWrongWay)
+[![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/DependencyInjection/OwningMultipleDependenciesTheWrongWay)
 
 The thing to remember when using `OwningComponentBase<T>`, is that it is only the `T` (stored in the property named `Service`)
 that is created within the injection container owned by the component.

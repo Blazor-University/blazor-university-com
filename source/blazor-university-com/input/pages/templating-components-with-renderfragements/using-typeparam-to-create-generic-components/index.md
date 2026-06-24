@@ -4,7 +4,7 @@ date: "2020-04-18"
 order: 3
 ---
 
-[![](images/SourceLink-e1567978928628.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/TemplatedComponents/UsingTypeParamToCreateGenericComponents)
+[![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/TemplatedComponents/UsingTypeParamToCreateGenericComponents)
 
 If you haven't already, please read the sections [Templating components with RenderFragments](/templating-components-with-renderfragements/)
 and [Passing data to a RenderFragment](/templating-components-with-renderfragements/passing-data-to-a-renderfragement/).

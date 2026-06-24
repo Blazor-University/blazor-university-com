@@ -4,7 +4,7 @@ date: "2020-03-04"
 order: 6
 ---
 
-[![](images/SourceLink-e1567978928628.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Forms/AccessingFormState)
+[![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Forms/AccessingFormState)
 
 Sometimes, we need access to form state inside the `<EditForm>` child content.
 The most common use for this is when we need to access the CSS classes for an input,

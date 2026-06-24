@@ -4,7 +4,7 @@ date: "2020-01-09"
 order: 4
 ---
 
-[![](images/SourceLink-e1567978928628.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Components/EventCallbacks)
+[![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Components/EventCallbacks)
 
 The `EventCallback<T>` class is a special Blazor class that can be exposed as a Parameter 
 so that components can easily notify consumers when something of interest has occurred.

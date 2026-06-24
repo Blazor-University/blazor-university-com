@@ -4,7 +4,7 @@ date: "2019-11-23"
 order: 1
 ---
 
-[![](images/SourceLink-e1567978928628.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/JavaScriptInterop/CallingDotNetFromJavaScriptLifetimes)
+[![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/JavaScriptInterop/CallingDotNetFromJavaScriptLifetimes)
 
 If we run the app we created in [Calling .NET from Javascript](/javascript-interop/calling-dotnet-from-javascript/) and
 inspect browser console window, we'll see that when we navigate to another page JavaScript is still calling back our component.

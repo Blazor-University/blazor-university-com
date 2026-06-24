@@ -4,7 +4,7 @@ date: "2020-01-09"
 order: 3
 ---
 
-[![](images/SourceLink-e1567978928628.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Components/LiteralsExpressionsAndDirectives)
+[![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Components/LiteralsExpressionsAndDirectives)
 
 > Note that this section does not cover Razor mark-up in general.
 > It will not cover things such as conditional output, loops, and so on.

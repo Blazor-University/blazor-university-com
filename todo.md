@@ -28,10 +28,10 @@
 - **Scope**: All images across all markdown files under `source/blazor-university-com/input/pages/`
 - **Problem**: Many images have suffixes like `-300x251.png`, `-e1567978928628.png`, `-1024x427.jpg` — these are WordPress responsive-image artifacts
 - **Sub-tasks**:
-  - [ ] Glob for all image files: `Get-ChildItem -Recurse -Include *.png,*.jpg,*.jpeg,*.gif`
-  - [ ] Identify files with WP-style suffixes
-  - [ ] Rename files to clean names (e.g., `BlazorClientSide.png` instead of `BlazorClientSide-300x251.png`)
-  - [ ] Update all `<img>` and `![](...)` references in markdown to match new filenames
+  - [x] Glob for all image files: `Get-ChildItem -Recurse -Include *.png,*.jpg,*.jpeg,*.gif`
+  - [x] Identify files with WP-style suffixes
+  - [x] Rename 41 files to clean names (e.g., `BlazorClientSide.png` instead of `BlazorClientSide-300x251.png`)
+  - [x] Update all `<img>` and `![](...)` references in markdown to match new filenames (30 files updated)
 
 ### 1.4 Replace absolute blazor-university.com URLs with relative paths
 - **Scope**: All markdown files

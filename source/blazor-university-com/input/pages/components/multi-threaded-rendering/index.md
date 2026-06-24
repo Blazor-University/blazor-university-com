@@ -16,7 +16,7 @@ The easiest way for us to observe this behavior is to create some asynchronous m
 For this example,
 we'll use the `OnInitializedAsync` [lifecycle](https://blazor-university.com/components/component-lifecycles/) method.
 
-[![](images/SourceLink-e1567978928628.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Components/MultithreadedRendering)
+[![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Components/MultithreadedRendering)
 
 To demonstrate this, we'll first need to create a new server-side Blazor application.
 Then, in the **/Shared** folder, create a component named `SynchronousInitComponent`.

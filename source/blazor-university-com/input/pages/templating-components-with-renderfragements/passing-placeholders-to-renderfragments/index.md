@@ -4,7 +4,7 @@ date: "2020-04-18"
 order: 4
 ---
 
-[![](images/SourceLink-e1567978928628.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/TemplatedComponents/PassingPlaceholdersToRenderFragments)
+[![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/TemplatedComponents/PassingPlaceholdersToRenderFragments)
 
 **Credit:** This page was inspired by a Twitter post by the user [ℳisterℳagoo](https://twitter.com/mistermag00).
 

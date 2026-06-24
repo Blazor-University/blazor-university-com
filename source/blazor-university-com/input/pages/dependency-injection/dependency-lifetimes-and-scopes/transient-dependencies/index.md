@@ -16,7 +16,7 @@ we'll create a simple application so we can see when an object instance is creat
 
 ## Transient dependency example
 
-[![](images/SourceLink-e1567978928628.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/DependencyInjection/TransientLifetimes)
+[![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/DependencyInjection/TransientLifetimes)
 
 First, create a new Blazor Server App. Then create a new folder named **Services** and add the following interface.
 This is the service our UI will use to show the instance number of the object that was created by the dependency container

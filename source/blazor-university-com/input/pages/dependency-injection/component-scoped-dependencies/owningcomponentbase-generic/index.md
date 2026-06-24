@@ -24,7 +24,7 @@ However, sometimes we do not own the source code for the services we consume, an
 
 ## Demonstrating the problem
 
-[![](images/SourceLink-e1567978928628.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/DependencyInjection/UsingGenericOwningComponentBase)
+[![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/DependencyInjection/UsingGenericOwningComponentBase)
 
 First, we'll modify the standard server-side Blazor project so the `WeatherForecastService` is no longer thread-safe.
 We'll detect if more than one thread is using the service at the same time and throw an `InvalidOperationException`,

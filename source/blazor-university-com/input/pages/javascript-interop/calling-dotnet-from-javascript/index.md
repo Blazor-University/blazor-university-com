@@ -19,7 +19,7 @@ Blazor does not allow JavaScript to call just any static or instance method in o
 
 ## Making .NET code invokable
 
-[![](images/SourceLink-e1567978928628.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/JavaScriptInterop/CallingDotNetFromJavaScriptBasic)
+[![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/JavaScriptInterop/CallingDotNetFromJavaScriptBasic)
 
 To call a method on a .NET object instance, we first need to pass a reference to the object over to JavaScript.
 We cannot pass our object directly because we want to give JavaScript a reference to our object rather than a Json

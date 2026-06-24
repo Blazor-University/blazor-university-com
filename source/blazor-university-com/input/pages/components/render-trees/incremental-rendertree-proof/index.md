@@ -45,7 +45,7 @@ Welcome to your new app.
 }
 ```
 
-![](images/IncrementalDomProof1-1024x392.png)
+![](images/IncrementalDomProof1.png)
 
 Main page showing values of list
 
@@ -107,7 +107,7 @@ the elements will look like this:
 Next click the new **Set values** button at the top of the page,
 this will execute the JavaScript to add a new attribute to each `<li>` to record the original text it help.
 
-![](images/IncrementalDomProof2-1024x430.png)
+![](images/IncrementalDomProof2.png)
 
 Main page with new **Set values** button
 

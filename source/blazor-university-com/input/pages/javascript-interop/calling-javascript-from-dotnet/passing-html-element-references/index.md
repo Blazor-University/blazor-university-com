@@ -4,7 +4,7 @@ date: "2019-04-27"
 order: 2
 ---
 
-[![](images/SourceLink-e1567978928628.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/JavaScriptInterop/HtmlElementReferences)
+[![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/JavaScriptInterop/HtmlElementReferences)
 
 When writing a Blazor application, manipulation of the Document Object Model (DOM) is discouraged as it may interfere with
 its [incremental render tree](/components/render-trees/incremental-rendertree-proof/),

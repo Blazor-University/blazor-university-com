@@ -101,7 +101,7 @@ These will be covered in more detail in [Component events](/components/component
 
 ## Directive attributes
 
-[![](images/SourceLink-e1567978928628.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Components/DirectiveAttributes)
+[![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Components/DirectiveAttributes)
 
 Directive attributes allow us to pass additional information to directives.
 If we think of a directive as a class, then directive attributes are its members.

@@ -13,7 +13,7 @@ the environment (Development/ QA / Production) as part of the deployment process
 **Warning:** Do not be tempted to create a JavaScript invokable method that will return just any old value from the config
 as this could result in the client being able to access sensitive information such as security keys.
 
-[![](images/SourceLink-e1567978928628.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/JavaScriptInterop/CallingStaticDotNetMethods)
+[![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/JavaScriptInterop/CallingStaticDotNetMethods)
 
 - Create a new Blazor server-side application
 - Open the **/appsettings.json** file and add a section named "JavaScript"

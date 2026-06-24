@@ -19,14 +19,14 @@ Take a job recruitment application as an example. A `Vacancy` can have many `App
 each `Application` is for a single `Vacancy` and belongs to a single `Candidate`;
 both `Vacancy` and `Candidate` have an `Address`.
 
-![](images/VacancyWithApplications-e1562101906614.png)
+![](images/VacancyWithApplications.png)
 
 Viewing the vacancy shows all applications.
 At some point a requirement is identified to allow the user to click on a single application and view it in detail on its
 own page, so a new `ViewApplication.razor` component is created that will be used when viewing a vacancy or when viewing
 a single application.
 
-![](images/VacancyWithApplications2-e1562101878223.png)
+![](images/VacancyWithApplications2.png)
 
 
 Now we have a `ViewVacancy.razor` component (labelled **A**) which loops through all applications against the vacancy and
@@ -35,7 +35,7 @@ for each it renders a `ViewApplication.razor` component (labelled **B**).
 As an exercise in standardizing the application, it is decided candidates should be displayed using a `ViewCandidate.razor`
 component (labelled **C**), and all addresses should be displayed using a `ViewAddress.razor` component (labelled **D**).
 
-![](images/VacancyWithApplications3-e1562101842952.png)
+![](images/VacancyWithApplications3.png)
 
 In the interests of equal opportunities, the page that displays applications for a vacancy needs the option of viewing
 applications without revealing the name or full address of the candidate,

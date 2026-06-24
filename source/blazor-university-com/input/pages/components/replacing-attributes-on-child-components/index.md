@@ -4,7 +4,7 @@ date: "2020-08-16"
 order: 9
 ---
 
-[![](images/SourceLink-e1567978928628.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Components/ReplacingChildAttributes)
+[![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Components/ReplacingChildAttributes)
 
 So far we've seen how to create [code-generated attributes](https://blazor-university.com/components/code-generated-html-attributes/),
 and also how to [capture unexpected parameters](https://blazor-university.com/components/capturing-unexpected-parameters/).

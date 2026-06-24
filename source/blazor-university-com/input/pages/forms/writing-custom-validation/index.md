@@ -4,7 +4,7 @@ date: "2019-09-02"
 order: 7
 ---
 
-[![](images/SourceLink-e1567978928628.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Forms/CustomValidation)
+[![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Forms/CustomValidation)
 
 Note that, as with the section on [EditContext, FieldIdentifiers, and FieldState](/forms/editcontext-fieldidentifiers-and-fieldstate/),
 this is an advanced topic.

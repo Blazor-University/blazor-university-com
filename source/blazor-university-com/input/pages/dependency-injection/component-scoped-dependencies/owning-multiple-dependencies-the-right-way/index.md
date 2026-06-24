@@ -19,7 +19,7 @@ it will give us access to its dependency container so we can resolve instances o
 
 ## Example
 
-[![](images/SourceLink-e1567978928628.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/DependencyInjection/OwningMultipleDependenciesTheRightWay)
+[![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/DependencyInjection/OwningMultipleDependenciesTheRightWay)
 
 First, create a new Blazor application. Then, as we have done before,
 we shall create some classes we can inject that will use a state member to keep track of how many instances

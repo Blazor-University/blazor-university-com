@@ -9,7 +9,7 @@ or in **wwwroot/index.html** for Web Assembly Blazor apps.
 
 Our JavaScript can then be invoked from Blazor by injecting the `IJSRuntime` service into our component.
 
-[![](images/SourceLink-e1567978928628.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/JavaScriptInterop/CallingJavaScriptFromDotNet)
+[![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/JavaScriptInterop/CallingJavaScriptFromDotNet)
 
 ```razor
 public interface IJSRuntime
@@ -44,7 +44,7 @@ So, to invoke `window.alert` we only need to specify `alert` as the identifier.
 
 ## Passing parameters
 
-[![](images/SourceLink-e1567978928628.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/JavaScriptInterop/PassingComplexObjectsToJavaScript)
+[![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/JavaScriptInterop/PassingComplexObjectsToJavaScript)
 
 The previous example passed the string "Hello world" as a parameter to the JavaScript `alert` function.
 It is also possible to pass complex objects to JavaScript.
@@ -107,7 +107,7 @@ If we view the browser's console output we should see the following when the but
 
 ## Accessing JavaScript return values
 
-[![](images/SourceLink-e1567978928628.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/JavaScriptInterop/AccessingJavaScriptReturnValues)
+[![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/JavaScriptInterop/AccessingJavaScriptReturnValues)
 
 So far we've only used the `IJSRuntime` extension method `InvokeVoidAsync`.
 If we want to receive the return value from a JavaScript function we need to use the `InvokeAsync<TValue>` method.
