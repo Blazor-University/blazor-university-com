@@ -1,24 +1,28 @@
 # blazor-university.com Modernization Plan — .NET 5 → .NET 10
 
+## Important rules
+1: Do not use en-dash or em-dash anywhere.
+2: Emulate my style of writing as much as possible.
+
 ---
 
 ## Phase 1 — Infrastructure
 
 ### 1.1 Update Statiq.Web package
-- **Current**: Statiq.Web v1.0.0-beta.60, Statiq.Docs v1.0.0-beta.17, Statiq.Lunr v1.0.0-beta.72
-- **In `source/blazor-university-com/blazor-university-com.csproj`** (lines 12–14)
+- **Current**: Statiq.Web v1.0.0-beta.49, Statiq.Docs v1.0.0-beta.3, Statiq.Lunr v1.0.0-beta.62
+- **In `source/blazor-university-com/blazor-university-com.csproj`** (lines 9–11)
 - **Task**: Check nuget.org for newer stable or beta releases compatible with `net10.0`
 - **Sub-tasks**:
-  - [ ] Run `dotnet list package --outdated` in `source/blazor-university-com/`
-  - [ ] Update to latest compatible Statiq.Web version
-  - [ ] Run `dotnet build` to verify no breaking changes in Statiq API
+  - [x] Run `dotnet list package --outdated` in `source/blazor-university-com/`
+  - [x] Updated: Statiq.Web `1.0.0-beta.49` → `1.0.0-beta.60`, Statiq.Docs `1.0.0-beta.3` → `1.0.0-beta.17`, Statiq.Lunr `1.0.0-beta.62` → `1.0.0-beta.72`
+  - [x] Run `dotnet build` to verify no breaking changes in Statiq API
 
 ### 1.2 Verify build succeeds on current codebase
 - **Task**: Establish a baseline — the build must pass before any content changes
 - **Sub-tasks**:
-  - [ ] Run `dotnet build` from repo root
-  - [ ] Capture and fix any pre-existing build errors (not related to content)
-  - [ ] Document any Statiq pipeline warnings for later cleanup
+  - [x] Run `dotnet build` from repo root
+  - [x] Capture and fix any pre-existing build errors (not related to content)
+  - [x] Document any Statiq pipeline warnings for later cleanup
 
 ### 1.3 Rename WordPress-style image filenames
 - **Scope**: All images across all markdown files under `source/blazor-university-com/input/pages/`
