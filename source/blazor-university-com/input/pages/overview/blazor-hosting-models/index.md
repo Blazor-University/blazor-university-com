@@ -4,18 +4,41 @@ date: "2019-11-26"
 order: 3
 ---
 
-Blazor currently has five hosting options: **Static Server Rendering**, **Interactive Server**, **Interactive WebAssembly**, **Interactive Auto**, and **Blazor Hybrid**. Server-side hosting was released in September 2019, WebAssembly was officially released in May 2020, Blazor Hybrid was introduced with .NET 6 in 2021, and .NET 8 unified the Blazor Web App template with multiple render modes.
+Blazor currently has five hosting options:
+
+- **Static Server Rendering**<br/>
+  Renders components to static HTML on the server with no SignalR circuit or client-side interactivity. Each navigation causes a full page load.
+  ```
+  dotnet new blazor --interactivity None -n MyApp
+  ```
+
+- **Interactive Server**<br/>
+  Runs .NET code on the server and communicates with the browser via a persistent SignalR connection. Enables rich interactivity with low client-side requirements.
+  ```
+  dotnet new blazor --interactivity Server -n MyApp
+  ```
+
+- **Interactive WebAssembly**<br/>
+  Downloads and runs .NET assemblies directly in the browser via WebAssembly. Can work offline and reduces server load, but has a slower initial load.
+  ```
+  dotnet new blazor --interactivity WebAssembly -n MyApp
+  ```
+
+- **Interactive Auto**<br/>
+  Starts with Interactive Server rendering, then downloads the .NET assemblies in the background and switches to WebAssembly mode on future visits.
+  ```
+  dotnet new blazor --interactivity Auto -n MyApp
+  ```
+
+- **Blazor Hybrid**<br/>
+  Hosts Blazor components inside a native .NET application (MAUI, WPF, WinForms) using the `BlazorWebView` control, with full access to native device APIs.
+  ```
+  dotnet new maui-blazor -n MyApp
+  ```
+
+Server-side hosting was released in September 2019, WebAssembly was officially released in May 2020, Blazor Hybrid was introduced with .NET 6 in 2021, and .NET 8 unified the Blazor Web App template with multiple render modes.
 
 Since .NET 8, the recommended approach is the **Blazor Web App** template, which supports all hosting models through render mode selection. Previously, developers had to choose between the `blazorwasm` and `blazorserver` project templates at creation time. Now the same project can mix multiple render modes on a per-component or per-page basis.
-
-### CLI
-
-```
-dotnet new blazor --interactivity None -n MyApp
-dotnet new blazor --interactivity Server -n MyApp
-dotnet new blazor --interactivity WebAssembly -n MyApp
-dotnet new blazor --interactivity Auto -n MyApp
-```
 
 ### Visual Studio
 
