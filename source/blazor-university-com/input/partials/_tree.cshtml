@@ -71,7 +71,7 @@
   {
     <div class="@GetMenuClasses()" data-doc-id=@Model.Id data-doc-title="@Model.GetTitle()">
       <div class="flex items-start cursor-pointer">
-        @await Html.PartialAsync("_tree-link.cshtml", (Model, hasChildren))
+        @await Html.PartialAsync("_tree-link.cshtml", (Model, hasChildren, hasChildren ? Model : null))
       </div>
     </div>
   }

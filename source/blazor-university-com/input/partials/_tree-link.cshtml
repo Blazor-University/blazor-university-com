@@ -1,11 +1,10 @@
 <!-- _tree-node.cshtml -->
 @{
-  // Model (IDocument theDocumentToLinkTo, bool hasChildren)
-  // The document for the sidebar link and whether it has children is passed in as the model
+  // Model (IDocument Document, bool HasChildren, IDocument? FirstChild)
   string? activeClass = !Model.HasChildren && Document.IdEquals(Model.Document) ? "active rounded-r-full pr-4 py-1" : null;
 }
 
-@inherits BaseStatiqRazorPage<(IDocument Document, bool HasChildren)>
+@inherits BaseStatiqRazorPage<(IDocument Document, bool HasChildren, IDocument? FirstChild)>
 
 @if (Model.HasChildren)
 {
@@ -17,7 +16,7 @@
 <div class="sidebar-nav-item px-2 @activeClass">
 @if (Model.HasChildren)
 {
-  <span>@Model.Document.GetTitle()</span>
+  <a href="@Context.GetLink(Model.FirstChild)">@Model.Document.GetTitle()</a>
 }
 else
 {

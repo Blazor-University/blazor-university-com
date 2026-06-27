@@ -87,8 +87,6 @@ function setEvents() {
 }
 
 function setClickEvents() {
-  const menuElements = document.querySelectorAll('.sidebar-nav-item');
-  menuElements.forEach(element => element.addEventListener('click', menuClick));
   const menuArrowElements = document.querySelectorAll('.menu-arrow');
   menuArrowElements.forEach(element => element.addEventListener('click', menuClick));
 }
