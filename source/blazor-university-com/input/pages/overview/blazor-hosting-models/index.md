@@ -36,6 +36,8 @@ Blazor currently has five hosting options:
   dotnet new maui-blazor -n MyApp
   ```
 
+The **WebAssembly** and **Auto** options add a `.Client` project to the solution that compiles to WebAssembly.
+
 Server-side hosting was released in September 2019, WebAssembly was officially released in May 2020, Blazor Hybrid was introduced with .NET 6 in 2021, and .NET 8 unified the Blazor Web App template with multiple render modes.
 
 Since .NET 8, the recommended approach is the **Blazor Web App** template, which supports all hosting models through render mode selection. Previously, developers had to choose between the `blazorwasm` and `blazorserver` project templates at creation time. Now the same project can mix multiple render modes on a per-component or per-page basis.
@@ -48,8 +50,6 @@ Create a new project, search for **Blazor**, and select the **Blazor Web App** t
 - **Server** - Interactive Server as the default render mode
 - **WebAssembly** - Interactive WebAssembly as the default render mode
 - **Auto** - Interactive Auto (Server first, WebAssembly after download)
-
-The **WebAssembly** and **Auto** options add a `.Client` project to the solution that compiles to WebAssembly.
 
 ### Render mode nesting rules
 
@@ -77,15 +77,11 @@ With code running on the client's machine it means the server load is significan
 
 ### Cons
 
-The `blazor.webassembly.js` file bootstraps the client application. It downloads all required .NET DLL assemblies, which makes the start-up time of the application slower than server-side the first time your app is run (DLLs are then cached by the browser, making subsequent start-up times much faster).
-
-Since .NET 8, Blazor WebAssembly supports multi-threading (experimental in .NET 8, refined in .NET 9/10) on browsers with SharedArrayBuffer support.
-
-Additionally, Blazor WebAssembly only works on newer browsers and is not search-engine friendly (unless we enable server-side pre-rendering).
+The `blazor.web.js` file bootstraps the client application. It downloads all required .NET DLL assemblies, which makes the start-up time of the application slower than server-side the first time your app is run (DLLs are then cached by the browser, making subsequent start-up times much faster).
 
 ## Static Server Rendering
 
-Static Server Rendering (also called Static SSR) renders components to static HTML on the server. There is no SignalR circuit, no `blazor.*.js` file downloaded by the browser, and no client-side interactivity. Each navigation or form submission causes a full page load from the server.
+Static Server Rendering (also called Static SSR) renders components to static HTML on the server. There is no SignalR circuit, no Blazor `.js` file downloaded by the browser, and no client-side interactivity. Each navigation or form submission causes a full page load from the server.
 
 Static SSR is the default when creating a Blazor Web App with `--interactivity None`, or when a component does not specify an interactive render mode.
 
@@ -111,7 +107,7 @@ Interactive Server pre-renders HTML content before it is sent to the client's br
 This makes it search-engine friendly, and there is no perceivable start-up time.
 
 Interactive Server apps will work on older browsers (such as Internet Explorer 11) as there is no requirement for WebAssembly,
-only HTML and JavaScript. As the code executes on the server, it is also possible to debug our .NET code in Visual Studio.
+only HTML and JavaScript.
 
 ### Cons
 
@@ -121,10 +117,10 @@ All memory and CPU usage comes at a cost to the server, for all users.
 It also means that the client is tied to the server that first served it, so doesn't work with load-balancing.
 
 Once the initial page has been rendered and sent to the browser,
-the `blazor.server.js` file hooks into any relevant user interaction events
+the `blazor.web.js` file hooks into any relevant user interaction events
 in the browser so it can mediate between the user and the server.
 For example, if a rendered element has an `@onclick` event registered,
-`blazor.server.js` will hook into its JavaScript `onclick` event and then use its SignalR connection
+`blazor.web.js` will hook into its JavaScript `onclick` event and then use its SignalR connection
 to send that event to the server and execute the relevant .NET code.
 
 ```razor
@@ -144,7 +140,7 @@ to send that event to the server and execute the relevant .NET code.
 }
 ```
 
-After the .NET code has finished, Blazor will re-render the components on the page and then send a delta package of HTML
+After the .NET code has finished, the server will re-render the components on the page and then send a delta package of HTML
 back to the client's browser so it can update its display without having to reload the entire page.
 
 **Note:** [Render trees](/components/render-trees/) are covered in depth later.
