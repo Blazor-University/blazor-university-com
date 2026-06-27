@@ -14,7 +14,7 @@ The application's default layout for all pages is specified in `/Components/Rout
 ```
 
 The name of the layout is strongly typed. Blazor will only syntax-highlight the code correctly
-if there is a layout with the name specified, the compiler will also fail if the identifier is incorrect.
+if there is a layout with the name specified. The compiler will also fail if the identifier is incorrect.
 
 **Note**: If you just wish to alter the appearance of the existing layout you should alter the
 `/Components/Layout/MainLayout.razor` file.
@@ -40,7 +40,7 @@ fix this, follow these steps:
 Now run the app again and note the layout is back.
 
 **WARNING**: Make sure you edit the file inside `/Components/Pages` and **not** the one directly inside
-`/Components`. `MainLayout.razor` is within the `/Components` folder (`/Components/Layouts`), so inherits
+`/Components`. `MainLayout.razor` is within the `/Components` folder (`/Components/Layout`), so inherits
 all code defined inside `/Components/_Imports.razor`, meaning it will have itself as a layout - which will
 cause an infinite loop and your app will hang.
 
