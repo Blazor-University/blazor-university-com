@@ -2,6 +2,8 @@ We are updating a very old Blazor tutorial website to cover the latest versions 
 
 The pages' contents are rooted in `source\blazor-university-com\input\pages\`.
 
+Pages are organized in nested subfolders. A page named `name-of-page` is found in `index.md` inside the folder `name-of-page`. For example, the page "What is WebAssembly?" lives at `source\blazor-university-com\input\pages\overview\what-is-webassembly\index.md`. When the user refers to a page by name, search for a folder with that name containing an `index.md`.
+
 Writing style notes:
 
 - Prefer prose over bullet lists. Use headings to structure content.
@@ -13,3 +15,4 @@ Writing style notes:
 - Keep headings short and descriptive. Use `##` and `###` only. Never use `#` in the body.
 - Use relative markdown links for internal references. Use standard `[text](url)` for external links.
 - Use the problem-solution pattern. Raise a question, then answer it through code and explanation.
+- Place `.` after `)` when a sentence ends with a closing parenthesis.

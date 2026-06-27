@@ -18,59 +18,6 @@ Just like .NET, Wasm can be generated from higher languages such as C#.
 
 Blazor does not require .NET to be installed on the client in order to run through WebAssembly.
 
-Supported browsers
+WebAssembly is supported in all modern browsers. Legacy Internet Explorer (not the new Edge browser) and Opera Mini are the only browsers that do not support it. (Data from [CanIUse.com](https://caniuse.com/wasm).)
 
-<table class="">
-  <tbody>
-    <tr>
-      <td><strong>Browser</strong></td>
-      <td><strong>From version</strong></td>
-    </tr>
-    <tr>
-      <td>Android browser</td>
-      <td>67</td>
-    </tr>
-    <tr>
-      <td>Chrome</td>
-      <td>57</td>
-    </tr>
-    <tr>
-      <td>Chrome for Android</td>
-      <td>74</td>
-    </tr>
-    <tr>
-      <td>Edge</td>
-      <td>16</td>
-    </tr>
-    <tr>
-      <td>Firefox</td>
-      <td>52</td>
-    </tr>
-    <tr>
-      <td>Firefox for Android</td>
-      <td>66</td>
-    </tr>
-    <tr>
-      <td>iOS Safari</td>
-      <td>11</td>
-    </tr>
-    <tr>
-      <td>Opera</td>
-      <td>44</td>
-    </tr>
-    <tr>
-      <td>Opera mobile</td>
-      <td>46</td>
-    </tr>
-    <tr>
-      <td>Safari</td>
-      <td>11</td>
-    </tr>
-    <tr>
-      <td>Samsung Internet</td>
-      <td>7.2</td>
-    </tr>
-  </tbody>
-</table>
-
-Data from CanIUse.com ([https://caniuse.com/#search=wasm](https://caniuse.com/#search=wasm))
+WebAssembly was announced in 2015 and reached version 1.0 in 2019, becoming a W3C recommendation in December of that year. It was created by engineers from Google, Mozilla, Microsoft, and Apple to provide a portable, secure, and fast compilation target for languages such as C, C++, Rust, and (through Blazor) C#. In 2024, Wasm 2.0 was ratified as a W3C recommendation. WebAssembly has since expanded beyond the browser into server-side runtimes (WASI) and edge computing platforms.
