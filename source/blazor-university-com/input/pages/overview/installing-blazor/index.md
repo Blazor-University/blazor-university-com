@@ -10,7 +10,11 @@ When installing, ensure you select the option **ASP.NET and web development** un
 
 ![](images/InstallAspWorkload.jpg)
 
-For native applications hosted on **Android, iOS, macOS, Windows, and tvOS** using a Web UI interface, also select **.NET Multi-platform App UI development** in the Visual Studio installer, or install the MAUI workload via the CLI:
+For native applications hosted on **Android, iOS, macOS, Windows, and tvOS** using a Web UI interface, also select **.NET Multi-platform App UI development** in the Visual Studio installer.
+
+![](images/InstallMauiWorkload.jpg)
+
+Or install the MAUI workload via the CLI:
 
 ```
 dotnet workload install maui
