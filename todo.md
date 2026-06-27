@@ -257,7 +257,15 @@
   - [ ] Update DOM root element description for current Blazor Web App model
   - [ ] Differentiate between Server rendering (no `<app>` element, uses `Components/App.razor`) and WASM (`wwwroot/index.html`)
 
-### 2.8 Component Libraries section
+### 2.8 Update `blazor.server.js` and `blazor.webassembly.js` references to `blazor.web.js`
+- Since .NET 8, the separate `blazor.server.js` and `blazor.webassembly.js` files were replaced by a single `blazor.web.js`
+- **Scope**: All markdown files and source code examples
+- **Sub-tasks**:
+  - [ ] Search for all occurrences of `blazor.server.js` and `blazor.webassembly.js`
+  - [ ] Replace with `blazor.web.js`
+  - [ ] Verify code examples and prose are consistent
+
+### 2.9 Component Libraries section
 
 #### 2.8.1 `component-libraries/index.md`
 - **Lines 41–47**: Separate guidance for "Client-side Blazor" vs "Server-side Blazor" — since .NET 8, Blazor Web Apps unify both. Script referencing should be explained for the unified model
