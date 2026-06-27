@@ -28,3 +28,4 @@ Or to create a Blazor Server app via the CLI:
 ```
 dotnet new blazor --interactivity Server -n MyFirstBlazorApp
 ```
+

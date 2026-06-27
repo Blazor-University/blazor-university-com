@@ -7,7 +7,7 @@ order: 1
 [![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/JavaScriptInterop/UpdatingDocumentTitle)
 
 In the section [Creating a Blazor layout](/layouts/creating-a-blazor-layout/)
-it we saw how a Blazor app lives within a HTML (or cshtml) document,
+it we saw how a Blazor app lives within an HTML (or cshtml) document,
 and only has control over the content within the main application element.
 
 ![](images/Layout.png)

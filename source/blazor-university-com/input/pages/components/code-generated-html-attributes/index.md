@@ -59,7 +59,7 @@ Razor will only execute C# code in the following places:
 2. When determining a value to assign into an element's attribute, for example `<img src=@GetTheImageForTheUrl() />`.
 3. Within the `@code` section.
 
-The technique we need to employ to generate one or more attributes + values for a HTML element is called "Attribute splatting".
+The technique we need to employ to generate one or more attributes + values for an HTML element is called "Attribute splatting".
 Attribute splatting involves assigning a `Dictionary<string, object>` to an attribute with the special name `@attributes`.
 
 ```razor
