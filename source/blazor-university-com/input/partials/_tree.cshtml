@@ -52,7 +52,7 @@
   {
     if (showInSidebar && !hasRedirect)
     {
-      string overviewActiveClass = Document.IdEquals(Model) ? "active rounded-r-full pr-4 py-1" : null;
+      string overviewActiveClass = Document.IdEquals(Model) || (Document.Destination.FullPath == "index.html" && Model.Destination.FullPath == "overview/index.html") ? "active rounded-r-full pr-4 py-1" : null;
       <div class="menu dark:text-gray-300 ml-6 font-light flex items-start cursor-pointer">
         <div class="flex items-start cursor-pointer">
           <div class="sidebar-nav-item px-2 @overviewActiveClass">
