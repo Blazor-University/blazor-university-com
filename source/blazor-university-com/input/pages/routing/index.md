@@ -1,7 +1,7 @@
 ---
 title: "Routing"
 date: "2019-04-27"
-order: 5
+order: 6
 ---
 
 As with a standard ASP.NET MVC, Blazor routing is a technique for inspecting the browser's URL and matching it up to a page to render.

@@ -1,7 +1,7 @@
 ---
 title: "Components"
 date: "2019-04-27"
-order: 3
+order: 4
 ---
 
 All rendered Blazor views descend from the `ComponentBase` class, this includes Layouts, Pages, and also Components.

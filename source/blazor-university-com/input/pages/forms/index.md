@@ -1,7 +1,7 @@
 ---
 title: "Forms"
 date: "2019-04-27"
-order: 6
+order: 7
 ---
 
 [![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Forms/BasicForm)

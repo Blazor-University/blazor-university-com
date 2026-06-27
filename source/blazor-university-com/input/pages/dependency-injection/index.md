@@ -1,7 +1,7 @@
 ---
 title: "Dependency injection"
 date: "2019-04-27"
-order: 9
+order: 10
 ---
 
 ## Overview of dependency injection

@@ -1,7 +1,7 @@
 ---
 title: "Templating components with RenderFragments"
 date: "2019-04-27"
-order: 4
+order: 5
 ---
 
 [![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/TemplatedComponents/TemplatedComponents)

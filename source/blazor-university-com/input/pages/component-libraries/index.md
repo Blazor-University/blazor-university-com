@@ -1,7 +1,7 @@
 ---
 title: "Component libraries"
 date: "2019-07-16"
-order: 7
+order: 8
 ---
 
 Component libraries enable us to package components and pages into a single re-usable project, along with any supporting files such as CSS files, JavaScript, and images.

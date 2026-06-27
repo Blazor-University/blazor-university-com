@@ -1,7 +1,7 @@
 ---
 title: "JavaScript interop"
 date: "2019-04-27"
-order: 8
+order: 9
 ---
 
 At present, there are a number of features WebAssembly does not support, therefore Blazor does not supply direct access to them. These are typically browser API features such as:
