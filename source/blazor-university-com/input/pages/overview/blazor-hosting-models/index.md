@@ -106,8 +106,7 @@ Static SSR is the default when creating a Blazor Web App with `--interactivity N
 Interactive Server pre-renders HTML content before it is sent to the client's browser.
 This makes it search-engine friendly, and there is no perceivable start-up time.
 
-Interactive Server apps will work on older browsers (such as Internet Explorer 11) as there is no requirement for WebAssembly,
-only HTML and JavaScript.
+
 
 ### Cons
 
