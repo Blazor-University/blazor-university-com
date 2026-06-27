@@ -2,8 +2,7 @@
 @{
   // Model (IDocument theDocumentToLinkTo, bool hasChildren)
   // The document for the sidebar link and whether it has children is passed in as the model
-  string? activeClass = Document.IdEquals(Model.Document) ? "active": null;
-  // string? hasChildrenClass = @Model.HasChildren ? "has-children" : null;
+  string? activeClass = !Model.HasChildren && Document.IdEquals(Model.Document) ? "active rounded-r-full pr-4 py-1" : null;
 }
 
 @inherits BaseStatiqRazorPage<(IDocument Document, bool HasChildren)>
@@ -15,6 +14,13 @@
   </div>
 }
 
-<div class="sidebar-nav-item px-2 @(Document.IdEquals(Model.Document) ? "active rounded-r-full pr-4 py-1" : null)">
+<div class="sidebar-nav-item px-2 @activeClass">
+@if (Model.HasChildren)
+{
+  <span>@Model.Document.GetTitle()</span>
+}
+else
+{
   @Html.DocumentLink(Model.Document)
+}
 </div>

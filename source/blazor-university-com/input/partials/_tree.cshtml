@@ -50,6 +50,17 @@
 
   async Task TraverseChildren()
   {
+    if (showInSidebar && !hasRedirect)
+    {
+      string overviewActiveClass = Document.IdEquals(Model) ? "active rounded-r-full pr-4 py-1" : null;
+      <div class="menu dark:text-gray-300 ml-6 font-light flex items-start cursor-pointer">
+        <div class="flex items-start cursor-pointer">
+          <div class="sidebar-nav-item px-2 @overviewActiveClass">
+            <a href="@Context.GetLink(Model)">Overview</a>
+          </div>
+        </div>
+      </div>
+    }
     @foreach (IDocument aChild in children)
     {
       @await Html.PartialAsync("_tree.cshtml", aChild);
