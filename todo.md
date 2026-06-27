@@ -4,6 +4,7 @@
 1: Do not use en-dash or em-dash anywhere.
 2: Emulate my style of writing as much as possible.
 3: Do not update copyright year.
+4: Always use `/` as path separator in all file references, never `\`.
 
 ---
 
@@ -253,9 +254,11 @@
 
 #### 2.7.1 `layouts/creating-a-blazor-layout/index.md`
 - **Line 31**: "within the `<app>` element in a default Blazor application" — since .NET 8, Blazor Web Apps define the root component in `App.razor` instead. The `wwwroot/index.html` with `<app>` element is only for WASM standalone
+- **Line 68**: `Layout.png` shows the old generated HTML output — needs to be updated to reflect modern Blazor rendered output
 - **Sub-tasks**:
   - [ ] Update DOM root element description for current Blazor Web App model
   - [ ] Differentiate between Server rendering (no `<app>` element, uses `Components/App.razor`) and WASM (`wwwroot/index.html`)
+  - [ ] Update `Layout.png` image to show current Blazor's generated HTML
 
 ### 2.8 Update `blazor.server.js` and `blazor.webassembly.js` references to `blazor.web.js`
 - Since .NET 8, the separate `blazor.server.js` and `blazor.webassembly.js` files were replaced by a single `blazor.web.js`
@@ -500,13 +503,17 @@
 
 ## Phase 5 — Verification
 
-### 5.1 Verify all GitHub source code links
+### 5.1 Update and verify all GitHub source code links
 - Pattern: `https://github.com/mrpmorris/blazor-university/tree/master/src/...`
 - Found in most articles as an image link: `[![](images/SourceLink.png)](...)`
+- **Task**: The companion repo source code is for .NET 5 era and needs updating to .NET 10
 - **Sub-tasks**:
-  - [ ] Collect all unique GitHub URLs from all markdown files
-  - [ ] Verify each resolves (they point to `master` branch, which should still work)
-  - [ ] Create a tracking issue if the companion repo also needs updating to .NET 10
+  - [ ] Collect all unique GitHub URLs from all markdown files (52 found across source pages)
+  - [ ] Decide on strategy: update companion repo code to .NET 10 and update links, or point links to a new branch (e.g., `net10`)
+  - [ ] Update companion repo source code projects to net10.0 TFM and modern Blazor patterns
+  - [ ] Update all GitHub source links from `tree/master` to the correct branch/tag (e.g., `tree/net10`)
+  - [ ] Verify each link resolves after updating
+  - [ ] Replace all `[![](images/SourceLink.png)](...)` image links with a clean text link format (e.g., `[View source code on GitHub](...)`)
 
 ### 5.2 Run `dotnet build` and fix Statiq pipeline errors
 - **Sub-tasks**:

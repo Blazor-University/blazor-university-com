@@ -7,7 +7,12 @@ order: 1
 [![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Layouts/CreatingALayout)
 
 Any content you intend to act as a layout template for pages must descend from the `LayoutComponentBase` class.
-To indicate where you want the content of your page to appear you simply output the contents of the `Body` property.
+To indicate a base component you add the following to the top of the `.razor` file.
+```razor
+@using <namespace of base class if necessary>
+@inherits <name of base class>
+```
+To indicate where you want the content of your page to appear you simply output the contents of `Body`.
 
 ```razor
 @inherits LayoutComponentBase
@@ -26,10 +31,3 @@ To indicate where you want the content of your page to appear you simply output 
   </footer>
 </div>
 ```
-
-Note that this is not the entire HTML page.
-Blazor layouts work only within the part of the HTML that Blazor is defined within the `wwwroot\index.html` page,
-in a default Blazor application this is everything within the `<app>` element.
-It isn't currently possible to alter attributes of HTML elements outside of this scope except by use of [JavaScript Interop](/javascript-interop/).
-
-[![](images/Layout.png)](images/Layout.png)
