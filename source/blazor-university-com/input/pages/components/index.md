@@ -21,7 +21,7 @@ To re-enable this feature, edit your `csproj` file and add the following:
 </PropertyGroup>
 ```
 
-```razor
+```csharp
 namespace MyFirstBlazorApp.Client.Pages
 {
     [Microsoft.AspNetCore.Components.RouteAttribute("/counter")]
@@ -59,6 +59,6 @@ Welcome to your new app.
 
 When embedding a page within another page, Blazor treats it as a component.
 
-If you have added an explicit [layout](../layouts/) you will also see `[Microsoft.AspNetCore.Components.LayoutAttribute(typeof(MainLayout))]` identifies which layout to use.
+If you have added an explicit [Layout](../layouts/) you will also see the attribute `[Microsoft.AspNetCore.Components.LayoutAttribute(typeof(MainLayout))]`, which identifies which layout to use.
 
-The `LayoutAttribute` on the embedded page is ignored because Blazor already has an explicit container - the parent component that contains it.
+When a page is embedded within another page like this, the `LayoutAttribute` on the embedded page is ignored because Blazor already has an explicit container - the parent component that contains it.
