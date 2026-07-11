@@ -6,10 +6,10 @@ order: 2
 
 [![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Components/OneWayBinding)
 
-At this point we have a component displaying inside a page, but the content is static.
+At this point we have a component displaying inside a page, but the content is constant, and non-interactive.
 What we really want is to be able to output content dynamically.
 
-If we alter the contents of **/Components/MyFirstComponent.razor** we can introduce a private member and
+If we alter the contents of MyFirstComponent.razor** we can introduce a private member and
 output the value of that member using the `@` symbol.
 
 ```razor
@@ -41,7 +41,7 @@ then change the private member to a public property.
 }
 ```
 
-Edit the Counter page, add a MySecondComponent component, and set its CurrentCounterValue, like so:
+Edit the Counter page, add a `MySecondComponent` component, and set its `CurrentCounterValue`, like so:
 
 ```razor
 <MySecondComponent CurrentCounterValue=@currentCount/>
@@ -49,9 +49,9 @@ Edit the Counter page, add a MySecondComponent component, and set its CurrentCou
 
 Running the app and navigating to the Counter page will now show an error in the browser's console window.
 
->WASM: System.InvalidOperationException: Object of type 'OneWayBinding.Client.Components.MySecondComponent'
+> InvalidOperationException: Object of type 'OneWayBinding.Client.Components.MySecondComponent'
 has a property matching the name 'CurrentCounterValue',
-but it does not have `[ParameterAttribute]` or `[CascadingParameterAttribute]` applied.
+but it does not have [Parameter], [CascadingParameter], or any other parameter-supplying attribute.
 
 This tells us clearly what is missing.
 To add a parameter to our component we must decorate our component's property with a `[Parameter]` attribute.
@@ -68,8 +68,8 @@ To add a parameter to our component we must decorate our component's property wi
 ```
 
 This informs Blazor we want a parameter on our component that is settable via what looks like an HTML attribute.
-Whenever the parent component is rerendered, Blazor will also rerender any child component it provides parameter values to.
-This ensures the child component is rerendered to represent any possible change
+
+Whenever the parent component is rerendered, Blazor will also rerender any child component it provides parameter values to. This ensures the child component is rerendered to represent any possible change
 in the state passed down to the component via a `[Parameter]` decorated property.
 
 If we run our application again and navigate to the Counter page, we'll see that whenever the `currentCount` in the
