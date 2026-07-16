@@ -8,10 +8,10 @@ order: 3
 
 > Note that this section does not cover Razor mark-up in general.
 > It will not cover things such as conditional output, loops, and so on.
-> That subject and is covered quite extensively in other places, both on the web and in books.
+> That subject and is covered quite extensively in other places, both on the Web and in books.
 
 When consuming a component we can pass it information as parameters.
-These parameters can be simple types such as integers, strings, booleans -
+These parameters can be simple types such as integers, strings, and booleans -
 or they can be complex types such as a `Func<T>`, actions, or instances of complex objects.
 Unlike HTML attributes, we are not limited to values that can be represented as a value in a plain HTML file.
 
@@ -112,17 +112,17 @@ when rendering a component what you see in the HTML is literally what you wrote 
 
 ## Expressions
 
-When we need to render HTML that contains dynamic values, rather than fixed literal values, we need to use expressions.
-We indicate to Blazor that we are using an expression by prepending an `@` symbol before the value we assign.
+When we need to render HTML that contains dynamic values rather than fixed literal values, we need to use expressions.
+We indicate to Blazor that we are using an expression by prepending an `@` symbol on the value we assign.
 Blazor will then try to interpret the text after the `@` as a valid piece of C# code,
 such as a member name, or a method invocation.
 
 Given a code section in our component that defines the following members and values:
 
-```razor
-int InputSize = 8;
-bool HeaderVisible = true;
-string HeaderText = "Value of variable";
+```csharp
+public int InputSize { get; set; } = 8;
+public bool HeaderVisible { get; set; } = true;
+public string HeaderText { get; set; } = "Value of variable";
 
 private int DoubleInputSize()
 {
@@ -130,57 +130,22 @@ private int DoubleInputSize()
 }
 ```
 
-We would expect to see the following:
+Then the following razor/html snippets are equivalent:
 
-<table>
-  <tbody>
-    <tr>
-      <td><strong>Razor view</strong></td>
-      <td><strong>HTML</strong></td>
-    </tr>
-    <tr>
-      <td>&lt;input value=<code>@InputSize</code>/&gt;</td>
-      <td>&lt;input value="8"/&gt;</td>
-    </tr>
-    <tr>
-      <td>&lt;input value=<code>@DoubleInputSize()</code>/&gt;</td>
-      <td>&lt;input value="16"/&gt;</td>
-    </tr>
-    <tr>
-      <td>
-        &lt;MyHeader Text=<code>@HeaderText</code>
-        Visible=<code>@HeaderVisible</code>/&gt;
-      </td>
-      <td>&lt;h1&gt;Value of variable&lt;/h1&gt;</td>
-    </tr>
-  </tbody>
-</table>
+| Razor | HTML |
+|-------|------|
+| &lt;input value=@InputSize/> | &lt;input value="8"/> |
+| &lt;input value=@DoubleInputSize()/> | &lt;input value="16"/> |
+| &lt;MyHeader Text=@HeaderText Visible=@HeaderVisible/> | &lt;h1>Value of variable&lt;/h1> |
 
 We can even pass more complex expressions, such as string interpolation and/or calculated values,
 by enclosing the expression text in brackets.
 
-<table>
-  <tbody>
-    <tr>
-      <td><strong>Razor view</strong></td>
-      <td><strong>HTML</strong></td>
-    </tr>
-    <tr>
-      <td>&lt;input size=<code>@(InputSize * 3)</code> /&gt;</td>
-      <td>&lt;input size="24"/&gt;</td>
-    </tr>
-    <tr>
-      <td>&lt;input value=<code>@($"Size is {InputSize}")</code> /&gt;</td>
-      <td>&lt;input value="Size is 8"/&gt;</td>
-    </tr>
-    <tr>
-      <td>
-        &lt;input value=<code>@($"Size is {DoubleInputSize()}")</code> /&gt;
-      </td>
-      <td>&lt;input value="Size is 16"/&gt;</td>
-    </tr>
-  </tbody>
-</table>
+| Razor view | HTML |
+|------------|------|
+| &lt;input size=@(InputSize * 3) /> | &lt;input size="24"/> |
+| &lt;input value=@($"Size is {InputSize}") /> | &lt;input value="Size is 8"/> |
+| &lt;input value=@($"Size is {DoubleInputSize()}") /> | &lt;input value="Size is 16"/> |
 
 ### Expressions that evaluate to complex types
 
@@ -193,9 +158,9 @@ Take the following `Person` class as an example:
 ```cs
 public class Person
 {
-  public string Salutation { get; set; }
-  public string GivenName { get; set; }
-  public string FamilyName { get; set; }
+  public string Salutation { get; set; } = "Mr";
+  public string GivenName { get; set; } = "Bob";
+  public string FamilyName { get; set; } = "Monkhouse";
 
   public override string ToString() => $"{Salutation} {GivenName} {FamilyName}";
 }
@@ -262,10 +227,13 @@ Create a new component named PersonView and enter the following mark-up:
 </div>
 @code
 {
-  [Parameter]
+  [EditorRequired, Parameter]
   public Person Person { get; set; }
 }
 ```
+
+*NOTE:* `[EditorRequired]` tells the compiler that when this component is used the consumer
+**must** specify a value for this parameter, otherwise a compiler warning will be output.
 
 - **Lines 14-15**  
     Declares a property named `Person` which is of type `Person`,
@@ -273,7 +241,7 @@ Create a new component named PersonView and enter the following mark-up:
 - **Lines 3, 7, and 10**  
     If `Person` is not null, the Salutation, GivenName, and FamilyName are displayed.
 
-Finally, change our view so that it passes **MyPerson** to our new `PersonView` component:
+Finally, change our view so that it passes `MyPerson` to our new `PersonView` component:
 
 ```razor
 <div class="row">
@@ -284,7 +252,7 @@ Finally, change our view so that it passes **MyPerson** to our new `PersonView` 
 </div>
 ```
 
-When running the application, we can now see the result of **MyPerson** being passed to an HTML attribute,
+When running the application, we can now see the result of `MyPerson` being passed to an HTML attribute,
 and also to another Blazor component as an instance of `Person`.
 
 ![](images/LED-ComplexTypes.png)
@@ -292,64 +260,29 @@ and also to another Blazor component as an instance of `Person`.
 ### Inferred expressions
 
 When passing a literal value to the parameter of a consumed component,
-Blazor will need to ensure the value being passes is compatible with the target.
+Blazor will need to ensure the value being passed is compatible with the target.
 For example, given the component **MyHeader** that has a boolean parameter **Visible**, the following combinations are valid.
 
-<table>
-  <tbody>
-    <tr>
-      <td>&lt;MyComponent Visible=<code>@true</code>/&gt;</td>
-      <td>An expression evaluating to <code>true</code>.</td>
-    </tr>
-    <tr>
-      <td>&lt;MyComponent Visible="<code>@true</code>"/&gt;</td>
-      <td>An expression in quotes.</td>
-    </tr>
-    <tr>
-      <td>&lt;MyComponent Visible="<code>true</code>"/&gt;</td>
-      <td>
-        A literal of type <code>string</code>, inferred as the expression
-        <code>@true</code>.
-      </td>
-    </tr>
-    <tr>
-      <td>&lt;MyComponent Visible=<code>true</code>/&gt;</td>
-      <td>
-        An unquoted literal string, again inferred to be the expression
-        <code>@true</code>.
-      </td>
-    </tr>
-  </tbody>
-</table>
+| Razor | Meaning |
+|-------|---------|
+| &lt;MyComponent Visible=@true/> | An expression evaluating to `true`. |
+| &lt;MyComponent Visible="@true"/> | An expression in quotes. |
+| &lt;MyComponent Visible="true"/> | A literal of type `string`, inferred as expression `@true`. |
+| &lt;MyComponent Visible=true/> | An unquoted literal string, again inferred to be expression `@true`. |
 
-The first row of this table is an explicit expression, `true`.
-The other rows are in fact attempting to set a `boolean` parameter to a `string` value.
+The first two rows of this table pass an explicit expression, `true`.
+The last two rows are in fact attempting to set a `boolean` parameter to a `string` value.
 In these cases, Blazor will infer our intention and pass a `boolean` value instead.
 
-Except in the case where the property being assigned is a string,
+**Except** in the case where the property being assigned is a string.
 Blazor will unquote values that are passed to other components as parameters and assume they are expressions.
 The following table shows mark-up and how that mark-up is transpiled into C#.
 
-<table>
-  <tbody>
-    <tr>
-      <td><strong>Mark-up</strong></td>
-      <td><strong>C#</strong></td>
-    </tr>
-    <tr>
-      <td>&lt;MyComponent Visible="<code>true</code>"/&gt;</td>
-      <td>Visible = true</td>
-    </tr>
-    <tr>
-      <td>&lt;MyComponent Visible=<code>@HeaderVisible</code>/&gt;</td>
-      <td>Visible = HeaderVisible</td>
-    </tr>
-    <tr>
-      <td>&lt;MyComponent Visible="<code>HeaderVisible</code>"/&gt;</td>
-      <td>Visible = HeaderVisible</td>
-    </tr>
-  </tbody>
-</table>
+| Mark-up | C# |
+|---------|----|
+| &lt;MyComponent Visible="true"/> | Visible = true |
+| &lt;MyComponent Visible=@HeaderVisible/> | Visible = HeaderVisible |
+| &lt;MyComponent Visible="HeaderVisible"/> | Visible = HeaderVisible |
 
 In cases where the property being assigned is a string, Blazor will assume values assigned without `@` are literal values.
 
@@ -357,35 +290,12 @@ Given that our consuming component has a member `string HeaderText = "Value of v
 and the embedded component has a `[Parameter]` decorated property `public string Text { get; set; }`
 the following table shows mark-up and how it is transpiled into C#.
 
-<table>
-  <tbody>
-    <tr>
-      <td><strong>Mark-up</strong></td>
-      <td><strong>C#</strong></td>
-      <td><strong>Value</strong></td>
-    </tr>
-    <tr>
-      <td>&lt;MyComponent Text="Hello"/&gt;</td>
-      <td>Text = "Hello"</td>
-      <td>"Hello"</td>
-    </tr>
-    <tr>
-      <td>&lt;MyComponent Text=@HeaderText/&gt;</td>
-      <td>Text = HeaderText</td>
-      <td>"Value of variable"</td>
-    </tr>
-    <tr>
-      <td>&lt;MyComponent Text="HeaderText"/&gt;</td>
-      <td>Text = "HeaderText"</td>
-      <td>"HeaderText"</td>
-    </tr>
-    <tr>
-      <td>&lt;MyComponent Text=HeaderText/&gt;</td>
-      <td>Text = "HeaderText"</td>
-      <td>"HeaderText"</td>
-    </tr>
-  </tbody>
-</table>
+| Mark-up | C# | Value |
+|---------|----|-------|
+| &lt;MyComponent Text="Hello"/> | Text = "Hello" | Literal text "Hello" |
+| &lt;MyComponent Text=@HeaderText/> | Text = HeaderText | Value of variable named `HeaderText` |
+| &lt;MyComponent Text="HeaderText"/> | Text = "HeaderText" | Literal text HeaderText |
+| &lt;MyComponent Text=HeaderText/> | Text = "HeaderText" | Literal text HeaderText |
 
 - The first example is unambiguous, there is no member in our consuming component named **Hello**,
   so the compiler knows we intend to set **Text** to a literal string.
