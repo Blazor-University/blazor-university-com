@@ -14,11 +14,11 @@ Blazor will decorate the generated target class with a `LayoutAttribute`.
 public class AdminUsers : Microsoft.AspNetCore.Components.ComponentBase { }
 ```
 
-**Note**: The generated code exists in-memory via the Razor source generator. If you want to inspect it, set `<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>` in your project file; the generated files will then appear under `obj/Debug/net10.0/generated/`.
+_Note: The generated code exists in-memory via the Razor source generator. If you want to inspect it, set `<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>` in your project file; the generated files will then appear under `obj/Debug/net{version number}/generated/`._
 
 Blazor will honor a `LayoutAttribute` on any `ComponentBase` descendant.
 Not only do pages descend from this class,
-but the `LayoutComponentBase` does too! This means that a custom layout can also have its own parent layout.
+but the `LayoutComponentBase` does too! This means that a custom layout can also have its own parent layout!
 
 Next we'll create a custom layout for the admin section.
 

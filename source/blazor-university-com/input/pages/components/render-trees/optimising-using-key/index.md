@@ -85,7 +85,7 @@ but now has the following changes.
 
 - **Line 46**  
     A new class named **Person** is defined.  
-    **_Note_**: This new class would normally be in its own source file, but is placed in-line in this example for simplicity.
+    _Note: This new class would normally be in its own source file, but is placed in-line in this example for simplicity._
 - **Line 32**  
     Defines a private member named **People** and adds two items to display in the view.
 - **Line 40**  

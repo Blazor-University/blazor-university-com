@@ -26,7 +26,7 @@ This is achieved by creating a view that acts as an HTML wrapper around the curr
 </footer>
 ```
 
-In modern Blazor projects, the default layout is wired up in `Components/Routes.razor` via `<RouteView DefaultLayout="typeof(MainLayout)" />`.
+_Note: In modern Blazor projects, the default layout is wired up in `Components/Routes.razor` via `<RouteView DefaultLayout="typeof(MainLayout)" />`._
 
 ## Pages that use the layout
 Individual pages can then optionally specify a single layout in which it would like its content to be wrapped.

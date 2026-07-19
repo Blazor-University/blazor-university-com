@@ -13,9 +13,9 @@ To indicate a base component you add the following to the top of the `.razor` fi
 @inherits <name of base class>
 ```
 
-In the default Blazor project template, the application layout lives at `Components/Layout/MainLayout.razor`.
+_Note: In the default Blazor project template, the application layout lives at `Components/Layout/MainLayout.razor`._
 
-To indicate where you want the content of your page to appear you simply output the contents of `Body`. `@Body` is a `RenderFragment` provided by the `LayoutComponentBase` base class; it is replaced at runtime with the content of the page being rendered.
+To indicate where you want the content of your page to appear you simply output the contents of the `Body` property. `@Body` is a `RenderFragment` provided by the `LayoutComponentBase` base class; it is replaced at runtime with the content of the page being rendered.
 
 ```razor
 @inherits LayoutComponentBase
@@ -34,5 +34,3 @@ To indicate where you want the content of your page to appear you simply output 
   </footer>
 </div>
 ```
-
-Layouts often include a `<HeadOutlet />` component to render elements placed via `<PageTitle>` or `<HeadContent>` in individual pages. A typical layout template also references a companion scoped CSS file. For example, if the layout is `MainLayout.razor`, its scoped styles are placed in `MainLayout.razor.css` and are automatically applied to the layout's HTML output.

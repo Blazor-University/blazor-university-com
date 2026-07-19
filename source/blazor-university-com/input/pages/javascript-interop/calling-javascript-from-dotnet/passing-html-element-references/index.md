@@ -164,7 +164,7 @@ result has been rendered to HTML in the browser.
 This solution results in an error `element.focus is not a function`,
 because the `ElementReference` was invalid at the point its value was passed to our AutoFocus component.
 
-> **_Note_**: Do not use element references too soon!
+> _Note: Do not use element references too soon!_
 
 As we saw in the [Render Trees](/components/render-trees/) section,
 during its rendering phase Blazor does not update the browser DOM at all.
@@ -284,7 +284,7 @@ Enter your name
 }
 ```
 
-> **_Note_:** There are plans for a future Blazor to automatically create the `ElementReference` member.
+> _Note: There are plans for a future Blazor to automatically create the `ElementReference` member._
 
 ## Static SSR and prerendering caveat
 

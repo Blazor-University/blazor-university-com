@@ -16,8 +16,8 @@ The application's default layout for all pages is specified in `/Components/Rout
 The name of the layout is strongly typed. Blazor will only syntax-highlight the code correctly
 if there is a layout with the name specified. The compiler will also fail if the identifier is incorrect.
 
-**Note**: If you just wish to alter the appearance of the existing layout you should alter the
-`/Components/Layout/MainLayout.razor` file.
+_Note: If you just wish to alter the appearance of the existing layout you should alter the
+`/Components/Layout/MainLayout.razor` file._
 
 ## Using _Imports.razor
 `_Imports.razor` is a convention used by Blazor to specify defaults. These can be `@using` declarations for
@@ -39,8 +39,7 @@ fix this, follow these steps:
 
 Now run the app again and note the layout is back.
 
-**WARNING**: Make sure you edit the file inside `/Components/Pages` and **not** the one directly inside
-`/Components`. `MainLayout.razor` is within the `/Components` folder (`/Components/Layout`), so inherits
+**WARNING**: Make sure you edit the `_Imports.razor` file inside `/Components/Pages` and **not** the one directly inside `/Components`. The reason is `/Components/Layout/MainLayout.razor` will inherit
 all code defined inside `/Components/_Imports.razor`, meaning it will have itself as a layout. Blazor
 detects circular layout references and throws an `InvalidOperationException` at runtime rather than
 hanging.
@@ -53,8 +52,9 @@ If your app has separate areas to it, for example an "Admin" area, it is possibl
 default layout to use for all pages within that area simply by grouping them within their own
 child-folder that has its own `_Imports.razor` file.
 
-We have seen this previously in `Using _Imports.razor`. During Razor compilation, Blazor walks up the folder
-hierarchy from the page's folder looking for `_Imports.razor` files. When found, their contents are merged
+We have seen this previously in the `Using _Imports.razor` section earlier.
+During Razor compilation, Blazor walks up the folder hierarchy from the page's folder looking
+for `_Imports.razor` files. When found, their contents are merged
 into the top of the generated Razor class. This walk continues to the parent folder, then the grandparent,
 and so on.
 
@@ -73,7 +73,7 @@ create shortly.
 1. Locate the last `<div>` element, it should contain a `<NavLink>` component.
 1. Duplicate the `<div>` element.
 1. Change the NavLink's `href` attribute to `"admin/users"`.
-1. Change the text of the link to `Admin users`.
+1. Change the text inside the `<NavLink>` to `Admin users`.
 
 Next we'll create a very basic page
 
@@ -87,7 +87,7 @@ Next we'll create a very basic page
 <h2>Users</h2>
 ```
 
-**Note**: The URL to the page does not have to reflect the folder structure.
+_Note: The URL to the page does not have to reflect the folder structure._
 
 Running the app now will present you with an app that has a new menu item named `Admin users`.
 When you click on the item it will show a very basic page that simply says "Users".
