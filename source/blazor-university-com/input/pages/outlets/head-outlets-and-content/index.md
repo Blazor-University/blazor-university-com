@@ -21,7 +21,7 @@ The entry point is the `<HeadOutlet />` component. This component must be placed
 </head>
 <body>
   <Routes />
-  <script src="_framework/blazor.web.js"></script>
+  <script src="@Assets["_framework/blazor.web.js"]"></script>
 </body>
 </html>
 ```
@@ -34,15 +34,15 @@ The `<PageTitle>` component sets the document's title. Place it anywhere inside 
 
 ```razor
 @* A page that wants to set its own title *@
-@page "/product/{Id}"
+@page "/products"
 
-<PageTitle>Product @Id - My Store</PageTitle>
+<PageTitle>Products - My Store</PageTitle>
 
-<h1>Product @Id</h1>
+<h1>Products</h1>
 @* ...rest of the page... *@
 ```
 
-When this page is navigated to, the browser title becomes "Product 42 - My Store" (assuming an Id of 42). When the user navigates away, the title is updated to whatever `PageTitle` the next page renders.
+When this page is navigated to, the browser title becomes "Products - My Store". When the user navigates away, the title is updated to whatever `PageTitle` the next page renders.
 
 ### Last-rendered-wins
 
@@ -63,16 +63,16 @@ And the page might render its own `<PageTitle>` as in the example above. During 
 
 ## HeadContent
 
-For anything other than the `<title>` tag, use `<HeadContent>`. This component projects arbitrary markup into the document `<head>`. You can inject `<meta>` descriptions, Open Graph tags, `<link>` elements, `<style>` blocks, or deferred `<script>` tags.
+For anything other than the `<title>` tag, use `<HeadContent>`. This component projects arbitrary markup into the document `<head>`. You can inject `<meta>` descriptions, Open Graph tags, `<link>` elements, `<style>` blocks, etc.
 
 ```razor
-@page "/product/{Id}"
+@page "/products"
 
-<PageTitle>Product @Id - My Store</PageTitle>
+<PageTitle>Products - My Store</PageTitle>
 <HeadContent>
-  <meta name="description" content="View product @Id at My Store" />
-  <meta property="og:title" content="Product @Id - My Store" />
-  <link rel="preload" href="/images/product-@Id.webp" as="image" />
+  <meta name="description" content="View products in My Store" />
+  <meta property="og:title" content="Products - My Store" />
+  <link rel="preload" href="/images/products.jpg" as="image" />
 </HeadContent>
 ```
 

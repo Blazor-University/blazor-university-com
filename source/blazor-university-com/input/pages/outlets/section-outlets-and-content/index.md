@@ -42,7 +42,6 @@ A page (or any component) can inject content into the outlet using `SectionConte
 
 <SectionContent SectionName="Sidebar">
   <h3>Filter Products</h3>
-  <input @bind="searchTerm" placeholder="Search..." />
   <ul>
     <li><a href="/products?category=electronics">Electronics</a></li>
     <li><a href="/products?category=books">Books</a></li>
@@ -53,9 +52,9 @@ A page (or any component) can inject content into the outlet using `SectionConte
 @* ... product listing ... *@
 ```
 
-When the `ProductsPage` renders, its `<SectionContent>` is projected into the layout's sidebar. The page authors do not need to know where the outlet lives; they only need to know its name.
+When the `ProductsPage` renders, its `<SectionContent>` is projected up into the layout's sidebar. The page authors do not need to know where the outlet lives; they only need to know its name.
 
-## Matching by SectionId
+## Stronger matching using SectionId
 
 String-based names are convenient but can collide. If two libraries use the same section name, they will interfere with each other. For a more robust contract, we can match sections by a static object reference using the `SectionId` parameter.
 
@@ -73,10 +72,10 @@ Then reference this field in both the outlet and the content.
 
 ```razor
 @* In the layout *@
-<SectionOutlet SectionId="AppSections.Sidebar" />
+<SectionOutlet SectionId=@AppSections.Sidebar />
 
 @* In a page *@
-<SectionContent SectionId="AppSections.Sidebar">
+<SectionContent SectionId=@AppSections.Sidebar>
   @* content *@
 </SectionContent>
 ```
@@ -112,15 +111,3 @@ A `SectionOutlet` can also include child content that acts as a fallback when no
 ```
 
 The child content of `SectionOutlet` is only rendered when no `SectionContent` targets that section. As soon as a `SectionContent` appears (even from a child component), the default content is replaced.
-
-## Important caveat: parameter and cascading value scope
-
-The content inside a `SectionContent` component executes in the context of where the `SectionContent` is declared, not where the `SectionOutlet` renders it. This means:
-
-- Parameters bound to the section content are evaluated in the declaring component.
-- Cascading values are inherited from the declaring component, not from the outlet's location.
-- `@ref` and scoped services follow the declaring component's scope.
-
-In practice, this is usually what we want. A page knows what data its sidebar content needs and can pass that data directly. But it is worth remembering if you are trying to make a section outlet that provides layout-level services: the section content cannot directly receive cascading values from the layout. If the layout needs to share state with section content, use a scoped service or pass the state explicitly.
-
-The Sections API is the generalised mechanism that makes `PageTitle` and `HeadContent` work behind the scenes. Understanding it lets us create our own content projection points anywhere in the component tree.
