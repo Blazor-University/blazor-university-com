@@ -1,6 +1,6 @@
 ---
 title: "Components"
-date: "2019-04-27"
+date: "2026-07-16"
 order: 4
 ---
 
@@ -21,7 +21,7 @@ To re-enable this feature, edit your `csproj` file and add the following:
 </PropertyGroup>
 ```
 
-```csharp
+ ```cs
 namespace MyFirstBlazorApp.Client.Pages
 {
     [Microsoft.AspNetCore.Components.RouteAttribute("/counter")]
@@ -32,11 +32,11 @@ namespace MyFirstBlazorApp.Client.Pages
             // Code omitted for brevity
         }
 
-    private int counter = 42;
+    private int currentCount = 42;
 
-    private void IncrementCounter()
+    private void IncrementCount()
     {
-        counter++;
+        currentCount++;
     }
   }
 }
@@ -44,8 +44,7 @@ namespace MyFirstBlazorApp.Client.Pages
 
 `[Microsoft.AspNetCore.Components.RouteAttribute("/counter")]` identifies the URL for the page.
 
-In fact, because pages are merely components decorated with additional attributes, if you alter the **Pages/Index.razor**
-file of a default Blazor app, it is possible to embed the **Counter** page as a component.
+In fact, because pages are merely components decorated with additional attributes, if you alter the **Home.razor** file in **Components/Pages/** of a default Blazor app, it is possible to embed the **Counter** page as a component.
 
 ```razor
 @page "/"
@@ -59,6 +58,18 @@ Welcome to your new app.
 
 When embedding a page within another page, Blazor treats it as a component.
 
+## Render modes
+
+In Blazor .NET 8 and later, components render as Static Server-Side Rendering (Static SSR) by default. This means the embedded Counter component would not be interactive unless we specify an interactive render mode. We can apply a render mode using the `@rendermode` directive:
+
+```razor
+<Counter @rendermode="InteractiveServer" />
+```
+
+Render modes are covered in more detail in the [Directives](literals-expressions-and-directives/directives) section.
+
 If you have added an explicit [Layout](../layouts/) you will also see the attribute `[Microsoft.AspNetCore.Components.LayoutAttribute(typeof(MainLayout))]`, which identifies which layout to use.
 
-When a page is embedded within another page like this, the `LayoutAttribute` on the embedded page is ignored because Blazor already has an explicit container - the parent component that contains it.
+When a page is embedded within another page like this, the `LayoutAttribute` on the embedded page is ignored because Blazor already has an explicit container, the parent component that contains it.
+
+To learn how to build your own reusable components, see [Creating a component](creating-a-component).

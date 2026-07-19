@@ -1,6 +1,6 @@
 ---
 title: "Directives"
-date: "2020-01-25"
+date: "2026-07-16"
 order: 1
 ---
 
@@ -60,19 +60,30 @@ Some standard directives applicable to the Razor file itself are:
     It is possible to have multiple `@code` directives in a single Razor mark-up file;
     Blazor will collate these to a single block of C# code in the transpiled file.
 - `@page`  
-    This directive generates a `[RouteAttribute]` on the transpiled class (`[PageAttribute]` in Blazor 3) ,
+    This directive generates a `[RouteAttribute]` on the transpiled class,
     enabling [Blazor routing](/routing) (covered later) to identify which component (page)
     to render given a specific address in the URL.
 - `@layout`  
     Generates a `[LayoutAttribute]` on the transpiled class.
     Blazor uses this to determine which [Layout](/layouts) to use (if any) to wrap the contents of a page.
+- `@implements`  
+    Instructs Blazor to generate a class declaration that implements the specified interface.
+- `@inherits`  
+    Specifies a custom base class for the generated component class, instead of the default `ComponentBase`.
 - `@typeparam`  
     Instructs Blazor to generate a generic class from the Razor mark-up.
+    We can also specify generic constraints using the standard C# syntax, for example `@typeparam TItem where TItem : class`.
+- `@namespace`  
+    Overrides the namespace generated for the component, which by default is derived from the folder path.
 - `@inject`  
     Allows components to specify dependencies they require to be injected by Blazor
     when it creates a new instance of the component.
 - `@attribute`  
     Adds the specified DotNet attribute to the generated C# class.
+- `@rendermode`  
+    Specifies the render mode for a component, such as `InteractiveServer`, `InteractiveWebAssembly`, `InteractiveAuto`, or a custom render mode. Components without an explicit `@rendermode` default to Static Server-Side Rendering (Static SSR).
+- `@preservewhitespace`  
+    Controls whether whitespace in the Razor source is preserved or trimmed in the rendered output. By default, leading and trailing whitespace is removed to minimise the render tree.
 
 The following is a small set of examples of directives that can be applied to components and
 HTML elements that the current Razor file is consuming.
@@ -86,6 +97,11 @@ For example `<h1 @ref=MyH1Element>Hello</h1>`.
 - `@bind`  
     Allows us to data bind ([Two way binding](/components/two-way-binding/))
     to the property of a component being consumed, or the attribute of an HTML element.
+    Additional directive attributes such as `@bind:after`, `@bind:get`, and `@bind:set` give us finer control over binding behaviour.
+    `@bind:after` specifies a callback that fires after the bound property is updated.
+    `@bind:get` and `@bind:set` let us separate the getter and setter for the bound value, enabling manual control of the update logic.
+- `@formname`  
+    Assigns a name to an HTML form element, which is required when using Blazor's enhanced form handling with static server-side rendering.
 - `@attributes`  
     [Outputs name-value pairs](/components/code-generated-html-attributes/) as HTML attributes.
 - `@key`  
@@ -98,6 +114,8 @@ These will be covered in more detail in [Component events](/components/component
 - `@onclick`
 - `@onkeypress`
 - `@onscroll`
+
+DOM event directives such as those above only function when the component has an interactive render mode assigned. Under Static Server-Side Rendering, these event handlers are not wired up. See the `@rendermode` entry above for details.
 
 ## Directive attributes
 

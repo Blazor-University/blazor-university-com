@@ -1,6 +1,6 @@
 ---
 title: "One-way binding"
-date: "2019-04-27"
+date: "2026-07-16"
 order: 2
 ---
 
@@ -41,17 +41,15 @@ then change the private member to a public property.
 }
 ```
 
-Edit the Counter page, add a `MySecondComponent` component, and set its `CurrentCounterValue`, like so:
+Edit the **Counter.razor** page in **Components/Pages/**, add a `MySecondComponent` component, and set its `CurrentCounterValue`, like so:
 
 ```razor
 <MySecondComponent CurrentCounterValue=@currentCount/>
 ```
 
-Running the app and navigating to the Counter page will now show an error in the browser's console window.
+Attempting to build the app will now give a compile-time error.
 
-> InvalidOperationException: Object of type 'OneWayBinding.Client.Components.MySecondComponent'
-has a property matching the name 'CurrentCounterValue',
-but it does not have [Parameter], [CascadingParameter], or any other parameter-supplying attribute.
+> The component parameter 'CurrentCounterValue' is not defined by 'MySecondComponent'.
 
 This tells us clearly what is missing.
 To add a parameter to our component we must decorate our component's property with a `[Parameter]` attribute.
@@ -79,4 +77,21 @@ Counter page changes it will push that change down to our embedded component via
 
 **Note**: Parameters must be `public` properties.
 
-Before continuing to learn how two-way binding works, we first need to learn about Component Events, and Directives.
+Optionally, we can decorate a parameter with `[EditorRequired]` to indicate that the consuming component must supply a value for it. The compiler will issue a warning if the parameter is omitted.
+
+```razor
+[EditorRequired, Parameter]
+public int CurrentCounterValue { get; set; }
+```
+
+## Render mode requirement
+
+The dynamic one-way binding described above requires an interactive render mode on the parent component. Without one, the parent renders statically and the parameter value will only be applied once on initial render. We can assign an interactive render mode using the `@rendermode` directive:
+
+```razor
+<MySecondComponent @rendermode="InteractiveServer" CurrentCounterValue=@currentCount/>
+```
+
+See the [Directives](literals-expressions-and-directives/directives) section for more details on render modes.
+
+Before continuing to learn how [two-way binding](/components/two-way-binding/) works, we first need to learn about [Component Events](/components/component-events/) and [Directives](literals-expressions-and-directives/directives).

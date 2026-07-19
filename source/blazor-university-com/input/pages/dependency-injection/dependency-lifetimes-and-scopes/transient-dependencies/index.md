@@ -1,6 +1,6 @@
 ---
 title: "Transient dependencies"
-date: "2020-05-09"
+date: "2026-07-16"
 order: 1
 ---
 
@@ -8,8 +8,8 @@ Transient dependencies are the most simple to understand.
 The Dependency Container simply acts as a factory when constructing an injectable dependency that was registered as Transient.
 Once the instance is created and injected into the dependent component, the container has no further interest in it.
 
-**WARNING**: This is only true of instances that do not implement `IDisposable`.
-To avoid potential memory leaks, please read the section at the bottom of this section [Avoiding memory leaks](#avoiding-memory-leaks).
+**WARNING**: This is only true of instances that do not implement `IDisposable` or `IAsyncDisposable`.
+To avoid potential memory leaks, please read the section at the bottom of this page [Avoiding memory leaks](#avoiding-memory-leaks).
 
 To illustrate the lifetime of transient dependencies,
 we'll create a simple application so we can see when an object instance is created.
@@ -51,13 +51,7 @@ public sealed class MyTransientService : IMyTransientService
 
 ## Registering our dependency
 
-In a server-side application edit `Startup.ConfigureServices` and add the following code:
-
-```cs
-services.AddTransient<IMyTransientService, MyTransientService>();
-```
-
-In a WebAssembly application edit `Program.Main` and add the following code before `builder.Build()` is called.
+Regardless of the project type, we register our dependency in `Program.cs` using the `builder.Services` pattern.
 
 ```cs
 builder.Services.AddTransient<IMyTransientService, MyTransientService>();
@@ -109,12 +103,12 @@ and allow it to be garbage collected when it is not.
 }
 ```
 
-- **Lines 19-20**  
+- **Lines 107-108**  
     Declares boolean fields to determine whether or not each of the two components should be created and rendered.
-- **Line 2**  
+- **Line 90**  
     Uses [two-way binding](/components/two-way-binding/) on a checkbox so we can toggle
     the boolean field between `false` and `true`.
-- **Line 5**  
+- **Line 93**  
     If the relevant field is true then an instance of `MyStandardComponent` is displayed.
 
 ## Running the app
@@ -187,7 +181,7 @@ the Microsoft dependency injection container will, when it is disposed,
 automatically call `Dispose` on any object implementing `IDisposable`.
 
 To do this, whenever it creates an instance that implements `IDisposable`,
-the container must store a reference to the created instance in order to call it's `Dispose` method.
+the container must store a reference to the created instance in order to call its `Dispose` (or `DisposeAsync`) method.
 This means that when Transient dependencies are created,
 the behavior is different depending on whether or not the instance is disposable.
 
@@ -202,9 +196,9 @@ This means that as well as creating a new instance of Transient dependencies whe
 the container will also hold on to them forever - effectively leading to a memory leak.
 
 There is a way to create a dependency scope per component (so it will be disposed of when the component is disposed)
-which will be covered in a later section.
+which is covered in the [OwningComponentBase](owning-component-base/) section.
 
-If you want to register dependencies as Transient, it's a good rule to avoid doing so for classes implementing `IDisposable` completely.
+If you want to register dependencies as Transient, it is a good rule to avoid doing so for classes implementing `IDisposable` or `IAsyncDisposable` completely.
 
 ## Summary
 

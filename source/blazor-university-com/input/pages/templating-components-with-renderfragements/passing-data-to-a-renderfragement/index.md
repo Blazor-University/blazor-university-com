@@ -1,6 +1,6 @@
 ---
 title: "Passing data to a RenderFragment"
-date: "2019-07-07"
+date: "2026-07-16"
 order: 2
 ---
 
@@ -17,10 +17,10 @@ Alter the `TabControl` component and add a new `TabTextTemplate` parameter prope
 
 ```razor
 [Parameter]
-public RenderFragment ChildContent { get; set; }
+public RenderFragment? ChildContent { get; set; }
 
 [Parameter]
-public RenderFragment<TabPage> TabTextTemplate { get; set; }
+public RenderFragment<TabPage>? TabTextTemplate { get; set; }
 ```
 
 Then change the mark-up in the `foreach` loop.
@@ -97,7 +97,7 @@ To make the intention clear, let's rename the `ChildContent` property to `Tabs`.
     Hello
   </TabTextTemplate>
 
-  <ChildContent>
+  <Tabs>
     <TabPage Text="Tab 1">
       <h1>The first tab</h1>
     </TabPage>
@@ -107,7 +107,7 @@ To make the intention clear, let's rename the `ChildContent` property to `Tabs`.
     <TabPage Text="Tab 3">
       <h1>The third tab</h1>
     </TabPage>
-  </ChildContent>
+  </Tabs>
 </TabControl>
 ```
 
@@ -135,8 +135,8 @@ has specified a template) then the template is rendered, passing in the current 
 
 When a Generic version of the `RenderFragment<T>` class is used, we must pass a value of `<T>` when rendering that fragment.
 The value passed to the fragment is available via a special variable named `context`.
-This can then be used to determine exactly what to render. In our case, we want to render the `TabPage.Text` property
-with some additional mark-up.
+Because `RenderFragment<T>` is generic, `@context` is strongly typed: it is an instance of `T`, so the compiler gives us full IntelliSense and type checking on its members.
+In our case, we want to render the `TabPage.Text` property with some additional mark-up.
 
 ```razor
 <TabTextTemplate>
@@ -160,3 +160,7 @@ For example, the `TabTextTemplate` mark-up demonstrated earlier could instead be
   <img src="/images/tab.png"/> @TheTab.Text
 </TabTextTemplate>
 ```
+
+## A note on render modes
+
+If your application uses InteractiveServer or InteractiveWebAssembly rendering, the `TabControl` and `TabPage` components will be prerendered on the server first. During prerendering `OnInitialized` runs once, then a second time once the interactive runtime attaches. The `AddPage` registration in `OnInitialized` will therefore execute twice, though the second call replaces the first so the final state is correct. Be aware of this if you introduce side-effects in component initialisation.

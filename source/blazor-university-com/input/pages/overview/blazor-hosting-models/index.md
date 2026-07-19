@@ -51,12 +51,20 @@ Create a new project, search for **Blazor**, and select the **Blazor Web App** t
 - **WebAssembly** - Interactive WebAssembly as the default render mode
 - **Auto** - Interactive Auto (Server first, WebAssembly after download)
 
+### Command line
+
+```
+dotnet new blazor --interactivity <None|Server|WebAssembly|Auto> -n MyApp
+```
+
+Use `--all-interactive` to make every page interactive by default instead of using per-page/component `@rendermode` directives.
+
 ### Render mode nesting rules
 
-Interactive render modes can be combined within a single page. The following rules apply:
+Interactive render modes can be combined within a single page, but there is an important constraint: a component cannot have a lower interactivity level than its parent. Mixing Server and WebAssembly components on one page must be done from a static SSR parent, not from an interactive one. Specifically:
 
-- Interactive Server and Interactive WebAssembly components can be embedded in a static page.
-- Interactive WebAssembly components can be embedded inside an Interactive Server component.
+- Interactive Server and Interactive WebAssembly components can be embedded in a static page (the parent is static SSR).
+- Interactive WebAssembly components cannot be embedded inside an Interactive Server component, because that would require the signal to cross from the server circuit to the client without a bridge.
 - Interactive Server components cannot be embedded inside an Interactive WebAssembly component, because WebAssembly mode has no SignalR circuit to the server.
 
 ![](images/HostingModelsOverview.jpg)
@@ -77,7 +85,7 @@ With code running on the client's machine it means the server load is significan
 
 ### Cons
 
-The `blazor.web.js` file bootstraps the client application. It downloads all required .NET DLL assemblies, which makes the start-up time of the application slower than server-side the first time your app is run (DLLs are then cached by the browser, making subsequent start-up times much faster).
+The `blazor.webassembly.js` file bootstraps the client application. It downloads the .NET runtime and all required assemblies, which makes the start-up time slower than server-side rendering the first time the app runs. Since .NET 8, assemblies ship as Webcil-packaged `.wasm` files that use standard HTTP caching, so subsequent visits are significantly faster. AOT compilation (available since .NET 6) improves runtime performance at the cost of a larger initial download.
 
 ## Static Server Rendering
 
@@ -104,7 +112,7 @@ Static SSR is the default when creating a Blazor Web App with `--interactivity N
 ### Pros
 
 Interactive Server pre-renders HTML content before it is sent to the client's browser.
-This makes it search-engine friendly, and there is no perceivable start-up time.
+This makes it search-engine friendly, and there is no perceivable start-up time after the SignalR connection is established. Note that prerendering is on by default for all interactive render modes (including WebAssembly and Auto), not just Interactive Server. It can be disabled per component using `@rendermode="new InteractiveServerRenderMode(prerender: false)"`.
 
 
 
@@ -113,7 +121,7 @@ This makes it search-engine friendly, and there is no perceivable start-up time.
 Interactive Server sets up an in-memory session for the current client and
 uses SignalR to communicate between the .NET running on the server and the client's browser.
 All memory and CPU usage comes at a cost to the server, for all users.
-It also means that the client is tied to the server that first served it, so doesn't work with load-balancing.
+It also requires session affinity (sticky sessions) or the Azure SignalR Service when load-balancing.
 
 Once the initial page has been rendered and sent to the browser,
 the `blazor.web.js` file hooks into any relevant user interaction events
@@ -124,17 +132,17 @@ to send that event to the server and execute the relevant .NET code.
 
 ```razor
 <p>
-  Current count = @CurrentCount
+  Current count = @currentCount
 </p>
 <button @onclick=IncrementCount>Click me</button>
 
 @code
 {
-  private int CurrentCount;
+  private int currentCount;
 
-  public void IncrementCount()
+  private void IncrementCount()
   {
-    CurrentCount++;
+    currentCount++;
   }
 }
 ```
@@ -197,12 +205,11 @@ the user's input as they type, the delta HTML from the server would increase wit
 When the input content becomes large, it results in a large network transfer for every keypress.
 
 Unlike Blazor WebAssembly, once the connection from the browser to the server is lost the app becomes unresponsive.
-Blazor will try to re-establish a connection to the server but, until it succeeds,
-the app shows the message "Attempting to reconnect to the server..." and prevents all mouse interaction with the user-interface.
+Blazor will try to re-establish a connection to the server. Since .NET 10, the template includes a customizable `ReconnectModal` component that shows connection status, and circuit state can be persisted across disconnects to preserve the user's session state.
 
 ## Blazor Hybrid
 
-Blazor Hybrid lets you host Blazor components inside a native .NET application using the `BlazorWebView` control. The UI is rendered using the native platform's rendering engine, not a browser. This gives your Blazor components full access to native device APIs such as the camera, GPS, file system, and notifications.
+Blazor Hybrid lets you host Blazor components inside a native .NET application using the `BlazorWebView` control. The UI is rendered as HTML and CSS inside an embedded WebView (WKWebView on iOS, Android WebView, WebView2 on Windows), while your .NET code runs natively on the device with full access to device APIs such as the camera, GPS, file system, and notifications. There is no WebAssembly runtime and no HTTP server involved.
 
 Blazor Hybrid is supported on:
 - **.NET MAUI** - cross-platform mobile and desktop (iOS, Android, Windows, macOS, iPadOS)

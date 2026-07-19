@@ -1,6 +1,6 @@
 ---
 title: "Optimizing using @key"
-date: "2019-06-13"
+date: "2026-07-16"
 order: 2
 ---
 
@@ -15,7 +15,7 @@ When elements are re-arranged, however, this becomes more difficult. Take for ex
 
 ![](images/CueCardDOM.png)
 
-Using Incremental [RenderTree Proof](http://components/render-trees/incremental-rendertree-proof) as a starting point,
+Using Incremental [RenderTree Proof](/components/render-trees/incremental-rendertree-proof) as a starting point,
 edit **/Pages/Index.razor** and enter the following mark-up.
 
 ```razor {: .line-numbers}
@@ -193,3 +193,23 @@ to either be re-arranged, or any items added / removed from anywhere other than 
 
 The value used for `@key` can be any type of object. We can use the `Person` instance itself or,
 if the instances in the list change, then we can use something like `Person.ID` instead.
+
+### Positional versus keyed matching
+
+Without `@key`, Blazor matches elements positionally: the first element in the new render tree is compared against the first element in the previous render tree, regardless of identity. This works well for stable lists but breaks down when items are reordered, inserted, or removed from the middle, causing unnecessary DOM updates and loss of state.
+
+When `@key` is specified, Blazor uses the key value to pair elements across renders. Elements with matching keys are matched directly, so reordering the data results in a simple reordering of DOM elements instead of destructive updates.
+
+### Correctness, not just performance
+
+Using `@key` is primarily about correctness. Without it, Blazor may destroy and recreate child components unnecessarily, losing their state. It may also lose focus or cursor position in input elements, cause `@ref` references to point to the wrong instances, and trigger unnecessary lifecycle methods. Adding `@key` ensures Blazor correctly identifies which elements map to which data items, keeping the DOM in sync with your application state.
+
+### Choosing a key value
+
+The value passed to `@key` must be stable and unique among sibling elements. The data object itself works well if the list contains the same object instances across renders. For lists where instances are replaced, use a persistent identifier such as `Person.ID`.
+
+**Do not use the loop index as a key.** Using an index (`@key=@index`) is equivalent to not using `@key` at all, because the index is positional. If items are reordered, the index follows the position, not the item, so Blazor still matches by position and you gain nothing.
+
+### Built-in components that use keys
+
+The `Virtualize` component and `QuickGrid` component both use keys internally to track items. When you provide data to these components, they manage identity for you, so you do not need to add `@key` manually for their rendered output.

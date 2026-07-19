@@ -1,18 +1,39 @@
 ---
 title: "Installing Blazor"
-date: "2019-04-27"
+date: "2026-07-16"
 order: 4
 ---
 
-Blazor is part of the [.NET SDK](https://dotnet.microsoft.com/download), so we can get started by installing the latest version. It is included when you install the latest version of [Visual Studio](https://visualstudio.microsoft.com/vs/).
+Blazor is part of the [.NET SDK](https://dotnet.microsoft.com/download), so we can get started by installing the latest version. It is included when you install [Visual Studio](https://visualstudio.microsoft.com/vs/) (Community, Professional, or Enterprise edition).
 
-When installing, ensure you select the option **ASP.NET and web development** under the **Workloads** tab.
+## Cross-platform installation
 
-![](images/InstallAspWorkload.jpg)
+Blazor development is fully supported on Windows, macOS, and Linux. In addition to Visual Studio on Windows, you can use:
 
-For native applications hosted on **Android, iOS, macOS, Windows, and tvOS** using a Web UI interface, also select **.NET Multi-platform App UI development** in the Visual Studio installer.
+- **Visual Studio Code** with the [C# Dev Kit](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit) extension.
+- **JetBrains Rider** on any platform.
+- The **.NET CLI** directly from any terminal.
 
-![](images/InstallMauiWorkload.jpg)
+### CLI installation
+
+1. Download and install the [.NET SDK](https://dotnet.microsoft.com/download) for your platform.
+2. Verify the installation:
+
+```
+dotnet --version
+```
+
+3. Confirm that Blazor templates are available:
+
+```
+dotnet new list blazor
+```
+
+### Visual Studio
+
+When installing Visual Studio, ensure you select the **ASP.NET and web development** workload under the **Workloads** tab.
+
+For native applications hosted on **Android, iOS, macOS, and Windows** using a Web UI interface, also select **.NET Multi-platform App UI development** in the Visual Studio installer.
 
 Or install the MAUI workload via the CLI:
 

@@ -1,6 +1,6 @@
 ---
 title: "Cascading values by type"
-date: "2019-07-03"
+date: "2026-07-16"
 order: 2
 ---
 
@@ -11,11 +11,14 @@ in a `CascadingValue` into the correct properties in consuming components by mat
 Another option is to specify a `CascadingValue` without specifying a `Name`, when Blazor encounters a cascading value
 specified in this way it will inject its value into a component's property if the property meets the following criteria.
 
+> **Prerequisite:** Cascading parameters work under all render modes (Static Server, InteractiveServer, InteractiveWebAssembly, and InteractiveAuto). However, components that react to value changes may require an interactive render mode. See [Render modes](/render-modes) for details.
+
 1. The property is decorated with a `CascadingParameterAttribute`.
 2. The `[CascadingParameter]` does **not** have a `Name` specified.
 3. The property is of the same `Type` as set in the `CascadingValue` (e.g. boolean).
 4. The property has a setter.
-5. The property is public.
+
+The property does not need to be public. We recommend marking it as `private` with a setter so it is clear the value comes from the render tree and not from application code.
 
 For example, the following `CascadingValue` will match both `CascadingParameter` properties in `SomeComponent`.
 
@@ -39,7 +42,7 @@ Property2 = @Property2
 }
 ```
 
-An unnamed `CascadingValue` isn't as specific as a `CascadingValue` that has a `Name` specified, because every `CascadingParameter`
+An unnamed `CascadingValue` is not as specific as a `CascadingValue` that has a `Name` specified, because every `CascadingParameter`
 decorated property with the correct type and no `Name` will consume the value.
 In cases where we define a simple .NET type such as a `bool` or an `int` it is recommended we use a named parameter, however,
 sometimes the type of the value is sufficient to identify its purpose;
@@ -73,8 +76,8 @@ It would make more sense (and take less code) to have a custom class:
 public class UserPreferences
 {
   public bool ViewAnonymizedData { get; set; }
-  public string DateFormat { get; set; }
-  public string LanguageCode { get; set; }
+  public string? DateFormat { get; set; }
+  public string? LanguageCode { get; set; }
 }
 ```
 
@@ -106,8 +109,36 @@ else
 @code
 {
   [CascadingParameter]
-  private UserPreferences UserPreferences { get; set; }
+  private UserPreferences? UserPreferences { get; set; }
 }
 ```
 
 Obviously, this example excludes how to translate the static text based on the `UserPreferences.LanguageCode`.
+
+## IsFixed and root-level registration
+
+By default, Blazor re-renders every component between a `CascadingValue` and its consumers whenever the value changes. If we know the value will never change, we can set `IsFixed="true"` on the `CascadingValue` element to skip change tracking and improve render performance.
+
+In .NET 8 and later, we can also register cascading values at the application root using `AddCascadingValue`:
+
+```cs
+builder.Services.AddCascadingValue(sp => new UserPreferences
+{
+  ViewAnonymizedData = false,
+  DateFormat = "yyyy-MM-dd",
+  LanguageCode = "en"
+});
+```
+
+Root-level cascading values feed every component in the application, just as if they were wrapped in a `CascadingValue` element at the top of the render tree. The `IsFixed` option is available through the same registration:
+
+```cs
+builder.Services.AddCascadingValue(sp => new UserPreferences
+{
+  ViewAnonymizedData = false,
+  DateFormat = "yyyy-MM-dd",
+  LanguageCode = "en"
+}, isFixed: true);
+```
+
+When using type-based resolution without a name, the nearest matching `CascadingValue` by type wins, whether registered at the root or in the render tree.

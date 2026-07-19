@@ -1,6 +1,6 @@
 ---
 title: "Injecting dependencies into Blazor components"
-date: "2020-04-26"
+date: "2026-07-16"
 order: 1
 ---
 
@@ -77,7 +77,7 @@ services.AddSingleton<ToDoApi>();
 Or we can register an interface as injectable, as long as we additionally specify the class that implements the interface.
 
 ```cs
-service.AddSingleton<IToDoApi, ToDoApi>();
+services.AddSingleton<IToDoApi, ToDoApi>();
 ```
 
 **Note:** Again, the latter approach is recommended in order to make unit testing more simple.
@@ -103,20 +103,20 @@ where we have to go to register our injectable dependencies is slightly differen
 
 ### Registering injectables in a Blazor Server app
 
-<!--- TODO: Cramer review the new startup template to see if this is still the same --->
-In a Blazor Server app there is a `Startup` class with a `ConfigureServices` method.
-This is where we are expected to perform our registrations.
+In a Blazor Server app, dependency registration is performed in `Program.cs` using the `builder.Services` pattern.
 
-```razor
-public void ConfigureServices(IServiceCollection services)
-{
-  ... default Blazor registrations omitted ...
-  // Register our own injectables
-  services.AddSingleton<IToDoApi, ToDoApi>();
-}
+```cs
+var builder = WebApplication.CreateBuilder(args);
+
+// ... default Blazor registrations omitted ...
+
+// Register our own injectables
+builder.Services.AddSingleton<IToDoApi, ToDoApi>();
+
+var app = builder.Build();
 ```
 
-This is the same for WASM applications when we check the ASP.NET Core hosted checkbox when creating our application.
+This same pattern is used for WASM applications when we check the ASP.NET Core hosted checkbox when creating our application.
 This is because the server is responsible for bootstrapping the whole application.
 
 ![](images/NewAspNetCoreHostedWasmApp.jpg)
@@ -128,7 +128,7 @@ the application must have its own bootstrapper class.
 In this type of application, the class is named `Program`,
 and the bootstrapping method is named `Main` - just as it is in a Console application.
 
-```razor
+```cs
 public static async Task Main(string[] args)
 {
   var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -159,9 +159,8 @@ public class NewsletterService : INewsletterService
 }
 ```
 
-This, however, is not the case for Blazor components.
-At the moment, constructor injection is not supported.
-There are two ways we can indicate which dependencies our component consumes; one in Razor mark-up, and one in C# code.
+This is also the case for Blazor components from .NET 9 onwards.
+Constructor injection is now supported alongside two declarative ways we can indicate which dependencies our component consumes; one in Razor mark-up, and one in C# code.
 
 ```razor
 @inject IToDoApi ToDoApi
@@ -177,10 +176,15 @@ There are two ways we can indicate which dependencies our component consumes; on
 The [InjectAttribute](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.injectattribute)
 may only be applied to a property that has a property setter, the encapsulation level of the property is irrelevant.
 
-**Note:** These two approaches are identical.
-In fact, the `@inject` syntax is simply shorthand for the `[Inject]` syntax.
-When building our app, Blazor will first transpile or Razor markup into C# source code.
-To see how the `@inject` syntax is transpiled, open the folder **\obj\Debug\netcoreapp3.1\Razor** and look for the `.cs`
+**Note:** The `@inject` and `[Inject]` approaches are equivalent.
+Blazor will transpile `@inject` into the `[Inject]` attribute on a generated property.
+
+It is important to understand that the scope semantics of injected dependencies differ depending on the render mode.
+For example, in an Interactive Server component the dependency scope is tied to the SignalR circuit,
+while in Interactive WebAssembly the scope matches the application lifetime in the browser.
+We will cover this in more detail in the [dependency lifetimes and scopes](/dependency-injection/dependency-lifetimes-and-scopes/) section.
+When building our app, Blazor will first transpile our Razor markup into C# source code.
+To see how the `@inject` syntax is transpiled, open the folder **\obj\Debug\net10.0\generated** and look for the `.cs`
 file corresponding to the razor file.
 
 ## Consuming injected dependencies
@@ -234,9 +238,9 @@ we'll simply inject it into our `Index` page using the `@inject` syntax and then
 ```
 
 - **Line 2**  
-    An instance of `IToDoApp` is injected into our page, we use the name **ToDoApi** to reference the injected dependency.
+    An instance of `IToDoApi` is injected into our page, we use the name **ToDoApi** to reference the injected dependency.
 - **Line 35**  
-    The `GetDoToAsync` method is called on the injected service. The method is awaited and the result stored in **Data**.
+    The `GetToDosAsync` method is called on the injected service. The method is awaited and the result stored in **Data**.
 - **Lines 16-23**  
     The items in **Data** are iterated over using a `@foreach` loop, and the output rendered as part of our view.
 

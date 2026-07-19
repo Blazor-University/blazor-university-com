@@ -1,6 +1,6 @@
 ---
 title: "Literals, expressions, and directives"
-date: "2020-01-09"
+date: "2026-07-16"
 order: 3
 ---
 
@@ -42,7 +42,7 @@ or a literal depends on the positioning (or absence of) the `@` symbol.
     <tr>
       <td>Left</td>
       <td>Directive</td>
-      <td><code>&lt;MyComponent @Bind-Value=SomeValue/&gt;</code></td>
+      <td><code>&lt;MyComponent @bind-Value=SomeValue/&gt;</code></td>
     </tr>
   </tbody>
 </table>
@@ -102,7 +102,7 @@ Where **MyHeader** is defined as so:
   public bool Visible { get; set; } = true;
 
   [Parameter]
-  public string Text { get; set; }
+  public string? Text { get; set; }
 }
 ```
 
@@ -119,7 +119,7 @@ such as a member name, or a method invocation.
 
 Given a code section in our component that defines the following members and values:
 
-```csharp
+```cs
 public int InputSize { get; set; } = 8;
 public bool HeaderVisible { get; set; } = true;
 public string HeaderText { get; set; } = "Value of variable";
@@ -228,7 +228,7 @@ Create a new component named PersonView and enter the following mark-up:
 @code
 {
   [EditorRequired, Parameter]
-  public Person Person { get; set; }
+  public Person? Person { get; set; }
 }
 ```
 
@@ -325,4 +325,4 @@ Directives are a complex subject.
 Because this section is about how to differentiate between literals, expressions, and directives,
 they will not be covered in depth here.
 
-Instead, directives will be covered in the [Directives](directives) section.
+Instead, directives will be covered in the [Directives](directives) section. For a closer look at binding specifically, see the [Two-way binding](/components/two-way-binding) section.

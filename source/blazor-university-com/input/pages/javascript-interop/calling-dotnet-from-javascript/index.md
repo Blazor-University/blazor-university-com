@@ -1,6 +1,6 @@
 ---
 title: "Calling .NET From JavaScript"
-date: "2019-04-27"
+date: "2026-07-16"
 ---
 
 Sometimes our .NET application code needs to be executed from JavaScript.
@@ -16,6 +16,8 @@ Blazor does not allow JavaScript to call just any static or instance method in o
 4. The return type of the method must be Json serializable, `void`, a `Task`, or a `Task<T>` where `T` is Json serializable.
 5. If specifying the `identifier` parameter on `JsInvokable` the value must be unique per class hierarchy
    (if an instance method) or unique per assembly (if a static method).
+
+> **Security note:** Adding `[JSInvokable]` to a method widens the attack surface of your application. Any JavaScript running in the browser can invoke that method with any arguments. Avoid exposing methods that accept or return sensitive data without additional authorization checks, and never trust client-supplied values as authoritative.
 
 ## Making .NET code invokable
 
@@ -94,12 +96,13 @@ First, create a new Blazor application and change Index.razor to the following m
 
 ## Invoking .NET code from JavaScript
 
-First we need to edit either **/Pages/_Host.cshtml** (server side) or **/wwwroot/index.html** (WASM) and add a reference
-to a script we are about to create.
+First, add a reference to the script we are about to create. In modern Blazor, add the `<script>` element in your host page before the Blazor script tag. For server-side Blazor with Interactive Server rendering, this is typically in **App.razor** or **Components/App.razor**. The Blazor script is now `_framework/blazor.web.js` for all hosting models.
 
-```razor
+```html
 <script src="/scripts/CallingDotNetFromJavaScript.js"></script>
 ```
+
+> **Prerequisite:** This example requires an interactive Blazor render mode (Interactive Server, Interactive WebAssembly, or Interactive Auto). JavaScript interop is only available during interactive sessions, not during static server-side rendering (SSR).
 
 Next, we'll create the function **BlazorUniversity.startRandomGenerator** and have it call back our .NET object with a random
 number every second.
@@ -108,7 +111,7 @@ number every second.
 var BlazorUniversity = BlazorUniversity || {};
 BlazorUniversity.startRandomGenerator = function(dotNetObject) {
     setInterval(function () {
-        let text = Math.random() \* 1000;
+        let text = Math.random() * 1000;
         console.log("JS: Generated " + text);
         dotNetObject.invokeMethodAsync('AddText', text.toString());
     }, 1000);
@@ -125,3 +128,53 @@ Browser view
 ![](images/CallingDotNetFromJavaScriptVS.png)
 
 Visual Studio output view
+
+## Module isolation as a modern alternative
+
+Instead of defining functions on the global `window` object (e.g., `BlazorUniversity.startRandomGenerator`), modern Blazor applications can use JavaScript modules. This avoids global namespace pollution and provides better encapsulation.
+
+Create a small helper in your host page to enable module loading:
+
+```html
+<script>
+    window.importModule = url => import(url);
+</script>
+```
+
+Then define your JavaScript functions in a module file:
+
+```js
+// scripts/callingDotNetFromJavaScriptModule.js
+export function startRandomGenerator(dotNetObject) {
+    setInterval(function () {
+        let text = Math.random() * 1000;
+        console.log("JS: Generated " + text);
+        dotNetObject.invokeMethodAsync('AddText', text.toString());
+    }, 1000);
+}
+
+export function stopRandomGenerator(handle) {
+    clearInterval(handle);
+}
+```
+
+Load the module from your Blazor component and call its exported functions:
+
+```razor
+@code
+{
+    IJSObjectReference Module;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Module = await JSRuntime.InvokeAsync<IJSObjectReference>("importModule", "./scripts/callingDotNetFromJavaScriptModule.js");
+            var dotNetReference = DotNetObjectReference.Create(this);
+            await Module.InvokeVoidAsync("startRandomGenerator", dotNetReference);
+        }
+    }
+}
+```
+
+For Blazor WebAssembly targeting .NET 7 or later, the `[JSImport]` attribute provides strongly-typed module interop without runtime string identifiers.

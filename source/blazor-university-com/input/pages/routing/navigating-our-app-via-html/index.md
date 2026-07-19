@@ -1,6 +1,6 @@
 ---
 title: "Navigating our app via HTML"
-date: "2019-04-27"
+date: "2026-07-16"
 order: 6
 ---
 
@@ -16,17 +16,19 @@ Hyperlinks in a Blazor component are intercepted automatically.
 When a user clicks a hyperlink the browser will not send a request to the server,
 instead Blazor will update the URL in the browser and render whichever page is associated with the new address.
 
+In Blazor's enhanced navigation mode (used with Static SSR), the framework handles navigation via fetch requests and selectively updates the DOM rather than performing a full page reload. This behavior applies to both anchor clicks and form submissions within the app.
+
 ## Using the NavLink component
 
 Blazor also includes a component for rendering hyperlinks with additional support for changing the HTML element's CSS
 class when address matches the URL.
 
-If we look inside the _/Shared/NavMenu.razor_ component in the default Blazor application we'll mark-up that looks
+If we look inside the _Components/Layout/NavMenu.razor_ component in the default Blazor application we'll mark-up that looks
 something like the following:
 
 ```razor
 <NavLink class="nav-link" href="counter">
-  <span class="oi oi-home" aria-hidden="true"></span> Counter
+  <span class="bi bi-house-fill" aria-hidden="true"></span> Counter
 </NavLink>
 ```
 
@@ -38,6 +40,8 @@ The `ActiveClass` parameter specifies which CSS class to apply to the rendered `
 matches the URL of the `href` attribute.
 If not specified, Blazor will apply a CSS class named "active".
 
+The NavLink component also sets the `aria-current` attribute on the rendered `<a>` element when the link matches the current URL. This improves accessibility by allowing screen readers to identify the currently active navigation item.
+
 ![](images/NavLinkActiveToggle.gif)
 
 ## URL matching
@@ -45,7 +49,7 @@ If not specified, Blazor will apply a CSS class named "active".
 The `Match` parameter identifies how the browser's URL should be compared to the `href` in order to decide whether or
 not the `ActiveClass` should be added to the element's `class` attribute.
 
-Edit the _/Pages/Counter.razor_ file in a new Blazor app so that it can be reached from three URLs.
+Edit the _Components/Pages/Counter.razor_ file in a new Blazor app so that it can be reached from three URLs.
 
 ```razor
 @page "/counter"
@@ -53,29 +57,29 @@ Edit the _/Pages/Counter.razor_ file in a new Blazor app so that it can be reach
 @page "/counter/2"
 ```
 
-Then edit the _/Shared/NavMenu.razor_ component so the Counter menu item has two sub-menu links.
+Then edit the _Components/Layout/NavMenu.razor_ component so the Counter menu item has two sub-menu links.
 
 ```razor
 <li class="px-3 nav-item">
   <NavLink class="nav-link" href="counter" Match=@NavLinkMatch.All>
-    <span class="oi oi-plus" aria-hidden="true"></span>Counter
+    <span class="bi bi-plus" aria-hidden="true"></span>Counter
   </NavLink>
   <ul class="nav flex-column">
     <li class="px-3 nav-item">
       <NavLink class="nav-link" href="counter/1" Match=@NavLinkMatch.All>
-        <span class="oi oi-plus" aria-hidden="true"></span>Counter/1
+        <span class="bi bi-plus" aria-hidden="true"></span>Counter/1
       </NavLink>
     </li>
     <li class="px-3 nav-item">
       <NavLink class="nav-link" href="counter/2" Match=@NavLinkMatch.All>
-        <span class="oi oi-plus" aria-hidden="true"></span>Counter/2
+        <span class="bi bi-plus" aria-hidden="true"></span>Counter/2
       </NavLink>
     </li>
   </ul>
 </li>
 ```
 
-Also edit _/wwwroot/site.css_ and add the following so we easily see which NavLink elements are considered "active".
+Also edit _Components/Layout/NavMenu.razor.css_ and add the following scoped style so we easily see which NavLink elements are considered "active".
 
 ```css
 .nav-item a.active::after
@@ -101,7 +105,7 @@ This meant we wanted Blazor to only consider each NavLink to be active if its `h
 If we now change the NavLink that links to /counter so its Match parameter is NavLinkMatch.Prefix we'll see it will be
 considered a match whenever the URL starts with `/counter`, so it will also match `/counter/1` and `/counter/2`.
 
-To illustrate the difference, declare a field within the code section of _/Shared/NavMenu.razor_
+To illustrate the difference, declare a field within the code section of _Components/Layout/NavMenu.razor_
 
 ```razor
 NavLinkMatch MatchMode = NavLinkMatch.All;
@@ -109,6 +113,8 @@ NavLinkMatch MatchMode = NavLinkMatch.All;
 
 Find the `<div class="@NavMenuCssClass"...` element, and before the `<ul>` element add the following mark-up to bind a
 `<select>` to the new field.
+
+> **Note**: Binding a `<select>` to a `NavLinkMatch` value requires an interactive render mode because `@bind` with a C# member only functions in interactive contexts. In Static SSR, this type of data binding is not available.
 
 ```razor
 <select @bind=MatchMode class="form-control">
@@ -136,22 +142,22 @@ Your mark-up should now look something like this.
   <ul class="nav flex-column">
     <li class="px-3 nav-item">
       <NavLink class="nav-link" href="" Match=@NavLinkMatch.All>
-        <span class="oi oi-home" aria-hidden="true"></span> Home
+        <span class="bi bi-house-fill" aria-hidden="true"></span> Home
       </NavLink>
     </li>
     <li class="px-3 nav-item">
       <NavLink class="nav-link" href="counter" Match=@MatchMode>
-        <span class="oi oi-plus" aria-hidden="true"></span>Counter
+        <span class="bi bi-plus" aria-hidden="true"></span>Counter
       </NavLink>
       <ul class="nav flex-column">
         <li class="px-3 nav-item">
           <NavLink class="nav-link" href="counter/1" Match=@NavLinkMatch.All>
-            <span class="oi oi-plus" aria-hidden="true"></span>Counter/1
+            <span class="bi bi-plus" aria-hidden="true"></span>Counter/1
           </NavLink>
         </li>
         <li class="px-3 nav-item">
           <NavLink class="nav-link" href="counter/2" Match=@NavLinkMatch.All>
-            <span class="oi oi-plus" aria-hidden="true"></span>Counter/2
+            <span class="bi bi-plus" aria-hidden="true"></span>Counter/2
           </NavLink>
         </li>
       </ul>

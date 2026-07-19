@@ -1,6 +1,6 @@
 ---
 title: "Using @typeparam to create generic components"
-date: "2020-04-18"
+date: "2026-07-16"
 order: 3
 ---
 
@@ -17,7 +17,7 @@ This can be especially useful when combined with the generic `RenderFragment<T>`
 
 ## Outlining our generic DataList component
 
-First, we need to create a **DataList.razor** file in the **/Shared** folder and
+First, we need to create a **DataList.razor** file in the **/Components** folder and
 identify it as a generic class with a single generic parameter called `TItem`.
 We'll also add a `[Parameter]` property, expecting an `IEnumerable<TItem>`.
 
@@ -27,9 +27,19 @@ We'll also add a `[Parameter]` property, expecting an `IEnumerable<TItem>`.
 @code
 {
   [Parameter]
-  public IEnumerable<TItem> Data { get; set; }
+  public IEnumerable<TItem>? Data { get; set; }
 }
 ```
+
+### Generic type constraints
+
+Just as in a regular C# generic class, we can constrain the type parameter with a `where` clause. For example, if we only want to allow `TItem` types that implement `IComparable`, we write:
+
+```razor
+@typeparam TItem where TItem : IComparable
+```
+
+Constraints are specified directly after the type parameter name on the `@typeparam` line, using the same syntax as C# generic constraints. This is useful when our component needs to call methods on `TItem` such as `CompareTo` or `ToString`.
 
 ## Using the generic component
 
@@ -83,29 +93,30 @@ The final `DataList.razor` component mark-up will look like this.
 @code
 {
   [Parameter]
-  public IEnumerable<TItem> Data { get; set; }
+  public IEnumerable<TItem>? Data { get; set; }
 
   [Parameter]
-  public RenderFragment<TItem> ChildContent { get; set; }
+  public RenderFragment<TItem>? ChildContent { get; set; }
 }
 ```
 
 - **Line 1**  
     Specifies this component is generic and has a single generic parameter named `TItem`.
 - **Lines 10-11**  
-    Declares a `[Parameter]` property named **Data** that is an enumerable property of type `ITem`.
+    Declares a `[Parameter]` property named **Data** that is an enumerable property of type `TItem`.
 - **Lines 13-14**  
     Declares a `[Parameter]` property named **ChildContent** that is a `RenderFragment<TItem>` -
     so we can pass an instance of `TItem` to it and have it give us some rendered HTML to output.
 - **Line 3**  
     Iterates over the `Data` property and for each element renders the `RenderFragment<TItem>` named **ChildContent**
     by passing the current element to it.
+    For performance, consider adding `@key` to each rendered element; see [Optimising using @key](/components/render-trees/optimising-using-key/).
 
 ## Final source code
 
 ### Index.razor
 
-Note: Line 5 has been added to specify the `ChildContext` that we wish to be rendered for each element.
+Note: Line 5 has been added to specify the `ChildContent` that we wish to be rendered for each element.
 The element itself is passed via the `@context` variable,
 so the `RenderFragment<TItem>` is in fact a `RenderFragment<Person>` -
 therefore `@context` is a `Person` and therefore we have the benefit of type-safe compilation and IntelliSense.
@@ -147,10 +158,10 @@ therefore `@context` is a `Person` and therefore we have the benefit of type-saf
 @code
 {
   [Parameter]
-  public IEnumerable<TItem> Data { get; set; }
+  public IEnumerable<TItem>? Data { get; set; }
 
   [Parameter]
-  public RenderFragment<TItem> ChildContent { get; set; }
+  public RenderFragment<TItem>? ChildContent { get; set; }
 }
 ```
 
@@ -164,6 +175,10 @@ therefore `@context` is a `Person` and therefore we have the benefit of type-saf
   <li>Mr Mercury, Freddie</li>
 </ul>
 ```
+
+## Cascading generic type inference
+
+When a generic component is nested inside another generic component that shares the same type parameter, Blazor's `[CascadingTypeParameter]` attribute can propagate the type argument automatically. Add `[CascadingTypeParameter]` to the parent component to let child components infer the generic type without the consumer having to specify it explicitly on each one. For example, a `<Table TItem>` component could cascade `TItem` so that child `<Column TItem>` components resolve the same type.
 
 ## Explicitly specifying generic parameter types
 

@@ -1,6 +1,6 @@
 ---
 title: "Render trees"
-date: "2019-06-08"
+date: "2026-07-16"
 order: 12
 ---
 
@@ -42,13 +42,13 @@ and an Incremental DOM approach.
 A Virtual DOM is an in-memory representation of the elements that will make up the HTML page.
 This data creates a tree of HTML elements as if they had been specified by an HTML mark-up page.
 Blazor components create this Virtual DOM in its Razor views via a virtual method named `BuildRenderTree`.
-For example, the `BuildRenderTree` for the standard **Pages/Index.razor** page looks like this.
+For example, the `BuildRenderTree` for the standard **Components/Pages/Index.razor** page looks like this.
 
 ```razor
 protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder)
 {
   builder.AddMarkupContent(0, "<h1>Hello, world!</h1>\\r\\n\\r\\nWelcome to your new app.\\r\\n\\r\\n");
-  builder.OpenComponent<MyFirstBlazorApp.Client.Shared.SurveyPrompt>(1);
+  builder.OpenComponent<MyBlazorApp.Components.Pages.Home>(1);
   builder.AddAttribute(2, "Title", "How is Blazor working for you?");
   builder.CloseComponent();
 }
@@ -68,7 +68,7 @@ Incremental DOM is a technique that minimizes the amount of work needed to updat
 Being able to create a diff tree gives us the ability to represent changes to the view using the smallest number of
 changes possible required to update the DOM.
 This saves time when changing the display (so the user-experience is better),
-and in Server-Side Blazor apps it means fewer bytes over the network -
+and in interactive Server render mode it means fewer bytes over the network -
 making a Blazor app more useable on slow networks or very remote locations.
 
 ## Example 1 - Adding a new list item
@@ -76,19 +76,19 @@ making a Blazor app more useable on slow networks or very remote locations.
 Imagine our user is using a Blazor app that shows a list of items. They click a button to add a new item to the list -
 which is automatically given the text "3".
 
-**Render 1**: The current Virtual DOM for the view in the browser consists of a list with two items.
+**Render 1 - Current**: The current Virtual DOM for the view in the browser consists of a list with two items.
 
 ![Current view](images/Incremental-1-Current.png)
 
 Current view
 
-**Render 1**: The app adds a new item to the list. Blazor represents this in a new Virtual DOM.
+**Render 1 - Next**: The app adds a new item to the list. Blazor represents this in a new Virtual DOM.
 
 ![Next view](images/Incremental-1-Next.png)
 
 Next view
 
-**Render 1**: The following differential tree is determined to be the fewest number of changes required.
+**Render 1 - Diff**: The following differential tree is determined to be the fewest number of changes required.
 In this case, one new `<li>` and one new text element `"3"`.
 
 ![](images/Incremental-1-Diff.png)
@@ -102,19 +102,19 @@ The differential render tree is then used to update the actual HTML DOM in the b
 The user sees the list "One", "Two", "3" and decides they would prefer to see numerical digits.
 They click another button which changes the text of each list item to its index in the list.
 
-**Render 2**: The current Virtual DOM for the view in the browser consists of a list with three items.
+**Render 2 - Current**: The current Virtual DOM for the view in the browser consists of a list with three items.
 
 ![Current view](images/Incremental-2-CurrentB.png)
 
 Current view
 
-**Render 2**: The app changes the text of all the items in the list. Again, Blazor represents this in a new Virtual DOM.
+**Render 2 - Next**: The app changes the text of all the items in the list. Again, Blazor represents this in a new Virtual DOM.
 
 ![Next view](images/Incremental-2-Next.png)
 
 Next view
 
-**Render 2**: The following differential tree is determined to be the fewest number of changes required. In this case,
+**Render 2 - Diff**: The following differential tree is determined to be the fewest number of changes required. In this case,
 only two changes to existing text elements.
 
 ![Differential render tree](images/Incremental-2-Diff.png)
@@ -122,3 +122,5 @@ only two changes to existing text elements.
 Differential tree
 
 The differential render tree is then used to update the actual HTML DOM in the browser.
+
+To control how Blazor matches elements and components between render trees, see the section on [Optimizing using @key](/components/render-trees/optimising-using-key/).

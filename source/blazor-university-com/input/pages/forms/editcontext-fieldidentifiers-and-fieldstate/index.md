@@ -1,6 +1,6 @@
 ---
 title: "EditContext, FieldIdentifiers, and FieldState"
-date: "2019-09-01"
+date: "2026-07-16"
 order: 5
 ---
 
@@ -18,6 +18,8 @@ Whenever the `EditForm.Model` changes (the object being modified in the form),
 `EditForm.OnParametersSet` is executed and creates a new `EditContext` instance.
 The `EditForm` component declares this `EditContext` as a [Cascading value](/components/cascading-values/cascading-values-by-type/),
 so that any components within the form have access to it.
+
+`EditForm` also has an overload that accepts an `EditContext` parameter directly, which is useful when we want to share the same `EditContext` across multiple forms or manage its lifecycle ourselves.
 
 The `EditContext` is a form-meta-data holder for the object currently being edited.
 When editing an object - such as a `Person` - in a form,
@@ -113,11 +115,12 @@ our Blazor validators will be given an instance of `FieldIdentifier` and the res
 The `FieldState` class holds additional information about any object's property.
 The `EditContext` class has a private property of type `Dictionary<FieldIdentifier, FieldState>` -
 this lets Blazor store its additional state in a flattened list for quick access.
+Note that `FieldState` and this dictionary are internal implementation details of Blazor and are not part of the public API. We describe them here only to understand how the framework works under the hood.
 
 Given the following model
 
 ```cs
-protected override OnInitialized()
+protected override void OnInitialized()
 {
   var country1 = new Country
   {

@@ -1,6 +1,6 @@
 ---
 title: "Validation"
-date: "2019-08-26"
+date: "2026-07-16"
 order: 3
 ---
 
@@ -26,6 +26,8 @@ public class Person
 - Line 3 specifies the `Name` property cannot be null or empty.
 - Line 5 specifies a valid range of values for the `Age` property (from 18 to 80) and
   also provides a suitable error message to display to the user.
+
+With nullable reference types enabled, the compiler gives a warning if a non-nullable `string` property like `Name` is left uninitialized. The `[Required]` attribute adds runtime validation on top of that compile-time safety, ensuring the user provides a value even when the property has been initialized in code.
 
 ## Adding validation
 
@@ -73,6 +75,8 @@ are errors in the user's input.
 
 ![](images/BasicValidationErrorIndicat.png)
 
+When an input is validated, Blazor applies CSS classes to indicate its state. The `modified` class is added once the user has interacted with the field, `valid` when the value passes validation, and `invalid` when it does not. We can use these classes to style our inputs accordingly.
+
 ## Displaying validation error messages
 
 Validation error messages can be displayed to the user in two ways.
@@ -90,9 +94,9 @@ it requires us to specify the identity of the field.
 To ensure our parameter's value stays correct after refactoring
 (for example, when we refactor property names on our `Person` class)
 Blazor requires us to specify an `Expression` when identifying the field.
-The parameter, named `For`, is defined on the `ValidationMessage` as follows:
+The `ValidationMessage` component defines a `[Parameter]` named `For` with the following signature (this is Blazor's own definition, not code we need to write ourselves):
 
-```razor
+```cs
 [Parameter]
 public Expression<Func<T>> For { get; set; }
 ```
@@ -132,5 +136,30 @@ whereas the razor expression makes it more obvious to other developers that we a
   Person Person = new Person();
 }
 ```
+
+## Registering validation services
+
+In .NET 10, Blazor introduced a new validation registration system. Instead of placing a `DataAnnotationsValidator` component inside every `EditForm`, we can register a validation service globally using `builder.Services.AddValidation()`. This service automatically validates complex object graphs and is the recommended approach for new applications.
+
+To enable this, first register the service in **Program.cs**:
+
+```cs
+builder.Services.AddValidation();
+```
+
+Then annotate the model types we want to validate with the `[ValidatableType]` attribute:
+
+```cs
+[ValidatableType]
+public class Person
+{
+  [Required]
+  public string Name { get; set; }
+  [Range(18, 80)]
+  public int Age { get; set; }
+}
+```
+
+When `AddValidation` is registered, we no longer need to include `<DataAnnotationsValidator/>` inside each `EditForm`. The service validates the entire object graph automatically, including nested complex-type properties. This replaces the earlier experimental `ObjectGraphDataAnnotationsValidator` component, which is now deprecated.
 
 [![](images/ValidationSummaryAndValidationMessages.png)](images/ValidationSummaryAndValidationMessages.png)

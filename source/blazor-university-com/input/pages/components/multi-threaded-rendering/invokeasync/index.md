@@ -1,6 +1,6 @@
 ---
 title: "Thread safety using InvokeAsync"
-date: "2020-06-13"
+date: "2026-07-16"
 order: 1
 ---
 
@@ -24,7 +24,7 @@ If `StateHasChanged` is called by a secondary thread an exception will be thrown
 
 > System.InvalidOperationException: The current thread is not associated with the Dispatcher.
 
-In a server-side Blazor application, there is a single dispatcher associated with each connection (each browser tab).
+In interactive Server render mode, there is a single dispatcher associated with each connection (each browser tab).
 When we use `InvokeAsync` we are executing actions via this dispatcher (just like WPF `Dispatcher.Invoke` or WinForms `Control.Invoke`).
 
 When calling `StateHasChanged` in one the previously outlined scenarios (executing code from a `Thread` etc.),
@@ -37,11 +37,10 @@ any given moment, eliminating the need to write thread-locking/synchronization c
 ## InvokeAsync example
 
 [![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Components/UsingInvokeAsync)
+To demonstrate the difference in behavior between executing component methods directly from a thread vs executing via `InvokeAsync`,
+we'll create an application using interactive Server render mode that will show how multiple concurrent threads can corrupt shared state.
 
-To demonstrate the different in behavior between executing component methods directly from a thread vs executing via `InvokeAsync`,
-we'll create a server-side application that will show how multiple concurrent threads can corrupt shared state.
-
-After creating a new Blazor server-side application, add a static class that will store an integer value that can be
+After creating a new Blazor Server app using interactive Server render mode, add a static class that will store an integer value that can be
 accessed by multiple components/threads.
 
 ```cs
@@ -54,7 +53,7 @@ public static class CounterState
 ### Displaying the state
 
 We'll show the value of this state in a component, and have the value checked twice per second.
-To do this, we'll create a component in the **/Shared** folder named **ShowCounterValue.razor**.
+To do this, we'll create a component in the **Components/Shared** folder named **ShowCounterValue.razor**.
 
 ```razor
 @implements IDisposable
@@ -88,7 +87,7 @@ To do this, we'll create a component in the **/Shared** folder named **ShowCount
 - **Line 3**  
     Displays the current value of `CounterState.Value` along with the current time.
 - **Line 13**  
-    When the component initializer, a `System.Threading.Timer` is created that will execute `StateHasChanged` every 500 milliseconds.
+    When the component initializes, a `System.Threading.Timer` is created that will execute `StateHasChanged` every 500 milliseconds.
     It is invoked via `InvokeAsync` to prevent Blazor throwing an exception telling us we are calling `StateHasChanged`
     from a thread.
 - **Line 21**  
@@ -97,6 +96,45 @@ To do this, we'll create a component in the **/Shared** folder named **ShowCount
 **Note:** If the timer is not disposed then it will remain active for the lifetime of the user session.
 If the timer remains active, then the component will not be garbage collected because the timer callback holds an implicit
 reference to the component via its `InvokeAsync` and `StateHasChanged` methods.
+
+### Using PeriodicTimer
+
+A more modern alternative to `System.Threading.Timer` is `PeriodicTimer` combined with an awaited loop and `InvokeAsync`. This pattern avoids the need for a callback delegate and is easier to reason about.
+
+```razor
+@implements IDisposable
+<div>
+  Counter value is: @CounterState.Value at @DateTime.UtcNow.ToString("HH:mm:ss")
+</div>
+
+@code
+{
+  private PeriodicTimer? Timer;
+
+  protected override async Task OnInitializedAsync()
+  {
+    Timer = new PeriodicTimer(TimeSpan.FromMilliseconds(500));
+    try
+    {
+      while (await Timer.WaitForNextTickAsync())
+      {
+        InvokeAsync(StateHasChanged);
+      }
+    }
+    catch (OperationCanceledException)
+    {
+      // PeriodicTimer is disposed
+    }
+  }
+
+  void IDisposable.Dispose()
+  {
+    Timer?.Dispose();
+  }
+}
+```
+
+The `PeriodicTimer` approach uses an async loop that naturally integrates with the component's lifecycle. The `await Timer.WaitForNextTickAsync()` suspends the loop between ticks, and upon disposal the timer is cancelled, breaking the loop and allowing the component to be garbage collected.
 
 ### Modifying the state
 
@@ -108,7 +146,7 @@ Note: This component will be passed a `System.Threading.WaitHandle`.
 The component's thread will be suspended until the main page triggers this `WaitHandle`,
 triggering all threads to start looping at the same time.
 
-In the **/Shared** folder, create a new file named **IncrementCounter.razor**.
+In the **Components/Shared** folder, create a new file named **IncrementCounter.razor**.
 We'll start off with some text to show the component exists on the page, a parameter to accept the required `WaitHandle`,
 and a parameter to indicate if we want to use `InvokeAsync` to increment the value or not.
 
@@ -301,7 +339,7 @@ The `Index` page should now look like so:
     modify shared state at the same time.
 - **Lines 33-35**  
     Wait 1 second for the test to complete, and then reset `IsWorking` and our `ManualResetEvent` so they are ready for
-    another rest run.
+    another test run.
 
 ## Running the example application
 
@@ -325,7 +363,7 @@ Next, tick the checkbox and click the **Start** button again.
 
 ![](images/ThreadingWithInvokeAsyncOn.jpg)
 
-One second later, the rest run will complete and we see a much more desirable result.
+One second later, the test run will complete and we see a much more desirable result.
 
 ![](images/ThreadingWithInvokeAsyncOn2.jpg)
 
@@ -335,17 +373,17 @@ When working with UI triggered events (button clicks, navigation events, etc.), 
 for thread safety.
 Blazor will manage this for us, and ensure only a single thread is executing component code at any one time.
 
-When non-UI events trigger our code, then in a server-side Blazor app then this code will be triggered in an
+When non-UI events trigger our code in an interactive Server render mode app, this code will be triggered in an
 unsynchronized thread.
 It is not possible to call `StateHasChanged`, and access to any shared state is prone to corruption due to [thread race conditions](https://en.wikipedia.org/wiki/Race_condition).
 
-**Note**: Blazor WebAssembly apps are single-threaded so do not have to account for thread safety.
+**Note**: Blazor WebAssembly apps are single-threaded by default (though .NET 9 added opt-in WASM multithreading support), so they do not have to account for thread safety in the default configuration.
 
 The Blazor `InvokeAsync`, introduced on the class `ComponentBase`, will ensure that race conditions do not occur by synchronizing
 thread execution per-user connection.
 
 Blazor is able to ensure that only a single thread is executing code at any given time by executing code via a Dispatcher
-that is created when a user connects to the Blazor server-side application.
+that is created when a user connects to the Blazor Server application.
 
 One possible complication to consider is that the Blazor Dispatcher will not ensure an entire piece of code runs to execution
 before the next dispatched code is executed.

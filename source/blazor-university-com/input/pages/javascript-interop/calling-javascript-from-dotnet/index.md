@@ -1,29 +1,18 @@
 ---
 title: "Calling JavaScript from .NET"
-date: "2019-04-27"
+date: "2026-07-16"
 order: 2
 ---
 
-JavaScript should be added into either **/Pages/_Host.cshtml** in Server-side Blazor apps,
-or in **wwwroot/index.html** for Web Assembly Blazor apps.
+> **Important:** JavaScript interop is not available during static server-side rendering or the prerendering phase of interactive render modes. Calls to `IJSRuntime` during these phases will throw an `InvalidOperationException`. Always guard JS interop calls behind `OnAfterRenderAsync` and the `firstRender` parameter.
+
+In modern Blazor (.NET 8+), JavaScript files are referenced from **/App.razor** (or **/Components/App.razor**) using the unified `blazor.web.js` script. In earlier Blazor versions, scripts were added to **/Pages/_Host.cshtml** for server-side apps or **wwwroot/index.html** for WebAssembly apps.
 
 Our JavaScript can then be invoked from Blazor by injecting the `IJSRuntime` service into our component.
 
 [![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/JavaScriptInterop/CallingJavaScriptFromDotNet)
 
-```razor
-public interface IJSRuntime
-{
-  ValueTask<TValue> InvokeAsync<TValue>(string identifier, object[] args);
-  ValueTask<TValue> InvokeAsync<TValue>(string identifier, CancellationToken cancellationToken, object[] args);
-  // Via an extension class
-  void InvokeVoid(string identifier, params object[] args);
-}
-```
-
-The `identifier` must be a JavaScript function scoped to the global `window` variable,
-but it is not necessary to include `window` in the identifier.
-So, to invoke `window.alert` we only need to specify `alert` as the identifier.
+The `IJSRuntime` interface provides the `InvokeAsync<TValue>` method for calling JavaScript functions. The `identifier` must be a JavaScript function scoped to the global `window` variable, but it is not necessary to include `window` in the identifier. So, to invoke `window.alert` we only need to specify `alert` as the identifier.
 
 ```razor
 @page "/"
@@ -41,6 +30,24 @@ So, to invoke `window.alert` we only need to specify `alert` as the identifier.
 ```
 
 ![](images/image.png)
+
+## JavaScript module isolation
+
+The recommended approach in modern Blazor is to use JavaScript module isolation rather than placing functions on the global `window` object. We import a JavaScript module and obtain an `IJSObjectReference`:
+
+```razor
+@inject IJSRuntime JSRuntime
+
+@code {
+    private async Task CallIsolatedJs()
+    {
+        var module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Pages/Index.razor.js");
+        await module.InvokeVoidAsync("myFunction");
+    }
+}
+```
+
+Blazor also supports collocated JavaScript files: a script named `MyComponent.razor.js` placed alongside a component is automatically published as a web resource. This keeps JavaScript scoped to the component that needs it and avoids global namespace pollution.
 
 ## Passing parameters
 

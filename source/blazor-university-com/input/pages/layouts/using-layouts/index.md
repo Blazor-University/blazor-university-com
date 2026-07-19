@@ -1,6 +1,6 @@
 ---
 title: "Using a layout"
-date: "2019-06-02"
+date: "2026-07-16"
 order: 2
 ---
 
@@ -30,7 +30,7 @@ specifying commonly imported namespaces or, in this case, a default `@layout` to
 If you now run the app it will look pretty awful, because there is no layout wrapping any of the pages. To
 fix this, follow these steps:
 
-1. Expend the `/Components/Pages` folder.
+1. Expand the `/Components/Pages` folder.
 1. Create a new file `_Imports.razor`.
 1. Add the following content
 ```razor
@@ -41,8 +41,9 @@ Now run the app again and note the layout is back.
 
 **WARNING**: Make sure you edit the file inside `/Components/Pages` and **not** the one directly inside
 `/Components`. `MainLayout.razor` is within the `/Components` folder (`/Components/Layout`), so inherits
-all code defined inside `/Components/_Imports.razor`, meaning it will have itself as a layout - which will
-cause an infinite loop and your app will hang.
+all code defined inside `/Components/_Imports.razor`, meaning it will have itself as a layout. Blazor
+detects circular layout references and throws an `InvalidOperationException` at runtime rather than
+hanging.
 
 ## Specifying a default template for a sub area of the app
 
@@ -52,13 +53,14 @@ If your app has separate areas to it, for example an "Admin" area, it is possibl
 default layout to use for all pages within that area simply by grouping them within their own
 child-folder that has its own `_Imports.razor` file.
 
-We have seen this previously in `Using _Imports.razor`. When rendering a page, Blazor will look in the page's
-folder for an `_Imports.razor` file. If found, it will merge its contents into the top of the page. But it
-doesn't stop there. It will then inspect the parent folder, and the parent's parent folder, and so on.
+We have seen this previously in `Using _Imports.razor`. During Razor compilation, Blazor walks up the folder
+hierarchy from the page's folder looking for `_Imports.razor` files. When found, their contents are merged
+into the top of the generated Razor class. This walk continues to the parent folder, then the grandparent,
+and so on.
 
-All the contents are merged together before being added to the razor file. When a declaration can only have
-a single value ('@layout', `@inherits`) then the value defined in the `_Imports.razor` closest to the razor
-file being rendered is used.
+All the imported directives are combined before the Razor source generator produces the compiled class. When
+a directive can only have a single value ('@layout', `@inherits`), the value defined in the
+`_Imports.razor` closest to the page wins.
 
 ![_Imports](images/imports.jpg)
 
@@ -133,3 +135,5 @@ itself using the `@layout` directive.
 
 Running the app again and clicking on the `Admin users` link will now show basic page
 using the app's standard layout.
+
+It is also possible to opt out of any layout entirely on a per-page basis by specifying `@layout null`. This is useful for pages that should render without any surrounding template, such as a full-screen login page.

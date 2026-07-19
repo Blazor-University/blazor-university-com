@@ -1,6 +1,6 @@
 ---
 title: "Lifetimes and memory leaks"
-date: "2019-11-23"
+date: "2026-07-16"
 order: 1
 ---
 
@@ -18,12 +18,12 @@ This means that unless we dispose of our references correctly, our app is going 
 The `DotNetObjectReference` class implements `IDisposable`. To solve our memory leak problem we need to do the following:
 
 - Our component should keep a reference to the `DotNetObjectReference` we create.
-- Our component should implement `IDisposable` and dispose our `DotNetObjectReference`.
+- Our component should implement `IAsyncDisposable` and dispose our `DotNetObjectReference`.
 
 ```razor
 @page "/"
 @inject IJSRuntime JSRuntime
-@implements IDisposable
+@implements IAsyncDisposable
 
 <h1>Text received</h1>
 <ul>
@@ -58,13 +58,10 @@ The `DotNetObjectReference` class implements `IDisposable`. To solve our memory 
     System.Diagnostics.Debug.WriteLine("DotNet: Received " + text);
   }
 
-  public void Dispose()
+  public async ValueTask DisposeAsync()
   {
-    GC.SuppressFinalize(this);
-
     if (ObjectReference != null)
     {
-      //Now dispose our object reference so our component can be garbage collected
       ObjectReference.Dispose();
     }
   }
@@ -72,7 +69,7 @@ The `DotNetObjectReference` class implements `IDisposable`. To solve our memory 
 ```
 
 - **Line 3**  
-    Tells the compiler we want our component to implement `IDisposable`.
+    Tells the compiler we want our component to implement `IAsyncDisposable`.
 - **Line 16**  
     We now keep a reference to our `DotNetObjectReference`.
 - **Line 21**  
@@ -102,11 +99,11 @@ has been destroyed.
 First, we need to update our JavaScript so that it returns the handle that is created when we execute `setInterval`.
 Then we need to add an additional function that will accept that handle as a parameter and cancel the interval.
 
-```razor
+```js
 var BlazorUniversity = BlazorUniversity || {};
 BlazorUniversity.startRandomGenerator = function (dotNetObject) {
   return setInterval(function () {
-    let text = Math.random() \* 1000;
+    let text = Math.random() * 1000;
     console.log("JS: Generated " + text);
     dotNetObject.invokeMethodAsync('AddText', text.toString());
   }, 1000);
@@ -117,17 +114,17 @@ BlazorUniversity.stopRandomGenerator = function (handle) {
 ```
 
 - **Line 3**  
-    The handle created by `setInteval` is returned from the function that starts the random number generator.
+    The handle created by `setInterval` is returned from the function that starts the random number generator.
 - **Line 9**  
     A function that will accept the handle to the interval we created and pass it to the JavaScript `clearInterval` function.
 
 Finally, we need our component to keep track of the handle of the JavaScript interval we created,
 and call the new stopRandomGenerator function when our component is disposed.
 
-```razor {: .line-numbers}
+```razor
 @page "/"
 @inject IJSRuntime JSRuntime
-@implements IDisposable
+@implements IAsyncDisposable
 
 <h1>Text received</h1>
 <ul>
@@ -163,31 +160,34 @@ and call the new stopRandomGenerator function when our component is disposed.
     System.Diagnostics.Debug.WriteLine("DotNet: Received " + text);
   }
 
-  public async void Dispose()
+  public async ValueTask DisposeAsync()
   {
-    GC.SuppressFinalize(this);
-
     if (GeneratorHandle != -1)
     {
-      //Cancel our callback before disposing our object reference
-      await JSRuntime.InvokeVoidAsync("BlazorUniversity.stopRandomGenerator", GeneratorHandle);
+      try
+      {
+        await JSRuntime.InvokeVoidAsync("BlazorUniversity.stopRandomGenerator", GeneratorHandle);
+      }
+      catch (JSDisconnectedException)
+      {
+        // The circuit is gone; no need to clean up JS
+      }
     }
     if (ObjectReference != null)
     {
-      //Now dispose our object reference so our component can be garbage collected
       ObjectReference.Dispose();
     }
   }
 }
 ```
 
-- **Line 16**  
+- **Line 15**  
     We create a member to hold a reference to the interval returned from our
     JavaScript **BlazorUniversity.startRandomGenerator** function.
-- **Line 25**  
+- **Line 23**  
     We store the returned handle in our new member.
-- **Line 46**  
-    If the handle has been set, we invoke our new JavaScript **BlazoUniversity.stopRandomGenerator** function,
+- **Line 44**  
+    If the handle has been set, we invoke our new JavaScript **BlazorUniversity.stopRandomGenerator** function,
     passing our interval handle so it can be passed to clearInterval.
 
 The interval is cancelled before our `DotNetObjectReference` is disposed so our JavaScript doesn't try to invoke a method

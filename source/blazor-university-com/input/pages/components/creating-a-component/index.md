@@ -1,12 +1,16 @@
 ---
 title: "Creating a component"
-date: "2019-06-06"
+date: "2026-07-16"
 order: 1
 ---
 
 [![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Components/CreatingAComponent)
 
-Create a new Blazor app with interactivity set to WebAssembly.
+Create a new Blazor app with interactivity set to WebAssembly by running:
+
+```sh
+dotnet new blazor -int WebAssembly
+```
 
 In the **Components** folder create a file named **MyFirstComponent.razor** and enter the following mark-up.
 
@@ -16,7 +20,7 @@ In the **Components** folder create a file named **MyFirstComponent.razor** and 
 </div>
 ```
 
-Now edit the **Index.razor** file and add the following
+Now edit the **Home.razor** file in **Components/Pages/** and add the following
 
 ```razor
 <MyFirstComponent/>
@@ -24,18 +28,29 @@ Now edit the **Index.razor** file and add the following
 
 If you create your component elsewhere you will need to either fully qualify that component
 name with a namespace like so `MyFirstBlazorApp.Client.MyNewFolder.MyFirstComponent`, or
-Or edit **/_Imports.razor** and add `@using MyFirstBlazorApp.Client.MyNewFolder>`. The using statements
+edit the **Components/_Imports.razor** file and add `@using MyFirstBlazorApp.Client.MyNewFolder`. The using statements
 here are cascaded into all Razor views.
 
 ```razor
 @page "/"
 
-<h1>Hello, world!</h1>
 <MyFirstComponent/>
-
-Welcome to your new app.
 ```
 
-Now run the app and we'll see the following.
+Now run the app and we will see the following.
+
+## Component naming conventions
+
+Component file names should use PascalCase, matching the component class name. For example, a component defined in **MyFirstComponent.razor** becomes the `MyFirstComponent` class. We can also use a code-behind approach by creating a **MyFirstComponent.razor.cs** partial class file alongside the Razor file.
+
+## Interactivity and render modes
+
+By default, components render as Static Server-Side Rendering (Static SSR). To make a component interactive, we need to assign a render mode such as `InteractiveServer`, `InteractiveWebAssembly`, or `InteractiveAuto` using the `@rendermode` directive.
+
+```razor
+<MyFirstComponent @rendermode="InteractiveServer" />
+```
+
+Render modes are covered in more detail in the [Directives](/components/literals-expressions-and-directives/directives) section.
 
 ![](images/ThisIsMyFirstComponent.jpg)

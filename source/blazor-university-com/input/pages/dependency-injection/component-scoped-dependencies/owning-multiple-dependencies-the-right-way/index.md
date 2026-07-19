@@ -1,6 +1,6 @@
 ---
 title: "Owning multiple dependencies: The right way"
-date: "2020-05-30"
+date: "2026-07-16"
 order: 3
 ---
 
@@ -127,9 +127,9 @@ dependency container that our component owns.
   protected override void OnInitialized()
   {
     OwnedDependency1 =
-      ScopedServices.GetService<IOwnedDependency1>();
+      ScopedServices.GetRequiredService<IOwnedDependency1>();
     OwnedDependency2 =
-      ScopedServices.GetService<IOwnedDependency2>();
+      ScopedServices.GetRequiredService<IOwnedDependency2>();
   }
 }
 ```
@@ -137,7 +137,7 @@ dependency container that our component owns.
 - **Line 1**  
     Descends from `OwningComponentBase` to give us our own private dependency container.
 - **Line 2**  
-    Uses the DependencyInjection namespace so we can use the `GetService<T>` extension method on `IServiceProvider`.
+    Uses the DependencyInjection namespace so we can use the `GetRequiredService<T>` extension method on `IServiceProvider`.
 - **Lines 19 & 21**  
     Uses the `OwningComponentBase.ScopedServices` property to resolve instances of the dependencies our component requires.
 - **Lines 6 & 9**  
@@ -171,10 +171,10 @@ In turn, any object instances this container created that implement `IDisposable
 
 To demonstrate this behavior, make the following changes to our application.
 
-First, override `Dispose(bool isDisposing)` on our component and have it log some output when it is disposed.
+First, override the `Dispose` method on our component and have it log some output when it is disposed.
 
 ```cs
-public void Dispose()
+protected override void Dispose(bool disposing)
 {
   System.Diagnostics.Debug.WriteLine("Disposing " + GetType().Name);
 }
@@ -189,7 +189,7 @@ Then, for each of our dependency classes (`OwnedDependency1` and `OwnedDependenc
 
     public void Dispose()
     {
-      System.Diagnostics.Debug.WriteLine($"Created {GetType().Name} instance {InstanceNumber}");
+      System.Diagnostics.Debug.WriteLine($"Disposing {GetType().Name} instance {InstanceNumber}");
     }
   }
 ```
@@ -222,3 +222,17 @@ and descend from the non-generic `OwningComponentBase` class when you need your 
 Although the process of resolving instances of your component's dependencies is a manual process,
 there is no need to dispose of any dependencies created as the component's dependency container will
 dispose of them when `OwningComponentBase.Dispose` is executed.
+
+## Additional considerations
+
+**Keyed services.** If you have registered services with the keyed DI support introduced in .NET 8,
+you can resolve them using `ScopedServices.GetRequiredService(serviceType, serviceKey)`.
+
+**IAsyncDisposable.** The owned DI scope and any dependencies that implement `IAsyncDisposable` will be
+disposed asynchronously when the component is torn down. `OwningComponentBase` handles both
+`IDisposable` and `IAsyncDisposable` correctly.
+
+**Prerender scope caveat.** Under Static Server Rendering, the component's owned scope is created per
+request and disposed when the response is sent. The owned dependencies will not persist across a
+postback or a navigation that triggers a full server render. Use an Interactive render mode if you
+need the owned scope to live as long as the component instance.

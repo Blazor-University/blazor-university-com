@@ -1,6 +1,6 @@
 ---
 title: "Templating components with RenderFragments"
-date: "2019-04-27"
+date: "2026-07-16"
 order: 5
 ---
 
@@ -18,21 +18,21 @@ And, in addition to the maintenance nightmare, the embedded HTML could only be b
 
 ## Child content
 
-If we create a new component named Collapsible (a completely empty .razor file) we can, as you have already seen, consume that in the `Index.razor` page, like so:
+If we create a new component named Collapsible (a completely empty .razor file) we can, as you have already seen, consume that in a page (such as **Components/Pages/Home.razor**), like so:
 
 ```razor
 <Collapsible/>
 ```
 
-But what if we want to embed some content? Give it a try and then look at the error in your browser's console output.
+But what if we want to embed some content? Give it a try and look at the error in your build output or browser's console.
 
 ```razor
 <Collapsible>Hello world!</Collapsible>
 ```
 
-> WASM: System.InvalidOperationException: Object of type 'TemplatedComponents.Components.Collapsible' does not have a property matching the name 'ChildContent'.
+> System.InvalidOperationException: Object of type 'TemplatedComponents.Components.Collapsible' does not have a property matching the name 'ChildContent'.
 >
-> Error output when trying to embed content in a component not designed to expect it
+> This error is detected at compile time in modern Blazor, so you will see it in the build output or IDE before running the app.
 
 ## The RenderFragment class
 
@@ -41,9 +41,11 @@ Now change the `Collapsible` component so that it has a property named `ChildCon
 ```razor
 @code {
 	[Parameter]
-	public RenderFragment ChildContent { get; set; }
+	public RenderFragment? ChildContent { get; set; }
 }
+
 ```
+
 
 These are the criteria Blazor uses to inject embedded content into a component. The embedded content may be anything you wish; plain text, HTML elements, more razor mark-up (including more components), and the content of that embedded content may be output anywhere in your component's mark-up simply by adding `@ChildContent`.
 
@@ -61,7 +63,7 @@ These are the criteria Blazor uses to inject embedded content into a component. 
 @code
 {
 	[Parameter]
-	public RenderFragment ChildContent { get; set; }
+	public RenderFragment? ChildContent { get; set; }
 
 	[Parameter]
 	public bool Collapsed { get; set; }
@@ -101,3 +103,7 @@ When we write mark-up inside a component, Blazor will assume it should be assign
 In the preceding example we only need to explicitly specify `<ChildContent>` because we have explicitly used one or more other render fragments (`Header` and `Footer`). If we don't want to specify a `<Header>` and a `<Footer>` then there would be no need to name `<ChildContent>` explicitly, Blazor will assume that all mark-up within between `<MyComponent>` and `</MyComponent>` is the render fragment for `ChildContent`.
 
 See [Passing data to RenderFragments](/templating-components-with-renderfragements/passing-data-to-a-renderfragement/) for more information.
+
+## Render-mode implications
+
+Templated components with `RenderFragment` work across all Blazor render modes: Static Server Rendering, Interactive Server, Interactive WebAssembly, and Interactive Auto. The `@ChildContent` is rendered as part of the component's output tree, so it inherits the component's render mode. If a component is interactive, its child content is interactive too. If a component is statically rendered, the child content is also static.

@@ -1,6 +1,6 @@
 ---
 title: "Incremental RenderTree proof"
-date: "2019-06-09"
+date: "2026-07-16"
 order: 1
 ---
 
@@ -50,8 +50,11 @@ Welcome to your new app.
 Main page showing values of list
 
 Now that we have some Blazor generated elements, we need to use some JavaScript to alter those elements.
-Edit **/wwwroot/index.html**, inside the opening `<body>` element add a button, and above the closing `</body>` add
-a reference to jQuery and some script to update the existing `<li>` elements.
+If you are using the standalone Blazor WebAssembly template, edit **/wwwroot/index.html**.
+For a Blazor Web App (the default template), there is no editable HTML host page; the app is rendered server-side.
+To follow along with this experiment, create a Blazor WebAssembly project or add a **wwwroot/index.html** to your project.
+Inside the opening `<body>` element add a button, and above the closing `</body>` add
+a script to update the existing `<li>` elements.
 
 ```razor {: .line-numbers}
 <!DOCTYPE html>
@@ -70,16 +73,11 @@ a reference to jQuery and some script to update the existing `<li>` elements.
 
     <script src="\_framework/blazor.webassembly.js"></script>
 
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-            crossorigin="anonymous"></script>
-
     <script>
-        $(function () {
-            $('#setValues').click(function () {
-                $('li').each(function () {
-                    var $elem = $(this);
-                    $elem.attr('originalValue', $elem.text());
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('setValues').addEventListener('click', function () {
+                document.querySelectorAll('li').forEach(function (elem) {
+                    elem.setAttribute('originalValue', elem.textContent);
                 });
             });
         });
@@ -89,8 +87,7 @@ a reference to jQuery and some script to update the existing `<li>` elements.
 ```
 
 - Line 12 adds a button in the HTML.
-- Line 17 references jQuery.
-- Line 21 adds a script that finds all `<li>` elements, gets their current `text`,
+- Line 17 adds a script that finds all `<li>` elements, gets their current `text`,
   and then assigns that to a new attribute named `originalValue`.
 
 Run the app, and right-click the first `<li>` element on the page and inspect it. Initially,
@@ -105,7 +102,7 @@ the elements will look like this:
 ```
 
 Next click the new **Set values** button at the top of the page,
-this will execute the JavaScript to add a new attribute to each `<li>` to record the original text it help.
+this will execute the JavaScript to add a new attribute to each `<li>` to record the original text it held.
 
 ![](images/IncrementalDomProof2.png)
 
@@ -141,3 +138,7 @@ Blazor will then re-render its view. Inspecting the elements now should show the
 We can see the existing elements were reused by the fact that the elements' `originalValue` attributes are not generated
 by Blazor and yet they still exist.
 The new element, that was newly created by Blazor, does not have an `originalValue` attribute.
+
+**Caution**: Mutating Blazor-managed DOM directly from JavaScript is an experiment to demonstrate how Blazor reuses elements, not a production pattern. Interfering with the DOM that Blazor owns can lead to unpredictable behavior. For proper interop, use `JSInvokable` methods and `ElementReference`.
+
+Now that we have seen how Blazor matches elements positionally, read about [Optimising using @key](/components/render-trees/optimising-using-key) to learn how to improve diffing when elements are reordered.

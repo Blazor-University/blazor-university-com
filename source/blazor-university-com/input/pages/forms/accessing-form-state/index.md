@@ -1,6 +1,6 @@
 ---
 title: "Accessing form state"
-date: "2020-03-04"
+date: "2026-07-16"
 order: 6
 ---
 
@@ -9,6 +9,18 @@ order: 6
 Sometimes, we need access to form state inside the `<EditForm>` child content.
 The most common use for this is when we need to access the CSS classes for an input,
 indicating whether the input is modified or valid/invalid.
+
+First, we need a model class with data annotations to drive validation.
+
+```cs
+using System.ComponentModel.DataAnnotations;
+
+public class MyContact
+{
+    [Required, EmailAddress]
+    public string EmailAddress { get; set; }
+}
+```
 
 For example, if we use Bootstrap to create an email input control prepended with the `@` symbol,
 we might end up with mark-up that looks something like the following.
@@ -40,7 +52,7 @@ If we want to apply the CSS `invalid` class to the `input-group` itself we can u
 The `ChildContent` parameter of `<EditForm>` is a `RenderFragment<EditContext>`,
 which means the `EditContext` instance is passed into its inner content via a variable named `context`
 (or whatever alias we tell Blazor to use).
-See [Templating components with RenderFragments for more information](/templating-components-with-renderfragements/).
+See [Templating components with RenderFragments](/templating-components-with-renderfragments/) for more information.
 
 ```razor {: .line-numbers}
 <EditForm Model=@MyContact Context="CurrentEditContext">
@@ -71,10 +83,12 @@ Prepended email input with error CSS applied to the parent element
 
 If we wish, we can hide the red outline on the generated `<input>` HTML element with some simple CSS.
 
+```css
 .input-group > input.invalid
 {
   outline: none;
 }
+```
 
 This CSS tells the browser that our `<input>` HTML element with an **invalid** class applied should not have a red outline
 if it is parented directly by an HTML element that has the **input-group** CSS class applied.
@@ -82,3 +96,35 @@ if it is parented directly by an HTML element that has the **input-group** CSS c
 ![](images/PrependedEmailError3.jpg)
 
 Input with only the outer element outlined
+
+## Using FieldCssClassProvider
+
+In addition to the `FieldCssClass` method on `EditContext`, Blazor also supports `FieldCssClassProvider` for more advanced scenarios. We can create a custom class that derives from `FieldCssClassProvider` and override the `GetFieldCssClass` method to provide our own logic for determining CSS classes based on field state. We then register it on the `EditContext` instance using the `SetFieldCssClassProvider` method.
+
+```cs
+public class CustomFieldCssClassProvider : FieldCssClassProvider
+{
+    public override string GetFieldCssClass(EditContext editContext,
+        in FieldIdentifier fieldIdentifier)
+    {
+        bool isModified = editContext.IsModified(fieldIdentifier);
+        bool isValid = !editContext.GetValidationMessages(fieldIdentifier).Any();
+
+        if (isModified)
+            return isValid ? "modified valid" : "modified invalid";
+
+        return "";
+    }
+}
+```
+
+We register this provider in our form's initialization.
+
+```cs
+protected override void OnInitialized()
+{
+    EditContext.SetFieldCssClassProvider(new CustomFieldCssClassProvider());
+}
+```
+
+Note that the `valid` and `invalid` CSS classes will only appear if a validation mechanism (such as `DataAnnotationsValidator` or a custom validator) has been wired up in the `EditForm`. Without validation, the framework does not know whether a field is valid or invalid.

@@ -1,6 +1,6 @@
 ---
 title: "Navigating our app via code"
-date: "2019-07-16"
+date: "2026-07-16"
 order: 7
 ---
 
@@ -9,9 +9,13 @@ order: 7
 Access to browser navigation from Blazor is provided via the `NavigationManager` service.
 This can be injected into a Blazor component using `@inject` in a razor file, or the `[Inject]` attribute in a CS file.
 
+Code-based navigation and the `LocationChanged` event only function in interactive render modes. In Static SSR, navigation is handled by the server and must use standard hyperlinks or form posts.
+
 The `NavigationManager` service has two members that are of particular interest; `NavigateTo` and `LocationChanged`.
 
 The `LocationChanged` event will be explained in more detail in [Detecting navigation events](/routing/detecting-navigation-events/).
+
+Since .NET 7, the `RegisterLocationChangingHandler` method can be used to intercept navigation before it completes. This is covered in the section on [Detecting navigation events](/routing/detecting-navigation-events/).
 
 ## The NavigateTo method
 
@@ -59,7 +63,7 @@ The `NavigationManager` was injected into our `CounterBase` class, and so is acc
   void AlterBy(int adjustment)
   {
     int newCount = CurrentCount + adjustment;
-    UriHelper.NavigateTo("/counter/" + newCount, forceLoad);
+    NavigationManager.NavigateTo("/counter/" + newCount, forceLoad);
   }
 }
 ```
@@ -103,7 +107,10 @@ The whole file should eventually look like this:
     int newCount = CurrentCount + adjustment;
 
     if (newCount >= 10)
+    {
       NavigationManager.NavigateTo("https://ibm.com");
+      return;
+    }
 
     NavigationManager.NavigateTo("/counter/" + newCount, forceLoad);
   }
@@ -160,6 +167,14 @@ This will result in an HTTP request to the server to retrieve the content to dis
 Note that a force load is not required in order to navigate to an off-site URL.
 Calling `NavigateTo` to another domain will invoke a full browser navigation.
 
+### NavigateTo overloads
+
+The `NavigateTo` method also accepts a `NavigationOptions` object that bundles the available options. Setting the `Replace` property to `true` replaces the current history entry rather than pushing a new one onto the browser's navigation stack:
+
+```cs
+NavigationManager.NavigateTo("/counter/5", new NavigationOptions { Replace = true, ForceLoad = false });
+```
+
 Play with the GitHub example for this section.
 Look in the browser's Console window to see how `IsNavigationIntercepted` differs when navigating via the buttons and
 the Reset link, and look in the browser's Network window to see how it behaves differently based on whether you are:
@@ -168,7 +183,7 @@ the Reset link, and look in the browser's Network window to see how it behaves d
 - Navigating with `forceLoad` set to `true`.
 - Navigating to an off-site URL.
 
-To observe the last scenario, you may wish to update your `AdjustBy` method to navigate off-site when `CurrentValue`
+To observe the last scenario, you may wish to update your `AlterBy` method to navigate off-site when `CurrentCount`
 passes a specific value.
 
 ```razor
@@ -177,7 +192,10 @@ void AlterBy(int adjustment)
   int newCount = CurrentCount + adjustment;
 
   if (newCount >= 10)
+  {
     NavigationManager.NavigateTo("https://ibm.com");
+    return;
+  }
 
   NavigationManager.NavigateTo("/counter/" + newCount, forceLoad);
 }

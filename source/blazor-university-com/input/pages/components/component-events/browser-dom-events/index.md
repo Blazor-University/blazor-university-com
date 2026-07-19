@@ -1,6 +1,6 @@
 ---
 title: "Browser DOM events"
-date: "2020-01-25"
+date: "2026-07-16"
 order: 1
 ---
 
@@ -22,14 +22,25 @@ DOM events start with `@on`.
 
 > Sets the '@onabort' attribute to the provided string or delegate value. A delegate value should be of type 'Microsoft.AspNetCore.Components.Web.ProgressEventArgs'
 
-**Warning:** When writing a Blazor app that runs entirely on the server,
-Blazor will hook events in the browser and send them to server so our C# methods can be invoked.
+> **Important:** DOM event handlers only work when the component uses an interactive render mode (InteractiveServer, InteractiveWebAssembly, or InteractiveAuto). Under [Static Server-Side Rendering (Static SSR)](/render-modes/static-server-side-rendering), DOM events are ignored because there is no active Blazor circuit to process them.
+
+**Warning:** When using InteractiveServer render mode (the old "Blazor Server" model),
+Blazor hooks events in the browser and sends them to the server so our C# methods can be invoked.
 This can lead to a noticeable slow-down for frequently fired events such as `onmousemove`.
 
 **Note:** Because JavaScript invocation of C# methods is asynchronous,
 this means that in C# methods we cannot cancel events as we can in JavaScript.
 This is because cancelling browser DOM events is a synchronous operation,
 by the time our C# has been asynchronously invoked it is already too late to cancel the event.
+
+Blazor provides directive attributes `:preventDefault` and `:stopPropagation` to handle these concerns declaratively in the markup instead:
+
+```razor
+<input type="submit" @onclick:preventDefault/>
+<button @onclick:stopPropagation>Click</button>
+```
+
+These are covered in more detail in the [Directives](/components/literals-expressions-and-directives/directives/) section.
 
 Available DOM events and their parameter types include:
 

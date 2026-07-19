@@ -1,6 +1,6 @@
 ---
 title: "Detecting navigation events"
-date: "2019-09-02"
+date: "2026-07-16"
 order: 8
 ---
 
@@ -14,7 +14,7 @@ This can be injected into a Blazor component using `@inject` in a razor file, or
 `LocationChanged` is an event that is triggered whenever the URL in the browser is altered.
 It passes an instance of `LocationChangedEventArgs` which provides the following information:
 
-```razor
+```csharp
 public readonly struct LocationChangedEventArgs
 {
   public string Location { get; }
@@ -36,9 +36,56 @@ The `Location` property is the full URL as it appears in the browser, including 
     Ultimately, any navigation event that wasn't initiated via `NavigationManager.NavigateTo` will be considered an intercepted
     navigation, and this value will be `true`.
 
-Note there is currently no way to intercept a navigation and prevent it from proceeding.
+## Intercepting navigation
 
-### Observing OnLocationChanged events
+Since .NET 7, we have two ways to intercept a navigation and either react to it or prevent it from proceeding.
+
+### RegisterLocationChangingHandler
+
+The `NavigationManager.RegisterLocationChangingHandler` method registers a handler that is invoked before navigation occurs. The handler receives a `LocationChangingContext` which allows us to inspect the target location and optionally prevent the navigation.
+
+```cs
+protected override void OnInitialized()
+{
+    NavigationManager.RegisterLocationChangingHandler(OnLocationChanging);
+}
+
+private async ValueTask OnLocationChanging(LocationChangingContext context)
+{
+    if (!AllowNavigation(context.TargetLocation))
+    {
+        context.PreventNavigation();
+    }
+}
+```
+
+The handler can also be used to perform asynchronous work before navigation completes, such as saving state or showing a confirmation dialog.
+
+### NavigationLock component
+
+The `NavigationLock` component provides a declarative way to prevent internal navigation. It is useful when a user has unsaved changes on a form and we want to prompt them before they leave.
+
+```razor
+<NavigationLock OnBeforeInternalNavigation="@OnNavigation" />
+
+@code {
+    private async Task OnNavigation(NavigationLockContext context)
+    {
+        if (HasUnsavedChanges)
+        {
+            context.PreventNavigation();
+        }
+    }
+}
+```
+
+Note that `NavigationLock` only intercepts internal Blazor navigations, not full browser reloads or external navigations.
+
+## Render mode considerations
+
+The `LocationChanged` event, `RegisterLocationChangingHandler`, and `NavigationLock` all operate within interactive render modes. In Static SSR, the server controls navigation and these APIs are not available.
+
+## Observing OnLocationChanged events
 
 It is important to note that the `NavigationManager` service is a long-living instance.
 Consequently, any component that subscribes to its `LocationChanged` event will be strongly referenced for the duration
@@ -71,4 +118,31 @@ void IDisposable.Dispose()
   // Unsubscribe from the event when our component is disposed
   NavigationManager.LocationChanged -= LocationChanged;
 }
+
+## IAsyncDisposable for async cleanup
+
+If a component performs asynchronous cleanup, it can implement `IAsyncDisposable` instead of `IDisposable`. Only `DisposeAsync` will be called if both interfaces are implemented.
+
+```razor
+@implements IAsyncDisposable
+@inject NavigationManager NavigationManager
+
+protected override void OnInitialized()
+{
+  NavigationManager.LocationChanged += LocationChanged;
+  base.OnInitialized();
+}
+
+void LocationChanged(object sender, LocationChangedEventArgs e)
+{
+  string navigationMethod = e.IsNavigationIntercepted ? "HTML" : "code";
+  System.Diagnostics.Debug.WriteLine($"Notified of navigation via {navigationMethod} to {e.Location}");
+}
+
+async ValueTask IAsyncDisposable.DisposeAsync()
+{
+  NavigationManager.LocationChanged -= LocationChanged;
+  await SomeAsyncCleanupOperation();
+}
+```
 ```

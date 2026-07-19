@@ -1,6 +1,6 @@
 ---
 title: "Handling form submission"
-date: "2019-08-24"
+date: "2026-07-16"
 order: 4
 ---
 
@@ -76,6 +76,24 @@ events by declaring them against the `EditForm`.
 }
 ```
 
+## Async submission handlers
+
+Submit handlers can be async. To handle form submission asynchronously, mark the handler with `async Task` and use `await` inside it.
+
+```razor
+<EditForm Model=@Person OnValidSubmit=@ValidFormSubmitted>
+  ...
+</EditForm>
+
+@code {
+  async Task ValidFormSubmitted(EditContext editContext)
+  {
+    await Task.Delay(500);
+    // Submit data to an API, save to a database, etc
+  }
+}
+```
+
 ## OnSubmit
 
 The `OnSubmit` event is executed when the form is submitted, regardless of whether the form passes validation or not.
@@ -112,6 +130,35 @@ which returns `true` if the form is valid or `false` if it is invalid (has valid
 }
 ```
 
+## Static SSR form submission
+
+In Static Server-Side Rendering (Static SSR), there is no ongoing Blazor circuit and the interactive form submission events (OnSubmit, OnValidSubmit, OnInvalidSubmit) do not fire. Instead, the form is submitted via HTTP POST and Blazor maps the posted data to our page model.
+
+To use this pattern, we give the `EditForm` a `FormName` and apply `[SupplyParameterFromForm]` to the model property.
+
+```razor
+@page "/"
+@using Microsoft.AspNetCore.Components.Forms
+
+<EditForm Model=@Person FormName="PersonForm" OnValidSubmit=@ValidFormSubmitted>
+  <DataAnnotationsValidator/>
+  <InputText @bind-Value=Person.Name />
+  <input type="submit" value="Save" />
+</EditForm>
+
+@code {
+  [SupplyParameterFromForm]
+  public Person? Person { get; set; }
+
+  void ValidFormSubmitted(EditContext editContext)
+  {
+    // This runs after model binding and validation on the server
+  }
+}
+```
+
+When the page is rendered statically, the `EditForm` renders a `<form>` element with `method="post"`. On submission, Blazor binds the form data to the `[SupplyParameterFromForm]` property and then executes the submit handler in an interactive context.
+
 ## Blazor validation limitations
 
 For a simple form where all of the properties are simple types, validation works fine.
@@ -126,3 +173,32 @@ is valid, even though `Address.Line` and `Address.PostalCode` are both decorated
 The behavior we actually want would result in a user-experience that looks like the following screenshot.
 
 ![](images/BlazorFormValidationCorrect.png)
+
+### Resolving the limitation with AddValidation
+
+In .NET 10, this limitation is resolved by registering the built-in validation service in **Program.cs** with `builder.Services.AddValidation()` and annotating the model with `[ValidatableType]`. When registered, Blazor automatically validates the entire object graph, including nested complex-type properties, without requiring the user to edit every sub-property first.
+
+```cs
+// Program.cs
+builder.Services.AddValidation();
+```
+
+```cs
+[ValidatableType]
+public class Person
+{
+  [Required]
+  public string Name { get; set; }
+  public Address? HomeAddress { get; set; }
+}
+
+public class Address
+{
+  [Required]
+  public string Line { get; set; }
+  [Required]
+  public string PostalCode { get; set; }
+}
+```
+
+With `AddValidation` registered, the `<DataAnnotationsValidator/>` component inside the `EditForm` is no longer needed, and `editContext.Validate()` will correctly report validation errors on nested complex types.

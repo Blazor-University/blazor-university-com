@@ -1,6 +1,6 @@
 ---
 title: "Component lifecycles"
-date: "2019-04-27"
+date: "2026-07-16"
 order: 10
 ---
 
@@ -13,6 +13,40 @@ The following diagram outlines the flow of these lifecycle methods.
 ## Component lifecycle diagram
 
 ![](images/component-lifecycle-1.jpg)
+
+## Lifecycle under different render modes
+
+The lifecycle methods described below behave differently depending on the render mode.
+
+**Static Server-Side Rendering (Static SSR)** does not execute the `OnAfterRender` / `OnAfterRenderAsync` methods at all because there is no interactive Blazor circuit in the browser. The component renders once on the server and the HTML is sent to the client. Any JavaScript interop calls made during `OnInitialized` or `OnParametersSet` will also fail because there is no JS bridge available.
+
+**Prerendering** (such as when using Interactive Server with prerendering enabled) runs the component twice. First, the component is rendered statically on the server to produce HTML. During this prerender phase, `OnInitialized` / `OnInitializedAsync` and `OnParametersSet` / `OnParametersSetAsync` execute, but `OnAfterRender` / `OnAfterRenderAsync` is skipped (same as Static SSR). Once the Blazor circuit is established in the browser, the component is rendered interactively and all lifecycle methods run normally, including `OnAfterRender` / `OnAfterRenderAsync`. This means code in `OnInitializedAsync` that fetches data may execute twice, so it is common to guard against duplicate work using a flag or by persisting state with `PersistentComponentState`.
+
+Blazor provides the `PersistentComponentState` service and, in .NET 10, the `[PersistentState]` attribute to help manage this. When prerendering, you can store serializable state in `PersistentComponentState` during `OnInitializedAsync`; the state is then rehydrated on the client so the interactive render can skip the server call.
+
+```cs
+@using Microsoft.AspNetCore.Components
+@inject PersistentComponentState PersistentComponentState
+
+@code
+{
+    [PersistentState("weather")]
+    private WeatherForecast[]? Forecasts { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Forecasts is null)
+        {
+            Forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("weather");
+            PersistentComponentState.RegisterOnPersisting(() =>
+            {
+                // State will be serialized for rehydration
+                return Task.CompletedTask;
+            });
+        }
+    }
+}
+```
 
 ## SetParametersAsync
 
@@ -29,7 +63,7 @@ See [Optional route parameters](/routing/optional-route-parameters/) for a full 
 
 ## OnInitialized / OnInitializedAsync
 
-Once the state from the `ParameterCollection` has been assigned to the component's `[Parameter]` properties,
+Once the state from the `ParameterView` has been assigned to the component's `[Parameter]` properties,
 these methods are executed. This is useful in the same way as **SetParametersAsync**,
 except it is possible to use the component's state.
 
@@ -73,6 +107,8 @@ private async Task GetDataFromMultipleSourcesAsync()
 
 The call to StateHasChanged will be honored when an `await` occurs (line 6) or when the method completes (line 10).
 
+When a component handles its own events (such as `@onclick`), Blazor's `IHandleEvent` infrastructure automatically calls `StateHasChanged` after the event handler completes. This means you generally do not need to call `StateHasChanged` manually in event handlers.
+
 ## ShouldRender
 
 This method can be used to prevent the component's RenderTree from being recalculated by returning `false`.
@@ -102,7 +138,7 @@ The preceding mark-up will add an `h1` to the render tree with "People" as its c
 If our component re-renders at a later time with an additional item in `people` then a new instance of the
 `ShowPersonDetails` component will be created and added to our component's RenderTree.
 If there are fewer items in `people` then some of the previously created `ShowPersonDetails` component instances will be
-discarded from our component's RenderTree, and `Dispose()` will be executed on them if they implement `IDiposable`.
+discarded from our component's RenderTree, and `Dispose()` will be executed on them if they implement `IDisposable`.
 
 **Note:** For rendering efficiency, whenever possible always use the [@key directive](/components/render-trees/)
 when rendering mark-up within any kind of loop.
@@ -164,6 +200,23 @@ To implement IDisposable we need to add `@implements IDisposable` to our razor f
 }
 ```
 
+## IAsyncDisposable
+
+In addition to `IDisposable`, Blazor also supports the asynchronous disposal pattern. If a component implements `IAsyncDisposable`, Blazor will call `DisposeAsync` when the component is removed from the render tree. This is useful for tearing down asynchronous resources such as network connections or file streams.
+
+```razor
+@implements IAsyncDisposable
+<h1>This is MyComponent</h1>
+
+@code {
+  async ValueTask IAsyncDisposable.DisposeAsync()
+  {
+    // Asynchronous cleanup code here
+    await SomeAsyncCleanupAsync();
+  }
+}
+```
+
 ## Awaiting within Async lifecycle methods
 
 It is important to note that instead of waiting for long-running asynchronous methods to complete before being able to
@@ -211,7 +264,7 @@ The simple rule is that `SetParametersAsync` is the only method that cannot susp
 All other async methods can suspend the lifecycle process until execution exits the method,
 and the first `await` will cause a render via `BuildRenderTree` to prevent the user from having to wait to see updates.
 
-`OnRenderAsync` might look like an exception as it performs no further action in either case.
+`OnAfterRenderAsync` might look like an exception as it performs no further action in either case.
 If we consider the fact that rendering is the end of execution chain then we can think of it as
 completing the chain rather than doing nothing.
 As for rendering on `await`, if desired then this must be done explicitly by the programmer by calling `StateHasChanged`,

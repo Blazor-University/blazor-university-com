@@ -1,8 +1,10 @@
 ---
 title: "Passing HTML element references"
-date: "2019-04-27"
+date: "2026-07-16"
 order: 2
 ---
+
+> **Note:** Modern Blazor provides the built-in `ElementReference.FocusAsync()` method for focusing elements without JavaScript interop. This is the recommended approach. The JavaScript interop examples that follow are retained as teaching exercises to illustrate how to pass HTML element references to JavaScript.
 
 [![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/JavaScriptInterop/HtmlElementReferences)
 
@@ -24,7 +26,7 @@ When we require a reference to an HTML element we should decorate that element (
 We identify which member in our component will hold a reference to the HTML element by creating a member
 with the type `ElementReference` and identify it on the element using the `@ref` attribute.
 
-```razor {: .line-numbers}
+```razor
 @page "/"
 
 <h1 @ref=MyElementReference>Hello, world!</h1>
@@ -35,16 +37,13 @@ Welcome to your new app.
 }
 ```
 
-- **Line 3**  
-    Defines an HTML element and uses `@ref` to specify which member in our component we will use when referencing that element (MyElementReference).
-- **Line 7**  
-    The member that will be used when referencing the element decorated with `@ref`.
+The `@ref` attribute on the `<h1>` element tells Blazor to store a reference to that element in the `MyElementReference` field.
 
 If we alter the **Index.razor** file of a new Blazor application to add an element reference to the `h1` element and
 run the application, we'll see something like the following generated HTML.
 
 ```html
-<h1 \_bl\_bc0f34fa-16bd-4687-a8eb-9e3838b5170d="">Hello, world!</h1>
+<h1 _bl_bc0f34fa-16bd-4687-a8eb-9e3838b5170d="">Hello, world!</h1>
 ```
 
 The addition of this specially formatted attribute is how Blazor uniquely identifies an element
@@ -52,6 +51,8 @@ without having to hijack the element's `id` parameter.
 We'll now use `@ref`,`ElementReference`, and JavaScript interop to solve a common problem.
 
 ## Case: Auto focusing elements
+
+> **Note:** Modern Blazor provides `ElementReference.FocusAsync()` as a built-in method for focusing elements without JavaScript interop. The following exercise is retained as a teaching example.
 
 The HTML specification has an `autofocus` attribute that can be applied to any focusable element;
 when a page is loaded the browser will find the first element decorated with `autofocus` and give it focus.
@@ -77,18 +78,18 @@ Run the application and observe how the `<input>` element does not automatically
 - In the **wwwroot** folder create a **scripts** folder.
 - Within that folder create a new file named **AutoFocus.js** and enter the following script.
 
-```razor
+```js
 var BlazorUniversity = BlazorUniversity || {};
 BlazorUniversity.setFocus = function (element) {
     element.focus();
 };
 ```
 
-Make sure a reference is added to this script either in **/Pages/_Host.cshtml** (Server-side Blazor apps) or **/wwwroot/index.html** (WebAssembly Blazor apps).
+Make sure a reference is added to this script in **/App.razor** (or **/Components/App.razor**) after the `blazor.web.js` script tag.
 
 In the **Index.razor** page change the mark-up as follows:
 
-```razor {: .line-numbers}
+```razor
 @page "/"
 @inject IJSRuntime JSRuntime
 Enter your name
@@ -226,7 +227,7 @@ Welcome to your new app.
 
     private void ShowSerializedReference()
     {
-        Log += System.Text.Json.JsonSerializer.Serialize(MyElementReference) + "\\r\\n";
+        Log += System.Text.Json.JsonSerializer.Serialize(MyElementReference) + "\r\n";
     }
 }
 ```
@@ -284,3 +285,7 @@ Enter your name
 ```
 
 > **_Note_:** There are plans for a future Blazor to automatically create the `ElementReference` member.
+
+## Static SSR and prerendering caveat
+
+As with all JavaScript interop, passing `ElementReference` values to JavaScript is not available during static server-side rendering or the prerendering phase of interactive render modes. The `ElementReference` will not have a valid identifier until the component has rendered in the browser. Always use `OnAfterRenderAsync` and check the `firstRender` parameter before passing element references to JavaScript.

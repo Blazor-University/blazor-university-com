@@ -1,6 +1,6 @@
 ---
 title: "Comparing dependency scopes"
-date: "2020-05-25"
+date: "2026-07-16"
 order: 4
 ---
 
@@ -85,11 +85,13 @@ public class MySingletonService : IMySingletonService
 
 ### Registering our services
 
-Edit the Startup.cs file, and in the `ConfigureServices` method register our services as follows.
+Edit the **Program.cs** file, and register our services before the `builder.Build()` call as follows.
 
-services.AddSingleton<IMySingletonService, MySingletonService>();
-services.AddScoped<IMyScopedService, MyScopedService>();
-services.AddTransient<IMyTransientService, MyTransientService>();
+```cs
+builder.Services.AddSingleton<IMySingletonService, MySingletonService>();
+builder.Services.AddScoped<IMyScopedService, MyScopedService>();
+builder.Services.AddTransient<IMyTransientService, MyTransientService>();
+```
 
 ## User interface
 
@@ -171,13 +173,14 @@ Run the application and you'll see the following output.
 ![](images/ScopeComparisonServerPrerendered.jpg)
 
 It might come as a surprise that our Scoped Instance is `#2` when it should be the first instance.
-This is because server-side Blazor apps pre-render our page to send back a full HTML response before establishing a SignalR
+This is because the app pre-renders the page to send back a full HTML response before establishing a SignalR
 connection between browser and server to actually start our user's session.
-We can disable this for now by doing the following.
+We can disable prerendering by setting `prerender: false` on the interactive render mode.
+In the root component (typically **App.razor**), apply the render mode as follows:
 
-- Edit **/Pages/_Host.cshtml**
-- Locate the text `render-mode="ServerPrerendered"`
-- Change `ServerPrerendered` to `Server`
+```razor
+<Routes @rendermode="new InteractiveServerRenderMode(prerender: false)" />
+```
 
 Re-running the app now will give us the result we expect.
 
@@ -205,7 +208,8 @@ We'll create a simple wizard style UI with the following steps
 ### Ensuring components are recreated at each step
 
 To ensure our components are created on each navigation, we'll have a `CurrentStep` field and display one or another set
-of components depending on if the `CurrentStep` is an odd or even number.
+of components depending on if the `CurrentStep` is an odd or even number. The two branches are identical so that switching
+between them forces the component instances to be destroyed and recreated, revealing the scope behavior.
 
 ```razor
 @if (CurrentStep % 2 == 1)
@@ -351,7 +355,7 @@ else
 - **Line 69**  
     If the `Continue` route parameter is not null then continue from step 3.
 - **Line 76**  
-    If the clicks the **Next step** button and ends up on step 3, then force a reload of the page.
+    If the user clicks the **Next step** button and ends up on step 3, then force a reload of the page.
 
 ## Running the application
 
@@ -371,7 +375,7 @@ they will receive the same Scoped dependency along with two new Transient depend
 When the user clicks the **Next step** button again the app will force a reload of the app at the new path `/continue`.
 Because the ID of the SignalR connection was forgotten when the page was reloaded,
 the user will be set up with a new connection and therefore a new scope.
-So now when the first couple of components are rendered they Scoped instance `#2`.
+So now when the first couple of components are rendered they get Scoped instance `#2`.
 
 ![](images/ScopeComparison3.jpg)
 
@@ -415,19 +419,27 @@ And then finally.
 
 ## Conclusion
 
-Due to the fact that the user interface and the UI logic are tied together in a Blazor application,
-there is no per-request dependency injection scope.
+The behavior of each scope depends on the render mode:
 
-Singleton registered dependencies are shared across users in a server-side application,
-but unique per browser tab in a WebAssembly application.
+| Render mode | Singleton | Scoped | Transient |
+| --- | --- | --- | --- |
+| Static SSR | Shared across all requests | Per HTTP request | Created per injection |
+| Interactive Server | Shared across all circuits | Per SignalR circuit | Created per injection |
+| Interactive WebAssembly | Per tab (app instance) | Per tab (same as Singleton in practice) | Created per injection |
 
-Scoped dependencies act pretty much the same as Singleton registered dependencies,
-except they are isolated from other users / other browser tabs.
+Singleton registered dependencies are shared across all users in an Interactive Server application,
+but unique per browser tab in an Interactive WebAssembly application.
 
-Transient dependencies work the same on both server-side and WebAssembly,
-and the same as in ASP.NET MVC -
-except for the fact that the dependency injection container is disposed of after a page request in ASP.NET MVC.
+Scoped dependencies under Interactive Server act similarly to Singleton dependencies,
+except they are isolated from other users or other browser tabs. Under Static SSR, they behave
+like traditional per-request scopes. Under Interactive WebAssembly, Scoped effectively equals Singleton
+because each tab is its own process.
+
+Transient dependencies work the same across all render modes and the same as in ASP.NET MVC,
+except that the dependency injection container is disposed of after a page request in ASP.NET MVC.
 See the [Avoiding memory leaks](/dependency-injection/dependency-lifetimes-and-scopes/transient-dependencies/#avoiding-memory-leaks)
 section of Transient dependencies.
 
-There are ways of introducing additional scopes for each user. This technique will be covered in a later section.
+There are ways of introducing additional scopes for each component instance.
+This technique will be covered in the next section on
+[Component scoped dependencies](/dependency-injection/component-scoped-dependencies/).

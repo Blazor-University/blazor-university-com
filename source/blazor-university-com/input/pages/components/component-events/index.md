@@ -1,10 +1,12 @@
 ---
 title: "Component events"
-date: "2020-01-09"
+date: "2026-07-16"
 order: 4
 ---
 
 [![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Components/EventCallbacks)
+
+> **Prerequisite:** The interactive examples in this section require the component to use an interactive render mode such as InteractiveServer or InteractiveWebAssembly. Without an interactive render mode, event callbacks from child components are not processed. See [Render modes](/render-modes) for details.
 
 The `EventCallback<T>` class is a special Blazor class that can be exposed as a Parameter 
 so that components can easily notify consumers when something of interest has occurred.
@@ -14,7 +16,7 @@ consuming components can specify in Razor mark-up which method to call when the 
 
 ## Adding an event to the Counter component
 
-In a new Blazor app, edit the **/Pages/Counter.razor** file and add a new callback parameter.
+In a new Blazor app, edit the **Components/Pages/Counter.razor** file and add a new callback parameter.
 ```razor
 [Parameter]
 public EventCallback<int> OnMultipleOfThree { get; set; }
@@ -37,7 +39,7 @@ private async Task IncrementCount()
 
 ## Subscribing to EventCallback<T>
 
-Edit the **/Pages/Index.razor** page so that we embed the Counter component and subscribe to its **OnMultipleOfThree** event.
+Edit the **Components/Pages/Home.razor** page so that we embed the Counter component and subscribe to its **OnMultipleOfThree** event.
 Change its mark-up to the following.
 
 ```razor {: .line-numbers}
@@ -119,7 +121,7 @@ on the consuming component so it can be re-rendered in case the method called al
 This is not something that will happen if the consumer's method was called back via a standard .NET event, `Action<T>`,
 or any other approach not initiated by `EventCallback<T>`.
 
-For example, if we add a new `[Parameter]` to the **Counter** component of type `Action<int>` and
+For example, if we add a new `[Parameter]` to the **Counter** component of type `Action<int>?` and
 call it whenever the current count is a multiple of two, we can see how the consuming component's render behavior is affected.
 
 Change the **Counter** component to match the following code:
@@ -137,7 +139,7 @@ Change the **Counter** component to match the following code:
   private int currentCount = 0;
 
   [Parameter]
-  public Action<int> OnMultipleOfTwoAction { get; set; }
+  public Action<int>? OnMultipleOfTwoAction { get; set; }
 
   [Parameter]
   public EventCallback<int> OnMultipleOfThree { get; set; }
@@ -155,7 +157,7 @@ Change the **Counter** component to match the following code:
 ```
 
 - **Line 13**  
-    A `[Parameter]` is added of type `Action<int>`
+    A `[Parameter]` is added of type `Action<int>?`
 - **Lines 21-22**  
     If the current count is a multiple of two, then invoke **OnMultipleOfTwoAction**
 
@@ -201,7 +203,7 @@ and so it also stores and displays the last number received from **OnMultipleOfT
 
 When we run the application now and click the button a number of times,
 we'll see that when **UpdateLastMultipleOfTwoValue** is called back via `Action<int>` there is no update to the view,
-but when **UpdateLastMultipleOfThreeValue** is called back via `EventCallback<int>` on the next click the view us updated
+but when **UpdateLastMultipleOfThreeValue** is called back via `EventCallback<int>` on the next click the view is updated
 and the latest value of both are displayed.
 
 ![](images/ComponentCallbacksViaAction.gif)
@@ -295,5 +297,33 @@ public Task SomethingHappenedInChildComponent()
 {
   // Do some asynchronous work that doesn't need the value
   return SomeTask;
+}
+```
+
+## Non-generic EventCallback
+
+When we only need to notify a parent that something happened without passing a value, we can use the non-generic `EventCallback` instead of `EventCallback<T>`. It works the same way but omits the typed payload.
+
+```razor
+[Parameter]
+public EventCallback OnSomethingHappened { get; set; }
+```
+
+Invoking it is the same, but without a value argument:
+
+```razor
+await OnSomethingHappened.InvokeAsync();
+```
+
+A parent component can subscribe to it like any other event callback:
+
+```razor
+<ChildComponent OnSomethingHappened=@HandleSomethingHappened/>
+```
+
+```razor
+private void HandleSomethingHappened()
+{
+  // No value parameter needed
 }
 ```

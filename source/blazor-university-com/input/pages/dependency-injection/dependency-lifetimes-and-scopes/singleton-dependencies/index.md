@@ -1,6 +1,6 @@
 ---
 title: "Singleton dependencies"
-date: "2020-05-02"
+date: "2026-07-16"
 order: 2
 ---
 
@@ -17,7 +17,7 @@ To illustrate this shared state, let's create a very simple (i.e. non-scalable) 
 
 First, create a new Blazor Server App. Then create a new folder named **Services** and add the following interface.
 This is the service our UI will use to send a message to other users, to be notified whenever a user sends a message,
-and when our user first connects will enable them to see an limited history of the chat so far.
+and when our user first connects will enable them to see a limited history of the chat so far.
 Because this is a Singleton dependency running on a Blazor server-side application,
 it will be shared by all users on the same server.
 
@@ -56,7 +56,7 @@ public class ChatService : IChatService
       while (ChatHistory.Count > 50)
         ChatHistory.RemoveAt(0);
 
-      ChatWindowText = string.Join("\\r\\n", ChatHistory.Take(50));
+      ChatWindowText = string.Join(Environment.NewLine, ChatHistory.Take(50));
     }
 
     TextAdded?.Invoke(this, EventArgs.Empty);
@@ -75,9 +75,11 @@ public class ChatService : IChatService
 - **Line 25**  
     Informs all consumers of the chat service that the `ChatWindowText` has been updated.
 
-To register the service, open **Startup.cs** and in `ConfigureServices` add the following
+To register the service, open **Program.cs** and add the following before `builder.Build()` is called.
 
-services.AddSingleton<IChatService, ChatService>();
+```cs
+builder.Services.AddSingleton<IChatService, ChatService>();
+```
 
 ## Defining the user interface
 
@@ -92,7 +94,7 @@ public partial class Index
 }
 ```
 
-Well need our component class to do the following
+We'll need our component class to do the following
 
 1. When initialised, subscribe to `ChatService.TextAdded`.
 2. To avoid our Singleton holding on to references of disposed objects,
@@ -219,6 +221,21 @@ This is because the `IChatService.TextAdded` event will be triggered by whicheve
 and will therefore be triggered by various threads.
 We need Blazor to marshal these calls using `InvokeAsync` to ensure all threaded calls on our component are performed in
 sequence.
+
+## A note on prerendering
+
+In a server-side Blazor application, the component is first rendered statically on the server during prerendering,
+and then rendered interactively once the SignalR circuit is established. This means `OnInitialized` (and `OnInitializedAsync`)
+may be called twice: once during prerendering and once when the circuit starts. If our singleton service performs
+initialization work that should only run once, we need to guard against this double invocation. A common approach is to
+check a flag, or to move one-time initialization into the component's constructor or into a dedicated service method.
+
+## Singleton subscription leak pattern
+
+When a component subscribes to an event on a singleton service (as we do with `ChatService.TextAdded`), the singleton
+holds a reference to the component's delegate. If the component is disposed without unsubscribing, the component cannot
+be garbage collected. This is a common memory leak pattern in Blazor. Always unsubscribe from singleton events in
+`IDisposable.Dispose` (or `IAsyncDisposable.DisposeAsync`), as shown in the code example above.
 
 ## Adding the chat window to our user interface
 

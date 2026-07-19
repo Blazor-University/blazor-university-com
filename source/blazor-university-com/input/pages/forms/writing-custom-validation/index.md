@@ -1,6 +1,6 @@
 ---
 title: "Writing custom validation"
-date: "2019-09-02"
+date: "2026-07-16"
 order: 7
 ---
 
@@ -25,7 +25,9 @@ can then be garbage collected, and with it all instances of classes that are gro
 ![](images/ValidationMessageStoresUML2.png)
 
 Our custom validation will be based on [FluentValidation](https://github.com/JeremySkinner/FluentValidation).
-Once you've finished this section (or if you just want something you can use straight away), please have a look a [blazor-validation](https://github.com/mrpmorris/blazor-validation).
+Once you've finished this section (or if you just want something you can use straight away), please have a look at [blazor-validation](https://github.com/mrpmorris/blazor-validation) or [Blazored.FluentValidation](https://github.com/Blazored/FluentValidation).
+
+Note that .NET 10 introduced a built-in `AddValidation()` method and `[ValidatableType]` attribute that provide a simpler alternative for many validation scenarios without needing a custom component.
 
 ## Creating a validator component
 
@@ -40,7 +42,7 @@ package.
 Then create a class called `FluentValidationValidator`.
 
 ```razor
-public class FluentValidationValidator : ComponentBase
+public class FluentValidationValidator : ComponentBase, IDisposable
 {
     [CascadingParameter]
     private EditContext EditContext { get; set; }
@@ -52,6 +54,15 @@ public class FluentValidationValidator : ComponentBase
     private ValidationMessageStore ValidationMessageStore;
     [Inject]
     private IServiceProvider ServiceProvider { get; set; }
+
+    public void Dispose()
+    {
+        if (EditContext != null)
+        {
+            EditContext.OnValidationRequested -= ValidationRequested;
+            EditContext.OnFieldChanged -= FieldChanged;
+        }
+    }
 }
 ```
 
@@ -118,7 +129,7 @@ private void ValidatorTypeChanged()
 }
 ```
 
-For this to work, we must register our validator in our app's `Startup.ConfigureServices` method - which we'll do once we have a validator and something to validate.
+For this to work, we must register our validator in our app's `Program.cs` - which we'll do once we have a validator and something to validate.
 
 Whenever the `EditContext` changes we need a new `ValidationMessagesStore` to store our validation error messages in.
 
@@ -152,7 +163,7 @@ async void ValidationRequested(object sender, ValidationRequestedEventArgs args)
 {
     ValidationMessageStore.Clear();
     var validationContext =
-        new ValidationContext<object>(EditContext.Model);
+        ValidationContext<object>.CreateWithOptions(EditContext.Model);
     ValidationResult result =
         await Validator.ValidateAsync(validationContext);
     AddValidationResult(EditContext.Model, result);
@@ -163,7 +174,7 @@ async void ValidationRequested(object sender, ValidationRequestedEventArgs args)
     First we clear out all error messages from any previous validations.
 - **Line 4**  
     Next we instruct the `FluentValidation.IValidator` to validate the Model being edited in the `EditForm`
-    (which we access via `EditContext.Model`).
+    (which we access via `EditContext.Model`). We use the modern `ValidationContext<T>.CreateWithOptions` API instead of the older constructor.
 - **Line 5**  
     Finally we add any validation errors to our `ValidationMessageStore`,
     this is done in a separate method because we will use it when validating a whole object and also when validating
@@ -201,10 +212,13 @@ async void FieldChanged(object sender, FieldChangedEventArgs args)
 
     var propertiesToValidate = new string[] { fieldIdentifier.FieldName };
     var fluentValidationContext =
-        new ValidationContext<object>(
+        ValidationContext<object>.CreateWithOptions(
             instanceToValidate: fieldIdentifier.Model,
-            propertyChain: new FluentValidation.Internal.PropertyChain(),
-            validatorSelector: new FluentValidation.Internal.MemberNameValidatorSelector(propertiesToValidate)
+            options =>
+            {
+                options.PropertyChain(new FluentValidation.Internal.PropertyChain());
+                options.IncludeProperties(propertiesToValidate);
+            }
         );
 
     ValidationResult result = await Validator.ValidateAsync(fluentValidationContext);
@@ -216,7 +230,7 @@ async void FieldChanged(object sender, FieldChangedEventArgs args)
 - **Lines 3-4**  
     Gets the `FieldIdentifier` (ObjectInstance/PropertyName pair) from the event args and clears down all previous error
     message for only that property.
-- **Line 16**  
+- **Line 18**  
     Uses the same method used by `ValidationRequested` to add the errors from FluentValidation to our `ValidationMessageStore`.
 
 ## Using the component
@@ -254,13 +268,10 @@ namespace CustomValidation.Validators
 ```
 
 Because our validation component uses `IServiceProvider` to create an instance of our validator,
-we need to register it in `Startup.ConfigureServices`.
+we need to register it in `Program.cs`.
 
-```razor
-public void ConfigureServices(IServiceCollection services)
-{
-    services.AddScoped<Validators.PersonValidator>();
-}
+```cs
+builder.Services.AddScoped<Validators.PersonValidator>();
 ```
 
 Finally, we need to set up our user interface to edit an instance of our `Person` class.
@@ -335,9 +346,9 @@ input regardless of which `ValidationMessageStore` they were added to.
 
 1. `<EditForm>` executes `EditContext.Validate`.
 2. `EditContext` triggers its `OnValidationRequested` event.
-3. Our component's even subscription tells our `ValidationMessageStore` to clear out _all_ of its previous validation error
+3. Our component's event subscription tells our `ValidationMessageStore` to clear out _all_ of its previous validation error
    messages for all fields.
-4. Out component performs its custom validation for the whole `EditContext.Model` object.
+4. Our component performs its custom validation for the whole `EditContext.Model` object.
 5. As with validation for individual changes, the errors are added to the `ValidationMessageStore`,
    which registers itself with all the relevant `FieldState` instances within the `EditContext`.
 6. `<EditForm>` triggers the relevant valid/invalid event depending on whether or not there were error messages.

@@ -1,6 +1,6 @@
 ---
 title: "Code generated HTML attributes"
-date: "2019-07-11"
+date: "2026-07-16"
 order: 7
 ---
 
@@ -8,7 +8,7 @@ order: 7
 
 Razor is great when it comes to conditional HTML output, or outputting HTML in a for-loop,
 but when it comes to conditional code within the element itself things are a bit more tricky.
-For example , the following code does not compile because you cannot add C# control blocks inside the `<` and `>` of an element.
+For example, the following code does not compile because you cannot add C# control blocks inside the `<` and `>` of an element.
 
 ```razor
 <img
@@ -60,7 +60,9 @@ Razor will only execute C# code in the following places:
 3. Within the `@code` section.
 
 The technique we need to employ to generate one or more attributes + values for an HTML element is called "Attribute splatting".
-Attribute splatting involves assigning a `Dictionary<string, object>` to an attribute with the special name `@attributes`.
+Attribute splatting involves assigning a `Dictionary<string, object>` to an attribute with the special name `@attributes`. The dictionary type can also be `IDictionary<string, object>` or `IReadOnlyDictionary<string, object>`, giving us flexibility in how we build the attribute collection.
+
+> **Note:** Attribute splatting works under all render modes (Static Server, InteractiveServer, InteractiveWebAssembly, and InteractiveAuto). The dictionary is evaluated at render time, so the attributes are always current.
 
 ```razor
 <div @attributes=MyCodeGeneratedAttributes/>

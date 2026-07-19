@@ -1,6 +1,6 @@
 ---
 title: "Dependency injection"
-date: "2019-04-27"
+date: "2026-07-16"
 order: 10
 ---
 
@@ -13,6 +13,11 @@ Take, for example, a service that uses a 3rd party service for sending emails.
 Traditionally, any class needing to use this service might create an instance.
 
 ```cs
+public interface IEmailService
+{
+  void Send(string from, string to, string subject, string body);
+}
+
 public class NewsletterService
 {
   private readonly IEmailService EmailService;
@@ -24,13 +29,13 @@ public class NewsletterService
 
   public void SignUp(string emailAddress)
   {
-     EmailService.SendEmail("noreply@sender.com", emailAddress, "Subject", "Body");
+     EmailService.Send("noreply@sender.com", emailAddress, "Subject", "Body");
   }
 }
 ```
 
 The problem with this approach is that it tightly couples the classes `NewsletterService` and `SendGridEmailService`.
-When unit testing `MyClass.SignUp`, the method being tested would actually try to send an email.
+When unit testing `NewsletterService.SignUp`, the method being tested would actually try to send an email.
 Not only is this not so good for your inbox, it's not good for costs (if your provider charges per email),
 and gives more points at which your test can fail when in fact all we need to know is that the `SignUp` method attempts
 to send out emails to welcome new users to our service.
@@ -50,12 +55,12 @@ public class NewsletterService
 
   public void SignUp(string emailAddress)
   {
-     EmailService.SendEmail(...);
+     EmailService.Send(...);
   }
 }
 ```
 
-A Dependency Injection Framework (such as the one used by default in ASP.NET MVC apps and Blazor apps) will automatically
+A Dependency Injection Framework (such as the one used by default in ASP.NET Core and Blazor applications) will automatically
 inject an instance of the correct class when we ask it to build up an instance of `NewsletterService` for us.
 
 Not only does this decouple our classes by making `NewsletterService` unaware of the class that implements `IEmailService`,
@@ -63,7 +68,7 @@ but it also makes unit-testing very simple. For example, using the Moq framework
 
 ```cs
 [Fact]
-public void WhenSigningUp\_ThenSendsAnEmail()
+public void WhenSigningUp_ThenSendsAnEmail()
 {
   var mockEmailService = new Mock<IEmailService>();
   
@@ -76,3 +81,5 @@ public void WhenSigningUp\_ThenSendsAnEmail()
       Times.Once);
 }
 ```
+
+Now that we understand the basic pattern of dependency injection, we can look at how to apply it specifically in Blazor applications. In the next section we will look at [injecting dependencies into Blazor components](injecting-dependencies-into-blazor-components/). After that we will explore [dependency lifetimes and scopes](dependency-lifetimes-and-scopes/) to understand how long our injected objects live and how many consumers share the same instance.

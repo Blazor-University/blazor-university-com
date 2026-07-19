@@ -1,13 +1,40 @@
 ---
 title: "Updating the document title"
-date: "2019-10-30"
+date: "2026-07-16"
 order: 1
 ---
+
+> **Note:** Modern Blazor provides the built-in `<PageTitle>` component for setting the document title. This is the recommended approach. The JavaScript interop example that follows is retained as a teaching exercise to illustrate the underlying mechanics of JS interop and the prerendering caveat.
+
+## The built-in solution: PageTitle
+
+In .NET 6 and later, Blazor includes a `<PageTitle>` component that sets the browser's tab title declaratively:
+
+```razor
+@page "/counter"
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+```
+
+The `<PageTitle>` component works in all render modes and handles the prerendering caveat automatically. For dynamic titles, we can bind the value:
+
+```razor
+<PageTitle>@Title</PageTitle>
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+}
+```
+
+## The JavaScript interop approach (teaching example)
 
 [![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/JavaScriptInterop/UpdatingDocumentTitle)
 
 In the section [Creating a Blazor layout](/layouts/creating-a-blazor-layout/)
-it we saw how a Blazor app lives within an HTML (or cshtml) document,
+we saw how a Blazor app lives within an HTML (or cshtml) document,
 and only has control over the content within the main application element.
 
 ![](images/Layout.png)
@@ -34,10 +61,10 @@ BlazorUniversity.setDocumentTitle = function (title) {
 This creates an object named `BlazorUniversity` with a function called `setDocumentTitle` which takes a new title and
 assigns it to `document.title`.
 
-Next, edit the **/Pages/_Host.cshtml** file and add a reference to our new script.
+Next, edit the **/App.razor** file (or **/Components/App.razor**) and add a reference to our new script after the Blazor script tag.
 
-```cshtml
-<script src="\_framework/blazor.server.js"></script>
+```html
+<script src="_framework/blazor.web.js"></script>
 <script src="~/scripts/DocumentInterop.js"></script>
 ```
 
@@ -57,7 +84,7 @@ and enter the following markup.
 }
 ```
 
-This code has a deliberate error in it. Run the application and you will see a `NullReferenceException`
+This code has a deliberate error in it. Run the application and you will see an `InvalidOperationException`
 on the line that calls `JSRuntime.InvokeVoidAsync`.
 
 The reason for this is that Blazor runs a pre-render phase on the server before handing control over to the client.
@@ -69,13 +96,13 @@ The purpose of this pre-render is to return valid rendered HTML from the server 
 The problem here is that when the pre-render phase runs, there is no browser for `JSRuntime` to interop with.
 Possible solutions are
 
-1. Edit **/Pages/_Host.cshtml** and change `<component type="typeof(App)" render-mode="ServerPrerendered" />` to
-   `<component type="typeof(App)" render-mode="Server"/>`  
-    **Pro**: A simple fix.  
-    **Con**: Google etc. will not see any content when visiting the pages of our website.
+1. Disable prerendering by setting `prerender: false` on the render mode in **/App.razor**:  
+   `@rendermode new InteractiveServerRenderMode(prerender: false)`  
+   **Pro**: A simple fix.  
+   **Con**: Google etc. will not see any content when visiting the pages of our website.
 2. Instead of overriding `OnParametersSetAsync` override `OnAfterRenderAsync`.  
 
-\#2 is the correct way to solve the problem.
+Option 2 is the correct way to solve the problem.
 
 ```razor
 @inject IJSRuntime JSRuntime
@@ -92,7 +119,7 @@ Possible solutions are
 ```
 
 As explained in the section on [The JavaScript boot process](/javascript-interop/javascript-boot-process/),
-when the server pre-renders the website before sending it do the client browser it will render the App component without
+when the server pre-renders the website before sending it to the client browser it will render the App component without
 any JavaScript. The `OnAfterRender*` methods are invoked with `firstRender` set to `true` only once the HTML has been rendered
 in the browser.
 

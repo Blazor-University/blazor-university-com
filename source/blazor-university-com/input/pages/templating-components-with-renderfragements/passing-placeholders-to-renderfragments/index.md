@@ -1,6 +1,6 @@
 ---
 title: "Passing placeholders to RenderFragments"
-date: "2020-04-18"
+date: "2026-07-16"
 order: 4
 ---
 
@@ -11,7 +11,7 @@ order: 4
 At first, it might seem unintuitive, or perhaps a little odd, to think of declaring a `[Parameter]` property of type `RenderFragment<RenderFragment>`.
 
 [Parameter]
-public RenderFragment<RenderFragment> ChildContent { get; set; }
+public RenderFragment<RenderFragment>? ChildContent { get; set; }
 
 The fact is, if you have ever created a [Custom Blazor layout](/layouts/creating-a-blazor-layout/) then you are already
 familiar with a similar concept.
@@ -80,7 +80,7 @@ public class Person
 This detail is similar to that covered in the section [Using @typeparam to create generic components](/templating-components-with-renderfragements/using-typeparam-to-create-generic-components/).
 Here we'll quickly gloss over the shared content so, if you've not read that already, please read it first.
 
-Next, we need to create a new component in **/Shared** named **DataList.razor**.
+Next, we need to create a new component in **/Components** named **DataList.razor**.
 This component will be a generic component (using `@typeparam`) and will take an `IEnumerable<TItem>` and iterate over
 the enumerable to render content per item using a template specified by its consumer.
 
@@ -95,10 +95,10 @@ the enumerable to render content per item using a template specified by its cons
 @code
 {
   [Parameter]
-  public IEnumerable<TItem> Data { get; set; }
+  public IEnumerable<TItem>? Data { get; set; }
 
   [Parameter]
-  public RenderFragment<TItem> ItemTemplate { get; set; }
+  public RenderFragment<TItem>? ItemTemplate { get; set; }
 }
 ```
 
@@ -179,7 +179,7 @@ The consuming component would look something like either of the two following ex
     <li @key=person>
       @person.Salutation @person.FamilyName, @person.GivenName
     </li>
-  </ItemTeplate>
+  </ItemTemplate>
 </DataList>
 
 <DataList Data=@People>
@@ -216,7 +216,7 @@ First, we'll add the `ListTemplate` property to our DataList component.
 
 ```razor
 [Parameter]
-public RenderFragment<RenderFragment> ListTemplate { get; set; }
+public RenderFragment<RenderFragment>? ListTemplate { get; set; }
 ```
 
 Next we'll change our DataList so that it uses `<ul>` and `<li>` as a default when no `ListTemplate` has been specified
@@ -242,13 +242,13 @@ the component, just as we normally would - but only if the `ListTemplate` proper
 @code
 {
   [Parameter]
-  public IEnumerable<TItem> Data { get; set; }
+  public IEnumerable<TItem>? Data { get; set; }
 
   [Parameter]
-  public RenderFragment<TItem> ItemTemplate { get; set; }
+  public RenderFragment<TItem>? ItemTemplate { get; set; }
 
   [Parameter]
-  public RenderFragment<RenderFragment> ListTemplate { get; set; }
+  public RenderFragment<RenderFragment>? ListTemplate { get; set; }
 }
 ```
 
@@ -265,7 +265,7 @@ but what do we do when we need to pass an instance of `RenderFragment` to our te
 
 To define a non-generic `RenderFragment` we can use the standard Razor escape sequence to denote HTML, which is `@:`
 
-`RenderFragment rf = @<h1>Hello</h1>`
+`RenderFragment rf = @<h1>Hello</h1>;`
 
 To define a `RenderFragment<T>` we need to use a lambda that passes in an instance of `T`
 
@@ -349,13 +349,13 @@ else
 @code
 {
   [Parameter]
-  public IEnumerable<TItem> Data { get; set; }
+  public IEnumerable<TItem>? Data { get; set; }
 
   [Parameter]
-  public RenderFragment<TItem> ItemTemplate { get; set; }
+  public RenderFragment<TItem>? ItemTemplate { get; set; }
 
   [Parameter]
-  public RenderFragment<RenderFragment> ListTemplate { get; set; }
+  public RenderFragment<RenderFragment>? ListTemplate { get; set; }
 }
 ```
 
@@ -501,8 +501,34 @@ our custom wig-pig `RenderFragment` instead.
 ```
 
 **Note**: The `;` cannot be on the same line as the preceding `}`, otherwise the Razor parser does not parse the source correctly.
-This has been [reported as a bug](https://github.com/dotnet/aspnetcore/issues/20971)
-and will hopefully be fixed in the near future.
+This was [reported as a bug](https://github.com/dotnet/aspnetcore/issues/20971)
+but was closed as by design: the `@:` syntax is intended for single-line mark-up, not multi-line blocks.
+This workaround (placing the `;` on its own line) remains necessary as of .NET 10.
+
+## A cleaner alternative to the wig-pig
+
+If the wig-pig syntax feels too cryptic, we can define the inner `RenderFragment` in the `@code` block using the `RenderTreeBuilder` API directly. This avoids the `@:@{` syntax entirely:
+
+```razor
+@code
+{
+  RenderFragment ListContent => (RenderFragment)((builder) =>
+  {
+    foreach (TItem item in Data ?? Array.Empty<TItem>())
+    {
+      builder.AddContent(0, ItemTemplate(item));
+    }
+  });
+}
+```
+
+Then our markup becomes much cleaner:
+
+```razor
+@ListTemplate(ListContent)
+```
+
+This approach is especially helpful when the inline wig-pig becomes difficult to read or format correctly.
 
 ## Summary
 

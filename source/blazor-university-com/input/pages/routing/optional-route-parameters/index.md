@@ -1,17 +1,23 @@
 ---
 title: "Optional route parameters"
-date: "2019-08-04"
+date: "2026-07-16"
 order: 4
 ---
 
-Optional route parameters aren't supported explicitly by Blazor, but the equivalent can be easily achieved by adding
-more than one `@page` declaration on a component.
-For example, alter the standard **Counter.razor** page to add an additional URL.
+Optional route parameters are supported natively in Blazor since .NET 6 using the `?` suffix on a route constraint. For example, we can define a counter component that optionally accepts a starting value:
+
+```razor
+@page "/counter/{CurrentCount:int?}"
+```
+
+Before .NET 6 the same effect required multiple `@page` directives. This legacy technique still works:
 
 ```razor
 @page "/counter"
 @page "/counter/{CurrentCount:int}"
 ```
+
+The multiple-`@page` approach remains useful for mapping several distinct route templates to the same component, but for a simple optional parameter the inline `?` syntax is preferred.
 
 Change the `int currentCount` field to a parameter, like so  
 `[Parameter] public int CurrentCount { get; set; }`  
@@ -147,3 +153,7 @@ public async override Task SetParametersAsync(ParameterView parameters)
 ```
 
 ![](images/OptionalRouteParametersWithDefaultValues.gif)
+
+## Render mode caveat
+
+The behavior described above applies to interactive render modes where the component instance is preserved across navigations. In Static Server Rendering (Static SSR) mode, each navigation is a full HTTP request that destroys and recreates the component, so `OnInitialized` runs on every request regardless of whether the page type is the same.

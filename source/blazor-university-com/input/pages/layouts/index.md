@@ -1,14 +1,16 @@
 ---
 title: "Layouts"
-date: "2019-04-27"
+date: "2026-07-16"
 order: 2
 ---
 
-A Blazor layout is similar to the ASP Webforms concept of a Master Page, and the same as a Razor layout in ASP MVC.
+This section covers [creating a Blazor layout](/layouts/creating-a-blazor-layout/), [using layouts](/layouts/using-layouts/), and [nested layouts](/layouts/nested-layouts/).
+
+A Blazor layout is the same as a Razor layout in ASP.NET MVC/Razor Pages.
 
 Almost every website on the Web has a template that is used either throughout the website (branding at the top of the page, copyright at the bottom), or throughout specific sub-sections of a website (such as a specific menu structure on the Admin pages of the site).
 
-This is achieved by creating a view that acts as an HTML wrapper around the current page's content, the template contains a place-holder indicating where the wrapped page's content should appear.
+This is achieved by creating a view that acts as an HTML wrapper around the current page's content. The template contains a place-holder (in Blazor, a `RenderFragment` named `@Body`) indicating where the wrapped page's content should appear.
 
 ## The layout
 ```html
@@ -24,8 +26,10 @@ This is achieved by creating a view that acts as an HTML wrapper around the curr
 </footer>
 ```
 
+In modern Blazor projects, the default layout is wired up in `Components/Routes.razor` via `<RouteView DefaultLayout="typeof(MainLayout)" />`.
+
 ## Pages that use the layout
-Individual pages can then optionally specify a single layout it would like its content to be wrapped in.
+Individual pages can then optionally specify a single layout in which it would like its content to be wrapped.
 
 ```html
  -- Some way of indicating which template to

@@ -1,6 +1,6 @@
 ---
 title: "Overriding cascaded values"
-date: "2019-07-03"
+date: "2026-07-16"
 order: 3
 ---
 
@@ -8,7 +8,9 @@ order: 3
 
 Cascading values and cascading parameters allow their values to cascade down the render tree without being passed explicitly
 from parent to child.
-Another feature of Blazor is that it allows us to override the value of a `CascadingValue` further down the render tree.
+Another feature of Blazor is that it allows us to override the value of a `CascadingValue` further down the render tree. This applies to both named values and type-based values. For type-based cascading values, the nearest `CascadingValue` of the same type (by render tree depth) wins.
+
+> **Prerequisite:** Cascading parameters work under all render modes (Static Server, InteractiveServer, InteractiveWebAssembly, and InteractiveAuto). See [Render modes](/render-modes) for details.
 
 Given the following `ViewSomeValue` component that displays the value of a `CascadingValue` named `ValueToOverride`:
 
@@ -18,10 +20,10 @@ Given the following `ViewSomeValue` component that displays the value of a `Casc
 @code
 {
   [CascadingParameter(Name = "CascadedValue")]
-  private string SomeValue1 { get; set; }
+  private string? SomeValue1 { get; set; }
 
   [CascadingParameter(Name = "ValueToOverride")]
-  private string SomeValue2 { get; set; }
+  private string? SomeValue2 { get; set; }
 }
 ```
 
@@ -70,5 +72,9 @@ The third component is rendered within the outermost `CascadingValue`, so that i
 a matching value.  
   
 Note also how the value of `CascadedValue` is available to all of the components.
+
+## IsFixed and root-level registration
+
+By default, Blazor re-renders every component between a `CascadingValue` and its consumers whenever the value changes. If we know the value will never change, we can set `IsFixed="true"` on the `CascadingValue` element to skip change tracking and improve render performance. Root-level values registered with `AddCascadingValue` in .NET 8 and later support the same `isFixed` parameter. A root-level cascading value can be overridden by a `CascadingValue` element deeper in the render tree in the same way as any other cascading value.
 
 ![](images/OverridingCascadedValues.png)

@@ -1,6 +1,6 @@
 ---
 title: "Creating a TabControl"
-date: "2019-07-07"
+date: "2026-07-16"
 order: 1
 ---
 
@@ -30,7 +30,7 @@ and the `TabPage` will pick this value up via a `CascadingParameter`.
 @code {
   // Next line is needed so we are able to add <TabPage> components inside
   [Parameter]
-  public RenderFragment ChildContent { get; set; }
+  public RenderFragment? ChildContent { get; set; }
 }
 ```
 
@@ -40,10 +40,10 @@ and the `TabPage` will pick this value up via a `CascadingParameter`.
 
 @code {
   [CascadingParameter]
-  private TabControl Parent { get; set; }
+  private TabControl? Parent { get; set; }
 
   [Parameter]
-  public RenderFragment ChildContent { get; set; }
+  public RenderFragment? ChildContent { get; set; }
 
   protected override void OnInitialized()
   {
@@ -90,7 +90,7 @@ public string Text { get; set; }
 
 And then add the following mark-up to `TabControl`
 (just above where the `ChildContent` is rendered) which will both render the tabs,
-and change which `TabPage` is selected when it's tab is clicked.
+and change which `TabPage` is selected when its tab is clicked.
 
 ```razor
 <div class="btn-group" role="group">
@@ -159,3 +159,15 @@ parent `TabControl`.
   @ChildContent
 }
 ```
+
+## A note on render modes and prerendering
+
+When using InteractiveServer or InteractiveWebAssembly render modes, a component may be prerendered on the server before the interactive session begins. During prerendering, `OnInitialized` is called once on the server and then again once the interactive runtime is established. If your `TabPage` or `TabControl` performs side-effects in `OnInitialized` (such as registering pages), be aware that these effects may execute twice. In practice, the second call typically replaces the earlier state, so the component works correctly; but it is worth knowing about if you see duplicate registrations during development.
+
+## Accessibility basics
+
+For a production tab control, consider adding WAI-ARIA attributes to improve accessibility. At a minimum, give the tab list a `role="tablist"`, each tab button `role="tab"`, and each content panel `role="tabpanel"` with matching `aria-labelledby` and `id` references. The `aria-selected` attribute on the active tab button also helps screen readers. Blazor makes this straightforward by binding these attributes in your render logic.
+
+## Next steps
+
+Now that we have a working `TabControl`, the next page explores [passing data to a RenderFragment](/templating-components-with-renderfragements/passing-data-to-a-renderfragement/) so consumers can customise how each tab's button is rendered.

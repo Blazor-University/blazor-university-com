@@ -1,6 +1,6 @@
 ---
 title: "Owning multiple dependencies: The wrong way"
-date: "2020-06-07"
+date: "2026-07-16"
 order: 2
 ---
 
@@ -87,14 +87,14 @@ Now create a component in the **/Shared** folder named **MyOwningComponent**, li
 
 - **Line 1**  
     Descends our component from `OwningComponentBase<IOwnedDependency>` so our component will create its own injection
-    container and resolve an instance of `IOwnedComponent` from it.
+    container and resolve an instance of `IOwnedDependency` from it.
 - **Line 2**  
     Uses the standard `@inject` directive to have Blazor inject an instance of `IInjectedDependency` into our component.
 
 ### Displaying the result
 
 Finally, we'll edit the **Index.razor** file.
-We'll create a `boolean` field, and only render `MyOwnedComponent` if that field is true.
+We'll create a `boolean` field, and only render `MyOwningComponent` if that field is true.
 This will tell Blazor to create an instance of the component when needed, and release it when it is not.
 We'll `@bind` an HTML checkbox to allow the user to toggle the component.
 
@@ -128,9 +128,16 @@ Running the application and toggling the state of the checkbox will reveal the f
 When using the `@inject` directive,
 Blazor will inject Scoped dependencies from the dependency container associated with the current user's session
 (the current browser tab).
-Only the `T` in `OwnedComponentBase<T>` will be resolved from the injection container that is created and destroyed
+This happens because `@inject` is resolved by the Blazor framework from the root DI container for the circuit,
+not from the owned container that `OwningComponentBase<T>` creates.
+Only the `T` in `OwningComponentBase<T>` will be resolved from the injection container that is created and destroyed
 along with the instance of our `OwningComponentBase<T>` descended component.
 
 ![](images/OwningMultipleDependenciesTheWrongWay.jpg)
+
+**Platform-specific notes.**
+
+- In **Interactive WebAssembly**, where Scoped effectively equals Singleton, the injected dependency will not increment across component recreations anyway because the root DI container persists for the whole tab lifetime.
+- Under **Static Server Rendering**, the `@inject` directive resolves from the per-request scope. If the component is rendered statically, the owned container is also created per request and disposed when the response completes. The behavioral difference between the owned and injected services only becomes visible under Interactive render modes.
 
 The correct way for a component to own multiple dependencies will be covered in the section about the non-generic [OwningComponentBase](/dependency-injection/component-scoped-dependencies/owning-multiple-dependencies-the-right-way/) class.

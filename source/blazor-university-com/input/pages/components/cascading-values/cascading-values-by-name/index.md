@@ -1,6 +1,6 @@
 ---
 title: "Cascading values by name"
-date: "2019-07-03"
+date: "2026-07-16"
 order: 1
 ---
 
@@ -9,6 +9,8 @@ order: 1
 Specifying a value for a cascading parameter is very simple.
 At any point in our Razor HTML mark-up we can create a `CascadingValue` element.
 Everything rendered within that element will have access to the value specified.
+
+> **Prerequisite:** The interactive example on this page uses checkboxes with `@bind-value`, which requires an interactive render mode such as InteractiveServer or InteractiveWebAssembly. Without an interactive render mode, event binding will not function. See [Render modes](/render-modes) for details.
 
 ```razor
 @page "/"
@@ -54,5 +56,32 @@ we are free to name our property anything we like, it's actually the `Name` on t
 identifies which cascading value should be injected.
 
 It is good practice to set the visibility of properties that act as Cascading parameters to `private`.
-It's not really logical to allow them to set via code on the consumer because the value is effectively owned by the
+It is not really logical to allow them to set via code on the consumer because the value is effectively owned by the
 parent that sets the Cascading value.
+
+## IsFixed and root-level registration
+
+By default, Blazor re-renders every component between a `CascadingValue` and its consumers whenever the value changes. If we know the value will never change, we can set `IsFixed="true"` on the `CascadingValue` element to skip change tracking and improve render performance:
+
+```razor
+<CascadingValue Name="Theme" Value="@CurrentTheme" IsFixed="true">
+  <Router ... />
+</CascadingValue>
+```
+
+In .NET 8 and later, we can also register cascading values at the application root using `AddCascadingValue` in our `Program.cs`:
+
+```cs
+builder.Services.AddCascadingValue("FirstOption", _ => false);
+builder.Services.AddCascadingValue("SecondOption", _ => false);
+```
+
+Root-level cascading values feed every component in the application, just as if they were wrapped in a `CascadingValue` element at the top of the render tree. The `IsFixed` option is available through the same registration:
+
+```cs
+builder.Services.AddCascadingValue("FirstOption", _ => false, isFixed: true);
+```
+
+## Warning on mistyped names
+
+If the `Name` in `[CascadingParameter(Name = "...")]` does not match any `CascadingValue` in the render tree, Blazor does **not** throw an exception. Instead, the property retains its default value, which can make the bug difficult to diagnose. Double-check the name spelling when a cascaded value does not appear to arrive.

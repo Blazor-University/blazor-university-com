@@ -1,23 +1,23 @@
 ---
 title: "Capturing unexpected parameters"
-date: "2019-07-27"
+date: "2026-07-16"
 order: 8
 ---
 
 [![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Components/CapturingUnexpectedParameters)
 
 Previously we've seen how to declare parameters and cascading parameters with specific names. Take, for example,
-a custom component that wraps an `<img>` element inside some custom HTML.
+a custom component named `MyImage.razor` that wraps an `<img>` element inside some custom HTML.
 
 ```razor
 <div class="row">
-  <img src=@src/>
+  <img src=@Src/>
 </div>
 
 @code 
 {
   [Parameter]
-  public string src { get; set; }
+  public string? Src { get; set; }
 }
 ```
 
@@ -25,17 +25,17 @@ During review it is pointed out that images without an `alt` tag are not very ac
 so another parameter is added and the HTML updated.
 
 ```razor
-<div class="row" role="img" aria-label=@alt>
-  <img src=@src/>
+<div class="row" role="img" aria-label=@Alt>
+  <img src=@Src/>
 </div>
 
 @code 
 {
   [Parameter]
-  public string src { get; set; }
+  public string? Src { get; set; }
   
   [Parameter]
-  public string alt { get; set; }
+  public string? Alt { get; set; }
 }
 ```
 
@@ -61,20 +61,20 @@ We simply create a property of type `Dictionary<string, object>`, decorate it as
 but in the Parameter we need to specify `CaptureUnmatchedValues = true`.
 
 ```razor
-<div class="row" role="img" aria-label=@alt>
-  <img src=@src @attributes=AllOtherAttributes />
+<div class="row" role="img" aria-label=@Alt>
+  <img src=@Src @attributes=AllOtherAttributes />
 </div>
 
 @code 
 {
   [Parameter]
-  public string src { get; set; }
+  public string? Src { get; set; }
 
   [Parameter]
-  public string alt { get; set; }
+  public string? Alt { get; set; }
 
   [Parameter(CaptureUnmatchedValues = true)]
-  public Dictionary<string, object> AllOtherAttributes { get; set; }
+  public Dictionary<string, object>? AllOtherAttributes { get; set; }
 }
 ```
 
@@ -82,11 +82,15 @@ Now instead of throwing an exception when the consumer of your component adds at
 permitted with a `[Parameter]` decorated property (the normal behavior), Blazor will collect them into the dictionary
 for us as Key/Value pairs.
 
+The dictionary type can be `Dictionary<string, object>`, `IDictionary<string, object>`, or `IReadOnlyDictionary<string, object>`. Only one property with `CaptureUnmatchedValues = true` is allowed per component; if more than one exists, Blazor will throw an exception.
+
 In the preceding example, any `attributes=value` assignments specified by the consumer of our component will be added to
 the `<img>` element within our component.
 
 ```razor
 <MyCustomImage src="https://randomuser.me/api/portraits/lego/6.jpg" alt="A photo of Emmet" width=64 height=64 />
 ```
+
+For more on how captured attributes interact with component-defined default values, see [Replacing attributes on child components](/components/replacing-attributes-on-child-components/).
 
 ![](images/CaptureUnmatchedValues.gif)

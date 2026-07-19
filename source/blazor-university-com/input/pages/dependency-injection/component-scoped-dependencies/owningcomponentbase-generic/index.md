@@ -1,14 +1,14 @@
 ---
 title: "OwningComponentBase<T>"
-date: "2020-05-30"
+date: "2026-07-16"
 order: 1
 ---
 
-As mentioned in the section on [Singleton dependencies](/dependency-injection/dependency-lifetimes-and-scopes/scoped-dependencies/),
+As mentioned in the section on [Singleton dependencies](/dependency-injection/dependency-lifetimes-and-scopes/singleton-dependencies/),
 a Singleton registered dependency must either have no state or should contain only state that may be shared across all
 users on the same server.
 
-And, as mentioned in the section on [Scoped dependencies](/dependency-injection/component-scoped-dependencies/),
+And, as mentioned in the section on [Scoped dependencies](/dependency-injection/dependency-lifetimes-and-scopes/scoped-dependencies/),
 a Scoped registered dependency isolates an individual user's state away from everyone else
 (or even the same user accessing the same website in a different browser tab).
 
@@ -45,7 +45,7 @@ At the end of the method, we'll use Interlocked.Decrement to change the value of
 
 We'll also need a delay in the method,
 otherwise we have too little a chance of having two threads executing it at exactly the same time.
-The `GetForecastAsyc` should be altered to the following code.
+The `GetForecastAsync` should be altered to the following code.
 
 ```razor {: .line-numbers}
 public class WeatherForecastService
@@ -102,16 +102,13 @@ and our \`InvalidOperationException\` should be thrown.
 
 ### Fix 1: Using a Scoped dependency
 
-Changing the `WeatherForecastService` from a `Singleton` dependency to a `Scoped` one (in **Startup.cs**) will prevent
+Changing the `WeatherForecastService` from a `Singleton` dependency to a `Scoped` one (in **Program.cs**) will prevent
 the thread reentrancy problem occurring across our users.
 
-```razor
-public void ConfigureServices(IServiceCollection services)
-{
-  services.AddRazorPages();
-  services.AddServerSideBlazor();
-  services.AddScoped<WeatherForecastService>();
-}
+```cs
+builder.Services.AddRazorComponents()
+  .AddInteractiveServerComponents();
+builder.Services.AddScoped<WeatherForecastService>();
 ```
 
 Running the application again we'll see that we are able to open many tabs without causing a threading conflict.
@@ -170,7 +167,7 @@ OwningComponentBase<T> Server-side hosted
 
 OwningComponentBase<T> Web Assembly hosted
 
-Create a new component in **/Pages** named **OwnedFetchDataPage.razor** and enter the folloing mark-up.
+Create a new component in **/Pages** named **OwnedFetchDataPage.razor** and enter the following mark-up.
 
 ```razor
 @page "/owned-fetchdata"
@@ -202,3 +199,23 @@ they are able to interact with the service independently of each other, and with
 If our server-side application were accessing a database,
 we might descend our component from `OwningComponentBase<MyDbContext>` and fetch data from the database into an array for
 rendering.
+
+**A note on DbContextFactory.** For EntityFrameworkCore specifically, a more modern approach is to register a
+`IDbContextFactory<T>` via `AddDbContextFactory<T>` and create short-lived `DbContext` instances within a `using` block.
+This avoids holding a `DbContext` for the lifetime of the component and works well with `OwningComponentBase`:
+
+```cs
+builder.Services.AddDbContextFactory<MyDbContext>(options =>
+  options.UseSqlServer(connectionString));
+```
+
+Then resolve the factory from the owned container and create scoped context instances as needed.
+
+**IAsyncDisposable.** `OwningComponentBase` implements both `IDisposable` and `IAsyncDisposable`.
+If any dependencies resolved from the owned container implement `IAsyncDisposable`, they will be disposed asynchronously
+when the component is torn down.
+
+**Render-mode caveat.** Under Static Server Rendering, `OwningComponentBase` still creates its own DI scope,
+but the scope may be discarded when the response is complete rather than living as long as the component.
+For truly component-scoped dependencies that survive interactivity, use an Interactive render mode
+(Interactive Server or Interactive WebAssembly).

@@ -1,10 +1,10 @@
 ---
 title: "Multi-threaded rendering"
-date: "2020-06-03"
+date: "2026-07-16"
 order: 11
 ---
 
-As there is more than one thread available in server-side Blazor applications,
+As there is more than one thread available in Blazor apps using interactive Server render mode,
 it is entirely possible that different components can have code executed on them by various threads.
 
 This is seen most frequently in asynchronous `Task` based operations.
@@ -18,8 +18,8 @@ we'll use the `OnInitializedAsync` [lifecycle](/components/component-lifecycles/
 
 [![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Components/MultithreadedRendering)
 
-To demonstrate this, we'll first need to create a new server-side Blazor application.
-Then, in the **/Shared** folder, create a component named `SynchronousInitComponent`.
+To demonstrate this, we'll first need to create a new Blazor Server app using interactive Server render mode.
+Then, in the **Components/Shared** folder, create a component named `SynchronousInitComponent`.
 This component will capture the `Thread.ManagedThreadId` of the current thread when `OnInitialized` is executed.
 This value will then be displayed on the page when our component renders.
 
@@ -48,7 +48,7 @@ This value will then be displayed on the page when our component renders.
 - **Line 1**  
     Renders the ID of the thread that was captured on line 10.
 
-Finally, edit the **/Pages/Index.razor** page to display 5 instances of our new component.
+Finally, edit the **Components/Pages/Index.razor** page to display 5 instances of our new component.
 
 ```razor
 @page "/"
@@ -72,7 +72,7 @@ Sync rendered by thread 4
 
 ### Asynchronous
 
-Next we'll create another new component in the **/Shared** folder named `AsynchronousInitComponent`.
+Next we'll create another new component in the **Components/Shared** folder named `AsynchronousInitComponent`.
 This component will be identical to the `SynchronousInitComponent`,
 but will additionally re-assign the value of `IdOfRenderingThread` in `OnInitializedAsync` after an `await` of 1 second.
 
@@ -117,7 +117,7 @@ This is because the base method does nothing.
 There are no awaits to asynchronous code (such as `Task.Delay`) so the same thread continues the execution.
 
 We'll also need another page that renders this new component.
-Create a new page in **/Pages** named **AsyncInitPage.razor** with the following mark-up.
+Create a new page in **Components/Pages** named **AsyncInitPage.razor** with the following mark-up.
 
 ```razor
 @page "/async-init"
@@ -156,6 +156,8 @@ Specifying `ConfigureAwait(true)` on our `await` does not guarantee we will see 
 thread that initiated the `await`.
 Specifying`ConfigureAwait(true)` will still result in a mixture of threads being used for the callbacks.
 
+It is worth noting that `ConfigureAwait(false)` is generally avoided in Blazor applications. Unlike traditional .NET libraries where `ConfigureAwait(false)` is used to avoid capturing the synchronization context, in Blazor the dispatcher keeps a reference to the component's synchronization scope. Using `ConfigureAwait(false)` can cause code to resume on a thread-pool thread outside that scope, which defeats the dispatcher's ability to serialize access and may lead to the `InvalidOperationException` described earlier.
+
 _Components with asynchronous OnInitializedAsync()_  
 Async rendered by thread 11  
 Async rendered by thread 11  
@@ -173,14 +175,16 @@ A component could be caused to re-render for many reasons, including (but not li
 
 ## Summary
 
-In server-side Blazor applications there is no single UI thread.
+In interactive Server render mode there is no single UI thread.
 Any available thread could be used when rendering work is required.
+Blazor's dispatcher serializes component access so that only one thread executes component code at any given moment,
+which avoids many thread-safety concerns without requiring explicit locking.
 
 Additionally, if any method uses an `await` on code that performs asynchronous operations,
 it is very likely that the thread assigned to continue the processing of
 the method will not be the same one that started it.
 
-In a Blazor WebAssembly application (which only has a single thread) there are no threading problems,
-but in server-side applications, this can cause problems when using a non-thread-safe dependency across multiple components.
+In a Blazor WebAssembly application (single-threaded by default, though .NET 9 added opt-in WASM multithreading support) there are no threading problems in the default configuration,
+but in interactive Server render mode, this can cause problems when using a non-thread-safe dependency across multiple components.
 
 This issue will be addressed in the section on [OwningComponentBase<T>](/dependency-injection/component-scoped-dependencies/owningcomponentbase-generic/).

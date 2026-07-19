@@ -1,6 +1,6 @@
 ---
 title: "Descending from InputBase<T>"
-date: "2019-08-26"
+date: "2026-07-16"
 order: 2
 ---
 
@@ -16,7 +16,9 @@ Implementing `InputBase<T>` is simply a case of implementing one abstract method
 `InputBase<T>` is a generic class that has a property of type `T` named `Value`.
 Because web browsers work with string values, this component needs a way to convert a value of type `T` to and from a string.
 
-protected abstract bool TryParseValueFromString(string value, out T result, out string validationErrorMessage);
+```cs
+protected abstract bool TryParseValueFromString(string? value, out T result, [NotNullWhen(false)] out string? validationErrorMessage);
+```
 
 `TryParseValueFromString` is an abstract method that should be overridden in order to convert a string value from an
 HTML `<input>` element (or other source that works with strings) into the target type `T`.
@@ -25,7 +27,9 @@ conversion failed.
 This is used to provide a validation error message along with a visual invalid state so the user is aware the attempt
 to set the value failed.
 
-protected virtual string FormatValueAsString(T value)
+```cs
+protected virtual string? FormatValueAsString(T? value)
+```
 
 `FormatValueAsString` is the inverse of `TryParseValueFromString`.
 In cases where a simple `Value.ToString()` is not sufficient to translate a value of `T` back into the browser UI layer,
@@ -47,6 +51,8 @@ Within that file we need to specify `InputBase<Color>` as a base class, and also
 `System.Drawing` was added for the `Color` class, and `System.Text.RegularExpressions` was added for parsing input
 from a hex code into a `Color` value.
 
+**Note:** `System.Drawing.Common` is only supported on Windows in modern .NET. For cross-platform color handling, consider a third-party library or a custom color struct.
+
 The first thing we'll do is implement `FormatValueAsString`. To achieve this we'll simply format the R, G, and B values
 as 2 digit hex values.
 
@@ -63,12 +69,12 @@ byte HexStringToByte(string hex)
   const string HexChars = "0123456789abcdef";
 
   hex = hex.ToLowerInvariant();
-  int result = (HexChars.IndexOf(hex[0]) \* 16) + HexChars.IndexOf(hex[1]);
+  int result = (HexChars.IndexOf(hex[0]) * 16) + HexChars.IndexOf(hex[1]);
   return (byte)result;
 }
 ```
 
-Next we'll need to implement `TryParseValueAsString`.
+Next we'll need to implement `TryParseValueFromString`.
 
 ```cs
 static Regex Regex = new Regex("^#([0-9a-f]{2}){3}$", RegexOptions.Compiled | RegexOptions.IgnoreCase);

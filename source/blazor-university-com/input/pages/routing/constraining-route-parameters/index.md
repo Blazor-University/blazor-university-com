@@ -1,6 +1,6 @@
 ---
 title: "Constraining route parameters"
-date: "2019-07-16"
+date: "2026-07-16"
 order: 3
 ---
 
@@ -49,10 +49,10 @@ For example `:int` will only match the component's URL if it contains a valid in
 <table>
     <thead>
         <tr>
-            <td><strong>Constraint<strong></td>
-            <td><strong>.NET type<strong></td>
-            <td><strong>Valid<strong></td>
-            <td><strong>Invalid<strong></td>
+            <td><strong>Constraint</strong></td>
+            <td><strong>.NET type</strong></td>
+            <td><strong>Valid</strong></td>
+            <td><strong>Invalid</strong></td>
         </tr>
     </thead>
     <tbody>
@@ -107,26 +107,34 @@ For example `:int` will only match the component's URL if it contains a valid in
     </tbody>
 </table>
 
+## Optional constrained parameters
+
+Since .NET 6, constrained parameters can also be made optional by appending the `?` suffix to the constraint. For example, the purchase order route can allow both `/purchase-order` and `/purchase-order/42` with a single directive:
+
+```razor
+@page "/purchase-order/{OrderNumber:int?}"
+```
+
+This is equivalent to declaring two `@page` directives (`/purchase-order` and `/purchase-order/{OrderNumber:int}`) but is more concise and avoids duplicating the route definition.
+
 ## Localization
 
-Blazor constraints do not currently support localization.
+Blazor route constraints parse values using the invariant culture. This means:
 
 - Numeric digits are only considered valid if they are in the form `0..9`, and not from a non-English language such as
   `૦..૯` (Gujarati).
-- Dates are only valid in the form `MM-dd-yyyy`, `MM-dd-yy`, or in ISO format `yyyy-MM-dd`.
-- Boolean values must be `true` or `false`.
+- Dates are only valid in the form `MM-dd-yyyy`, `MM-dd-yy`, or in ISO format `yyyy-MM-dd`. The parser uses the invariant culture, so regional date formats such as `dd/MM/yyyy` are not accepted.
+- Boolean values must be `true` or `false` (case-insensitive).
 
 ## Unsupported constraint types
 
 Blazor constraints do not support the following constraint types, but hopefully will in future:
 
-- **Greedy parameters**  
-In ASP.NET MVC it is possible to provide a parameter name that starts with an asterisk and catches a chunk of the URL
-including forward slashes.  
-    `/articles/{Subject}/{*TheRestOfTheURL}`
 - **Regular expressions**  
-Blazor does not currently support the ability to constrain a parameter based on a regular expression.
+  Blazor does not currently support the ability to constrain a parameter based on a regular expression.
 - **Enums**  
-It's not currently possible to constrain a parameter to match a value of an enum.
+  It is not currently possible to constrain a parameter to match a value of an enum.
 - **Custom constraints**  
-It is not possible to define a custom class that determines whether or not a value passed to a parameter is valid.
+  It is not possible to define a custom class that determines whether or not a value passed to a parameter is valid.
+
+Note: Catch-all parameters (`{*VariableName}`) were previously unsupported but have been available since .NET 5.
