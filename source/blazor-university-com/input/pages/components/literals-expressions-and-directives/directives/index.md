@@ -9,7 +9,7 @@ Directives are used by preceding the identifier with the `@` symbol,
 the identifier being what we'd typically expect to be either the name of an HTML attribute or the name of a component's property.
 If you haven't done so already, read [Literals, expressions, and directives](/components/literals-expressions-and-directives).
 
-**Note:** Currently, unlike other frameworks such as Angular, Blazor does not allow developers to create their own directives.
+_Note: Currently, unlike other frameworks such as Angular, Blazor does not allow developers to create their own directives._
 
 Because the type of the value assigned to the directive is known (it is strongly typed in C# code)
 the value will be inferred to be an expression.

@@ -43,14 +43,4 @@ Now run the app and we will see the following.
 
 Component file names should use PascalCase, matching the component class name. For example, a component defined in **MyFirstComponent.razor** becomes the `MyFirstComponent` class. We can also use a code-behind approach by creating a **MyFirstComponent.razor.cs** partial class file alongside the Razor file.
 
-## Interactivity and render modes
-
-By default, components render as Static Server-Side Rendering (Static SSR). To make a component interactive, we need to assign a render mode such as `InteractiveServer`, `InteractiveWebAssembly`, or `InteractiveAuto` using the `@rendermode` directive.
-
-```razor
-<MyFirstComponent @rendermode="InteractiveServer" />
-```
-
-Render modes are covered in more detail in the [Directives](/components/literals-expressions-and-directives/directives) section.
-
 ![](images/ThisIsMyFirstComponent.jpg)

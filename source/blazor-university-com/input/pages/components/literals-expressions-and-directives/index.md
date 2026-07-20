@@ -6,9 +6,9 @@ order: 3
 
 [![](images/SourceLink.png)](https://github.com/mrpmorris/blazor-university/tree/master/src/Components/LiteralsExpressionsAndDirectives)
 
-> Note that this section does not cover Razor mark-up in general.
-> It will not cover things such as conditional output, loops, and so on.
-> That subject and is covered quite extensively in other places, both on the Web and in books.
+_Note: This section does not cover Razor mark-up in general.
+It will not cover things such as conditional output, loops, and so on.
+That subject and is covered quite extensively in other places, both on the Web and in books._
 
 When consuming a component we can pass it information as parameters.
 These parameters can be simple types such as integers, strings, and booleans -

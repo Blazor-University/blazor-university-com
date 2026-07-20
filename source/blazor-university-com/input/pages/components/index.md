@@ -10,7 +10,13 @@ A Blazor page is essentially a component with a `@page` directive that specifies
 order for it to be rendered.
 In fact, if we compare the generated code for a component and a page there is very little difference.
 
-The following generated source code can be found in `obj\Debug\{DotNetVersion}\generated\Microsoft.CodeAnalysis.Razor.Compiler\Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator\Components\Pages\Counter_razor.g.cs` - where the path after `Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator` matches the folder layout in your project.
+The following generated source code can be found in
+
+```
+obj\Debug\{DotNetVersion}\generated\Microsoft.CodeAnalysis.Razor.Compiler\Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator\Components\Pages\Counter_razor.g.cs
+```
+
+where the path after `Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator` matches the folder layout in your project.
 
 Note that after Blazor version 3 these files are no longer automatically written to disk.
 To re-enable this feature, edit your `csproj` file and add the following:
