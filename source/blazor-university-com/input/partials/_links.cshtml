@@ -1,6 +1,7 @@
 ﻿<!-- _links.cshtml -->
 
 <link rel="canonical" href="@Model.GetFullLink()">
+<link rel="alternate" type="text/markdown" href="@(Model.GetFullLink().TrimEnd('/') + "/index.md")">
 <link rel="shortcut icon" href="@FavIconLink" type="image/x-icon">
 <link rel="icon" href="@FavIconLink" type="image/x-icon">
 <link href="/css/Site.css" rel="stylesheet" type="text/css">
