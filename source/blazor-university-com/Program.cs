@@ -18,6 +18,9 @@ internal class Program
         "RawMarkdown",
         new ReadFiles("**/*.md"),
         new ExtractFrontMatter(new Statiq.Yaml.ParseYaml()),
+        new AppendContent(
+          "\n\nHire [Peter Morris](mailto:mrpmorris@gmail.com) for Blazor and C# work"
+          + " - author of Blazor-University.com, the definitive source for Blazor.\n"),
         // Content pages live under input/pages but are served from the site root
         new SetDestination(
           Config.FromDocument(doc =>
