@@ -93,7 +93,6 @@ Here is what colleagues, managers, and mentees say about working with me.
       width: 100%;
       flex-shrink: 0;
       box-sizing: border-box;
-      padding: 0 0.5rem;
    }
 
    .t-card {
@@ -141,47 +140,47 @@ Here is what colleagues, managers, and mentees say about working with me.
       font-weight: 700;
    }
 
-   .t-role,
-   .t-rel {
-      font-size: 0.875rem;
-   }
+    .t-role {
+       font-size: 0.875rem;
+    }
 
-   .t-rel {
-      opacity: 0.7;
-   }
+    .t-quote {
+       font-style: italic;
+       margin-top: 0.5rem;
+       padding: 0 3rem;
 
-   .t-quote {
-      font-style: italic;
-      margin-top: 1rem;
-   }
+    }
 
-   .t-button {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 2;
-      border-radius: 9999px;
-      border: 2px solid #d1d5db;
-      background: #ffffff;
-      color: #6b7280;
-      font-size: 1.25rem;
-      line-height: 1;
-      padding: 0.25rem 0.75rem;
-      cursor: pointer;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-   }
+    .t-button {
+       position: absolute;
+       bottom: 2.5em;
+       z-index: 2;
+       border-radius: 9999px;
+       border: 2px solid #d1d5db;
+       background: #ffffff;
+       color: #6b7280;
+       line-height: 1;
+       margin: 0;
+       padding: 0;
+       display: grid;
+       place-items: center;
+       width: 3rem;
+       height: 3rem;
+       cursor: pointer;
+       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
 
    .t-button:hover {
       background: #f3f4f6;
    }
 
-   .t-prev {
-      left: 0;
-   }
+    .t-prev {
+       left: 0.25em;
+    }
 
-   .t-next {
-      right: 0;
-   }
+    .t-next {
+       right: 0.25em;
+    }
 
    .t-dots {
       display: flex;
@@ -245,9 +244,8 @@ Here is what colleagues, managers, and mentees say about working with me.
                   <img class="t-avatar" src="https://media.licdn.com/dms/image/v2/D4E03AQEXxPwukGY60A/profile-displayphoto-shrink_200_200/B4EZRM7CgqGcAo-/0/1736457333877?e=1787788800&v=beta&t=uAAj9br0ykTo1I2e1gT9Qprj3GZOtB3JCa5FQ4qBZJ4" alt="Alex McLean" loading="lazy" decoding="async" />
                   <div class="t-meta">
                      <p class="t-name">Alex McLean</p>
-                     <p class="t-role">Senior software engineer at Hubspot</p>
-                     <p class="t-rel">Alex worked with Peter on the same team, May 30, 2024</p>
-                  </div>
+                      <p class="t-role">Worked with Peter at Bennetts Motorcycling Services</p>
+                   </div>
                </div>
                <p class="t-quote">"Peter is a very knowledgeable and extremely passionate developer. Peter spent a lot of time mentoring and training me, and I can confidently say that without Peter's help I would not be half the developer I am today, he patiently explains technical concepts in great detail, leaving you with a solid foundation not only of what you are doing but the reasons why as well. Peter is also very easy to get along with and brings a lot of fun and laughter into the team."</p>
             </div>
@@ -258,9 +256,8 @@ Here is what colleagues, managers, and mentees say about working with me.
                   <img class="t-avatar" src="https://media.licdn.com/dms/image/v2/D4E03AQFB8qI0uKF0HA/profile-displayphoto-scale_200_200/B4EZ.jQd8PJMAg-/0/1785150432208?e=1787788800&v=beta&t=h66zbwCS3gWl1n9wzOEA9lqcoFa_oWTMmR15N1LXlMw" alt="Andre Jacyshyn" loading="lazy" decoding="async" />
                   <div class="t-meta">
                      <p class="t-name">Andre Jacyshyn</p>
-                     <p class="t-role">Founder, Inteevo</p>
-                     <p class="t-rel">Andre managed Peter directly, April 30, 2024</p>
-                  </div>
+                      <p class="t-role">Worked with Peter at Lynx Express, 2Tribes, and Eden BI</p>
+                   </div>
                </div>
                <p class="t-quote">"I have had the pleasure of working with Peter over many years on multiple occasions, and I can confidently say he stands out as a truly dedicated and highly proficient professional. Peter's technical skills are impeccable and consistently place him at the forefront of his field. Beyond his technical expertise, Peter's amiable personality and remarkable adaptability make him a valuable asset to any team."</p>
             </div>
@@ -271,9 +268,8 @@ Here is what colleagues, managers, and mentees say about working with me.
                   <img class="t-avatar" src="https://media.licdn.com/dms/image/v2/C4D03AQFibPmOAc5W8g/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1636640802478?e=1787788800&v=beta&t=OClAZcRRAWHY_8mrHQr2zMuj0ds6udQBvZqKt0PYXoA" alt="Kieran Brinkley" loading="lazy" decoding="async" />
                   <div class="t-meta">
                      <p class="t-name">Kieran Brinkley</p>
-                     <p class="t-role">Senior Software Engineer at Bennetts Motorcycling Services Ltd</p>
-                     <p class="t-rel">Peter was senior to Kieran, March 12, 2024</p>
-                  </div>
+                      <p class="t-role">Worked with Peter at Bennetts Motorcycling Services</p>
+                   </div>
                </div>
                <p class="t-quote">"I have worked with Peter for roughly five months now and I have learnt a lot under him. Rather than just doing the job himself, he has the patience and willingness to help others learn under his guidance. He has also come in with fresh and modern ideas that have hugely contributed to not just the code base, but also the ways in which we work."</p>
             </div>
@@ -284,9 +280,8 @@ Here is what colleagues, managers, and mentees say about working with me.
                   <img class="t-avatar" src="https://media.licdn.com/dms/image/v2/D4E03AQFG3mENgC2WgA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1675439356822?e=1787788800&v=beta&t=LASOWz51oeKBbEH6UmpCOO4fvPin8nUBJK1KJoICI8g" alt="Chris Key" loading="lazy" decoding="async" />
                   <div class="t-meta">
                      <p class="t-name">Chris Key</p>
-                     <p class="t-role">Chief Architect at MHR</p>
-                     <p class="t-rel">December 30, 2021</p>
-                  </div>
+                      <p class="t-role">Worked with Peter at Xoserve</p>
+                   </div>
                </div>
                <p class="t-quote">"Pete is incredibly smart and dedicated. Having him on the team was an absolute bonus and really helped get things moving. He works very well both on his own and as part of a team, leading and being led as required. His knowledge of Blazor was exactly what we needed and dedication to getting things done meant we completed stages on development on time. I'd 100% work with Pete again."</p>
             </div>
@@ -297,9 +292,8 @@ Here is what colleagues, managers, and mentees say about working with me.
                   <img class="t-avatar" src="https://media.licdn.com/dms/image/v2/C4E03AQF92eHiKNrMFQ/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1516480026713?e=1787788800&v=beta&t=6FwZS2rW-G-iTqMreZNT_mvQB6yv6_sJ4o6meDL5pT0" alt="James Clyne" loading="lazy" decoding="async" />
                   <div class="t-meta">
                      <p class="t-name">James Clyne</p>
-                     <p class="t-role">Head of Data Science</p>
-                     <p class="t-rel">James managed Peter directly, November 15, 2021</p>
-                  </div>
+                      <p class="t-role">Worked with Peter at Centre of Applied Practical Psychology</p>
+                   </div>
                </div>
                <p class="t-quote">"There are engineers who code and those who think before they code. Peter definitely falls into that far more productive latter category. He has clarity in decomposition and is well schooled in best practice, whilst remaining very pragmatic. He possesses a deep knowledge of C# and the analytical chops to make the very best of that knowledge."</p>
             </div>
@@ -310,9 +304,8 @@ Here is what colleagues, managers, and mentees say about working with me.
                   <img class="t-avatar" src="https://media.licdn.com/dms/image/v2/C4D03AQEDSVMykpaRaA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1574254758648?e=1787788800&v=beta&t=jNQ1asNyUuh-NNu6d_Pui9ObK3_-tvpRJQmMv08Sq9Q" alt="Colin Powers" loading="lazy" decoding="async" />
                   <div class="t-meta">
                      <p class="t-name">Colin Powers</p>
-                     <p class="t-role">Developer and manager, as the job requires</p>
-                     <p class="t-rel">Peter was senior to Colin, October 20, 2021</p>
-                  </div>
+                      <p class="t-role">Worked with Peter at Xoserve</p>
+                   </div>
                </div>
                <p class="t-quote">"Peter is very knowledgeable and clearly absolutely loves what he does. Programming is not a 9 to 5 activity for Pete but a hobby and a passion as well. Pete has a broad and deep knowledge of many different technologies including Microsoft Azure, Blazor and databases. Peter always has time to discuss things with people and has a very positive and pragmatic attitude when it comes to discussing design and implementation ideas."</p>
             </div>
@@ -323,9 +316,8 @@ Here is what colleagues, managers, and mentees say about working with me.
                   <img class="t-avatar" src="https://media.licdn.com/dms/image/v2/C4D03AQEraeHs4aKc7Q/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1517611949322?e=1787788800&v=beta&t=xxcHOwD52PyAQHhnA_MbYOUnhGdIyE_SqNOJgJBe3a0" alt="Mikey Stewart" loading="lazy" decoding="async" />
                   <div class="t-meta">
                      <p class="t-name">Mikey Stewart</p>
-                     <p class="t-role">PHP Developer</p>
-                     <p class="t-rel">Peter was senior to Mikey, October 8, 2021</p>
-                  </div>
+                      <p class="t-role">Worked with Peter at Eden BI</p>
+                   </div>
                </div>
                <p class="t-quote">"I have had the pleasure of working with Peter for a few years in one of my earlier jobs. Kind of like a mentor to me when I was coming up in C#, and in software development in general. He's highly skilled, borderline brilliant, gets on easily and always has time to help out fellow team members should the need arise. I learned so much working with him and those lessons I have tried to take to heart in my own career. Highly recommended."</p>
             </div>
@@ -336,9 +328,8 @@ Here is what colleagues, managers, and mentees say about working with me.
                   <img class="t-avatar" src="https://media.licdn.com/dms/image/v2/C4D03AQH4bhA9DYwTOg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1644495791482?e=1787788800&v=beta&t=HVJ0Chdba2tyVa7Hwk23aES4-CwtqHSgVUi68cUa9yE" alt="Mark Gwilliam" loading="lazy" decoding="async" />
                   <div class="t-meta">
                      <p class="t-name">Mark Gwilliam</p>
-                     <p class="t-role">Software Engineer and Architect (contract)</p>
-                     <p class="t-rel">Mark worked with Peter on the same team, September 24, 2021</p>
-                  </div>
+                      <p class="t-role">Worked with Peter at Department for Education and Xoserve</p>
+                   </div>
                </div>
                <p class="t-quote">"Pete is a talented, passionate and very capable developer with many years of experience. I have recruited Pete to work with me on two occasions, both times he made significant contributions to the project. Pete is a great person to have in a team, he has a vibrant personality and brings much welcomed enthusiasm and good humour to the team."</p>
             </div>
@@ -349,9 +340,8 @@ Here is what colleagues, managers, and mentees say about working with me.
                   <div class="t-avatar-fallback" aria-hidden="true">SP</div>
                   <div class="t-meta">
                      <p class="t-name">Sachin Patel</p>
-                     <p class="t-role">Senior Consultant</p>
-                     <p class="t-rel">Sachin worked with Peter on the same team, September 21, 2021</p>
-                  </div>
+                      <p class="t-role">Worked with Peter at Department for Education</p>
+                   </div>
                </div>
                <p class="t-quote">"I worked with Pete for around 18 months at the Education and Skills Funding Agency. He was actively contributing to a handful of projects, from a live public facing service for applying to apprenticeships opportunities to systems that supported the larger apprenticeship programme. Working with Pete is fun and refreshing, he has a vast amount of knowledge around good coding and software engineering practices which he is willing to share."</p>
             </div>
@@ -362,9 +352,8 @@ Here is what colleagues, managers, and mentees say about working with me.
                   <img class="t-avatar" src="https://media.licdn.com/dms/image/v2/C4E03AQHq5_2E_FOxOw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1516332172001?e=1787788800&v=beta&t=tsUQgVvoBSyBENw0JYlI3Zl8_XdE9CZtMORljKQlc0s" alt="Deven Shah" loading="lazy" decoding="async" />
                   <div class="t-meta">
                      <p class="t-name">Deven Shah</p>
-                     <p class="t-role">Contract .Net Lead Developer</p>
-                     <p class="t-rel">Deven worked with Peter on the same team, September 21, 2021</p>
-                  </div>
+                      <p class="t-role">Worked with Peter at Department for Education and Xoserve</p>
+                   </div>
                </div>
                <p class="t-quote">"I have worked with Peter at both Correla and Education Skills and Funding Agency. He is creative and loves coding, you can see this from his various contributions on GitHub. He likes to automate, the tool he created to test migration of Elastic Search was very critical to the successful delivery of that project. He has the ability to talk through problems or solutions with great clarity."</p>
             </div>
@@ -375,9 +364,8 @@ Here is what colleagues, managers, and mentees say about working with me.
                   <img class="t-avatar" src="https://media.licdn.com/dms/image/v2/C4D03AQEW0oIVEhlx6A/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1516949606127?e=1787788800&v=beta&t=kzs7L6uobBOQihA0wRO2nMQ2YV2rcqYokGOq78fJ3ZI" alt="Linus Bernas" loading="lazy" decoding="async" />
                   <div class="t-meta">
                      <p class="t-name">Linus Bernas</p>
-                     <p class="t-role">Application Architect at Vitec ALMA Oy</p>
-                     <p class="t-rel">Linus managed Peter directly, September 21, 2021</p>
-                  </div>
+                      <p class="t-role">Was a customer of Air Software</p>
+                   </div>
                </div>
                <p class="t-quote">"Peter has good knowledge about software design and always strives to build quality solutions."</p>
             </div>
@@ -388,9 +376,8 @@ Here is what colleagues, managers, and mentees say about working with me.
                   <img class="t-avatar" src="https://media.licdn.com/dms/image/v2/C5603AQEjccXDHtzKeQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1517671584110?e=1787788800&v=beta&t=Q28GPIto8vOMp4I1tzQK4HHLb95Bl4zbCGZJodetaDQ" alt="Gary Gardiner" loading="lazy" decoding="async" />
                   <div class="t-meta">
                      <p class="t-name">Gary Gardiner</p>
-                     <p class="t-role">Creative Manager, Technologist, Experience Designer</p>
-                     <p class="t-rel">Gary managed Peter directly, September 20, 2021</p>
-                  </div>
+                      <p class="t-role">Worked with Peter at Holovis</p>
+                   </div>
                </div>
                <p class="t-quote">"I had the pleasure of working closely with Pete on a number of high-priority projects in the entertainment technology sector. I was quite impressed by his extensive skillset; not only did he have deep experience in C# from his successful career as a software engineer, but he also had familiarity with a wide variety of new and emerging technologies, such as VR, AR, and robotics. His broad expertise and easy-to-work-with attitude made him an essential member of multiple project teams. I look forward to working with Pete again!"</p>
             </div>
@@ -439,7 +426,7 @@ Here is what colleagues, managers, and mentees say about working with me.
 
       let currentIndex = 0;
       let timer = null;
-      const intervalMs = 7000;
+       const intervalMs = 15000;
 
       const goTo = (index) => {
          currentIndex = (index + slides.length) % slides.length;
@@ -482,6 +469,11 @@ Here is what colleagues, managers, and mentees say about working with me.
 
       carousel.addEventListener("mouseenter", stopTimer);
       carousel.addEventListener("mouseleave", startTimer);
+
+      prevButton.addEventListener("mouseenter", stopTimer);
+      prevButton.addEventListener("mouseleave", startTimer);
+      nextButton.addEventListener("mouseenter", stopTimer);
+      nextButton.addEventListener("mouseleave", startTimer);
 
       slides.forEach((slide, index) => {
          const button = document.createElement("button");
