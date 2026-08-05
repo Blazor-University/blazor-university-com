@@ -16,7 +16,7 @@ I am Peter Morris, a senior C# and .NET contractor with over 30 years of commerc
 organisations build new C#/Blazor applications, modernise ageing code bases, and get the most out of the .NET platform.
 If you are reading this site, you already know that I am the author of Blazor-University.
 
-## Why hire me
+## Why hire me?
 
 I am recognised as a leading authority on Blazor. I was an early adopter of the platform, I run the definitive free
 learning resource in Blazor-University, and I have built open-source libraries, including Fluxor for state management
@@ -27,7 +27,7 @@ That depth of knowledge matters in production. I have delivered systems that han
 per day, systems accountable for billions of pounds of investment transactions, and regulated systems in government,
 insurance, utilities, and logistics across the UK and the United States.
 
-## What I can do for you
+## What I can do for you?
 
 ### Blazor and modern .NET development
 
