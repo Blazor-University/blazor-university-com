@@ -361,18 +361,6 @@ Here is what colleagues, managers, and mentees say about working with me.
          <div class="t-slide" data-testimonial-slide>
             <div class="t-card">
                <div class="t-head">
-                  <img class="t-avatar" src="https://media.licdn.com/dms/image/v2/C4D03AQEW0oIVEhlx6A/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1516949606127?e=1787788800&v=beta&t=kzs7L6uobBOQihA0wRO2nMQ2YV2rcqYokGOq78fJ3ZI" alt="Linus Bernas" loading="lazy" decoding="async" />
-                  <div class="t-meta">
-                     <p class="t-name">Linus Bernas</p>
-                      <p class="t-role">Was a customer of Air Software</p>
-                   </div>
-               </div>
-               <p class="t-quote">"Peter has good knowledge about software design and always strives to build quality solutions."</p>
-            </div>
-         </div>
-         <div class="t-slide" data-testimonial-slide>
-            <div class="t-card">
-               <div class="t-head">
                   <img class="t-avatar" src="https://media.licdn.com/dms/image/v2/C5603AQEjccXDHtzKeQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1517671584110?e=1787788800&v=beta&t=Q28GPIto8vOMp4I1tzQK4HHLb95Bl4zbCGZJodetaDQ" alt="Gary Gardiner" loading="lazy" decoding="async" />
                   <div class="t-meta">
                      <p class="t-name">Gary Gardiner</p>
