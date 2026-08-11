@@ -16,8 +16,12 @@
 
                     </label>
                     <input id="search-model-input" class="flex items-center justify-center flex-auto h-12 border-none group md:ring-1 md:ring-slate-200 md:hover:ring-slate-300 dark:bg-slate-800/75 dark:ring-inset dark:ring-white/5 dark:hover:bg-slate-700/40 dark:hover:ring-slate-500 lg:w-96" placeholder="search..." >
-                    <button class="p-1 bg-amber-500">
-                        esc
+                    <button type="button" onclick="closeSearchWindow()" aria-label="Close search"
+                        class="flex items-center justify-center w-8 h-8 rounded-full hover:bg-slate-200 dark:hover:bg-slate-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                            stroke="currentColor" style="width:1.25rem;height:1.25rem">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
                     </button>
                 </form>
             </header>

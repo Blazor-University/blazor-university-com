@@ -80,6 +80,14 @@ document.onkeyup = function (e) {
 };
 
 /*
+    close the search model (close button / click outside).
+*/
+function closeSearchWindow() {
+    makeBodyScrollable();
+    document.querySelector("#search-model").classList.add("hidden");
+}
+
+/*
     on click on main search window open a search model.
 */
 function searchWindow() {
@@ -119,6 +127,14 @@ window.onload = function () {
     if (ul == null) {
         ul = document.querySelector('#search-results');
     }
+
+    // clicking outside the search dialog closes it
+    var searchModelElement = document.querySelector("#search-model");
+    searchModelElement.addEventListener('mousedown', function (e) {
+        if (!e.target.closest('#search-model > div')) {
+            closeSearchWindow();
+        }
+    });
 }
 
 

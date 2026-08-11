@@ -1,0 +1,248 @@
+/* mobile.css — mobile-first layout. Loaded after Site.css.
+   Base rules target phones; min-width media queries scale up. */
+
+/* ---------- Page shell ---------- */
+.bu-page {
+  width: 100%;
+  padding: 0 1rem;
+}
+
+@media (min-width: 1024px) {
+  .bu-page {
+    width: 100%;
+    max-width: 96rem;
+    padding: 0 2rem;
+  }
+}
+
+/* ---------- Main two-pane layout ---------- */
+.bu-layout {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+@media (min-width: 1024px) {
+  .bu-layout {
+    flex-direction: row;
+  }
+}
+
+/* ---------- Sidebar: off-canvas drawer on mobile ---------- */
+.bu-sidebar {
+  position: fixed;
+  inset: 0 25% 0 0; /* drawer covers left 75% */
+  z-index: 40;
+  transform: translateX(-100%);
+  transition: transform 0.2s ease-out;
+  overflow-y: auto;
+  padding: 1rem;
+  padding-top: calc(4.5rem + 1em); /* clear the fixed menu button, plus breathing room */
+  background-color: #e4e4e7; /* zinc-200 */
+}
+
+@media (max-width: 1023.98px) {
+  @media (prefers-color-scheme: dark) {
+    .bu-sidebar {
+      background-color: #1e293b; /* slate-800 */
+    }
+  }
+
+  html.dark .bu-sidebar {
+    background-color: #1e293b;
+  }
+}
+
+.bu-sidebar.open {
+  transform: translateX(0);
+  box-shadow: 0 0 30px rgb(0 0 0 / 0.4);
+}
+
+@media (min-width: 1024px) {
+  .bu-sidebar {
+    position: static;
+    inset: auto;
+    transform: none;
+    transition: none;
+    overflow-y: visible;
+    padding: 0;
+    background-color: transparent;
+    box-shadow: none;
+    width: 18rem;
+    flex-shrink: 0;
+    margin-top: 1rem;
+    margin-right: 2rem;
+  }
+}
+
+/* Backdrop behind open drawer */
+.bu-sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  background-color: rgb(0 0 0 / 0.5);
+}
+
+.bu-sidebar-backdrop.open {
+  display: block;
+}
+
+@media (min-width: 1024px) {
+  .bu-sidebar-backdrop.open {
+    display: none;
+  }
+}
+
+/* ---------- Menu toggle button (hidden on desktop) ---------- */
+.bu-menu-button {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 9999px;
+  background-color: #7c3aed; /* violet-600 */
+  color: #fff;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.3);
+  cursor: pointer;
+}
+
+@media (min-width: 1024px) {
+  .bu-menu-button {
+    display: none;
+  }
+}
+
+/* ---------- Content pane ---------- */
+.bu-content {
+  width: 100%;
+  min-width: 0; /* allow pre/code to shrink instead of overflowing */
+}
+
+@media (min-width: 1024px) {
+  .bu-content {
+    flex: 1 1 auto;
+    width: auto;
+  }
+}
+
+/* ---------- Header scaling ---------- */
+/* Push header below the fixed top-left menu button */
+.bu-header {
+  padding-top: 4.5rem;
+}
+
+@media (min-width: 1024px) {
+  .bu-header {
+    padding-top: 0;
+  }
+}
+
+
+.bu-site-title {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.bu-site-tagline {
+  font-size: 0.7rem;
+}
+
+.bu-logo {
+  width: 3.5rem;
+  height: auto;
+  flex-shrink: 0;
+}
+
+@media (min-width: 640px) {
+  .bu-site-title {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+
+  .bu-site-tagline {
+    font-size: 0.875rem;
+  }
+
+  .bu-logo {
+    width: auto;
+  }
+}
+
+/* Page title: smaller on phones */
+.bu-page-title {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+@media (min-width: 640px) {
+  .bu-page-title {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .bu-page-title {
+    font-size: 3rem;
+    line-height: 1;
+  }
+}
+
+/* Search box: keep it a full-size input on small screens
+   (Tailwind classes only style it from md up) */
+@media (max-width: 767.98px) {
+  .bu-search,
+  .bu-search-inner,
+  .bu-search-inner > div {
+    width: 100%;
+  }
+
+  .bu-search-input {
+    height: auto;
+    width: 100%;
+    border-radius: 0.5rem;
+    padding: 0.625rem 0.875rem 0.625rem 1rem;
+    font-size: 0.875rem;
+    box-shadow: inset 0 0 0 1px #cbd5e1; /* ring-slate-300 */
+    background-color: #fff;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .bu-search-input {
+      background-color: rgb(30 41 59 / 0.75); /* slate-800/75 */
+      box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.05);
+    }
+  }
+
+  html.dark .bu-search-input {
+    background-color: rgb(30 41 59 / 0.75);
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.05);
+  }
+}
+
+/* Code blocks: never force page-wide horizontal scroll */
+.prose pre {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* Tables scroll within themselves on narrow screens */
+.prose table {
+  display: block;
+  overflow-x: auto;
+}
+
+@media (min-width: 768px) {
+  .prose table {
+    display: table;
+    overflow-x: visible;
+  }
+}
